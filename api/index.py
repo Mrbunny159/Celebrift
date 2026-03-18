@@ -132,6 +132,48 @@ def add_review(slug):
     finally:
         cur.close()
         conn.close()
+# --- GLOBAL SETTINGS ROUTES ---
 
+# Fetch all settings (Public - used by the frontend to display T&C, About, etc.)
+@app.route('/api/settings', methods=['GET'])
+def get_all_settings():
+    conn = get_db_connection()
+    cur = conn.cursor(cursor_factory=RealDictCursor)
+    cur.execute('SELECT key, content FROM global_settings;')
+    # Convert list of dicts to a single key-value dictionary
+    settings = {row['key']: row['content'] for row in cur.fetchall()}
+    cur.close()
+    conn.close()
+    return jsonify(settings)
+
+# Update a specific setting (Admin Only)
+@app.route('/api/settings/<key>', methods=['POST'])
+def update_setting(key):
+    # Security Check
+    if request.headers.get('Authorization') != f'Bearer {SECRET_TOKEN}':
+        return jsonify({'error': 'Unauthorized'}), 401
+        
+    data = request.json
+    content = data.get('content', '')
+    
+    conn = get_db_connection()
+    cur = conn.cursor()
+    try:
+        # Upsert: Insert if it doesn't exist, Update if it does
+        cur.execute('''
+            INSERT INTO global_settings (key, content)
+            VALUES (%s, %s)
+            ON CONFLICT (key) DO UPDATE SET content = EXCLUDED.content;
+        ''', (key, content))
+        conn.commit()
+        return jsonify({'success': True, 'message': f'{key} updated successfully'})
+    except Exception as e:
+        conn.rollback()
+        return jsonify({'error': str(e)}), 400
+    finally:
+        cur.close()
+        conn.close()
+
+        
 if __name__ == '__main__':
     app.run(debug=True, port=5000)

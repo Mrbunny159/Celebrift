@@ -6,18 +6,24 @@
     <title>Details | Celebrift</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-50 flex flex-col min-h-screen">
+<body class="bg-gray-50 flex flex-col min-h-screen relative">
 
-    <nav class="bg-white shadow-sm sticky top-0 z-50 p-4 border-b">
-        <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <a href="index.html" class="text-2xl font-black text-gray-800 tracking-tighter">Celebrift 👑</a>
-            <a href="index.html" class="text-pink-500 font-bold">&larr; Back to Store</a>
+    <nav class="bg-white/90 backdrop-blur-md shadow-sm sticky top-0 z-50 border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-3xl font-black text-gray-800 tracking-tighter">
+                <span class="text-pink-500">Celebr</span>ift 👑
+            </a>
+            <div class="hidden md:flex gap-8 text-sm font-bold text-gray-600 uppercase tracking-widest">
+                <a href="index.html" class="hover:text-pink-500">Home</a>
+                <a href="index.html#rows-container" class="hover:text-pink-500">Categories</a>
+            </div>
+            <a href="index.html" class="md:hidden text-pink-500 font-bold">&larr; Back</a>
         </div>
     </nav>
 
     <div id="loading-state" class="text-center py-20 font-bold text-pink-500 animate-pulse">Fetching details...</div>
 
-    <div id="detail-container" class="hidden flex-grow max-w-7xl mx-auto w-full px-4 mt-8 flex-col">
+    <div id="detail-container" class="hidden flex-grow max-w-7xl mx-auto w-full px-4 mt-8 flex-col pb-20">
         
         <div class="max-w-6xl mx-auto w-full flex flex-col md:flex-row gap-10 bg-white p-6 md:p-10 rounded-3xl shadow-sm border border-gray-100">
             <img id="decor-image" class="w-full md:w-1/2 aspect-square object-cover rounded-2xl shadow-md">
@@ -38,9 +44,9 @@
             </div>
         </div>
 
-        <div id="related-products-container" class="mt-20 px-2"></div>
+        <div id="related-products-container" class="mt-20"></div>
 
-        <div class="max-w-6xl mx-auto w-full mt-24 mb-20 border-t border-gray-200 pt-16">
+        <div class="max-w-6xl mx-auto w-full mt-24 border-t border-gray-200 pt-16">
             <h3 class="text-4xl font-black text-gray-900 mb-12 text-center">Customer Feedback</h3>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
                 <div class="bg-pink-50 p-8 rounded-3xl border border-pink-100 h-fit">
@@ -60,7 +66,20 @@
         </div>
     </div>
 
-    <footer class="bg-blue-50 py-12 text-center text-xs font-bold border-t mt-auto uppercase tracking-widest text-gray-400">© 2026 CELEBRIFT</footer>
+    <footer class="bg-gradient-to-b from-white to-blue-50 pt-20 pb-10 px-6 border-t mt-auto">
+        <div class="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-12 text-sm text-gray-600 mb-16">
+            <div><h4 class="font-bold text-gray-900 mb-6 text-lg">Important Links</h4><a href="#" class="block mb-3 hover:text-pink-500">T&C</a><a href="#" class="block hover:text-pink-500">About Us</a></div>
+            <div><h4 class="font-bold text-gray-900 mb-6 text-lg">Categories</h4><p class="mb-3">Birthday</p><p>Anniversary</p></div>
+            <div><h4 class="font-bold text-gray-900 mb-6 text-lg">Cities</h4><p class="mb-3">Mira Bhayandar</p><p>Mumbai</p></div>
+            <div><h4 class="font-bold text-gray-900 mb-6 text-lg">Info</h4><p class="mb-3">Privacy Policy</p><p>Sitemap</p></div>
+        </div>
+        <p class="text-center text-xs text-gray-400 font-bold tracking-widest">© 2026 CELEBRIFT.COM</p>
+    </footer>
+
+    <div class="fixed bottom-8 right-6 z-50 flex flex-col gap-4">
+        <a href="tel:+919594328008" class="w-14 h-14 bg-indigo-600 text-white rounded-2xl flex items-center justify-center shadow-2xl hover:scale-110 transition text-2xl">📞</a>
+        <a href="https://wa.me/919594328008" target="_blank" class="w-14 h-14 bg-green-500 text-white rounded-2xl flex items-center justify-center shadow-2xl hover:scale-110 transition text-2xl">💬</a>
+    </div>
     
     <script src="details.js"></script>
 </body>

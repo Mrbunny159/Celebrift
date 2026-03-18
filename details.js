@@ -30,15 +30,21 @@ async function fetchProductDetails() {
 async function loadRelated() {
     const res = await fetch('/api/decorations');
     const data = await res.json();
-    const related = data.filter(i => i.slug !== decorId).slice(0, 12);
+    // Fetch up to 8 items to create exactly 2 rows of 4 items on desktop
+    const related = data.filter(i => i.slug !== decorId).slice(0, 8); 
     
     document.getElementById('related-products-container').innerHTML = `
-        <h3 class="text-2xl font-black mb-8 px-2">More Designs for You</h3>
-        <div class="flex overflow-x-auto gap-6 pb-10 hide-scroll-bar px-2">
+        <h3 class="text-3xl font-black mb-8 text-center text-gray-900 border-t pt-16">More Designs for You</h3>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 px-4">
             ${related.map(item => `
-                <a href="details.html?id=${item.slug}" class="flex-none w-64 bg-white rounded-2xl shadow-sm border group">
-                    <img src="${item.image_url}" class="w-full h-40 object-cover group-hover:scale-105 transition">
-                    <div class="p-4"><h4 class="font-bold truncate">${item.title}</h4><p class="text-pink-600 font-bold">${item.price_range}</p></div>
+                <a href="details.html?id=${item.slug}" class="bg-white rounded-2xl shadow-sm border group overflow-hidden hover:shadow-lg transition-all">
+                    <div class="h-48 overflow-hidden">
+                        <img src="${item.image_url}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                    </div>
+                    <div class="p-4">
+                        <h4 class="font-bold text-indigo-900 line-clamp-1">${item.title}</h4>
+                        <p class="text-pink-600 font-extrabold mt-1">${item.price_range}</p>
+                    </div>
                 </a>
             `).join('')}
         </div>`;
