@@ -48,14 +48,24 @@
                             <option value="anniversary">Anniversary</option>
                             <option value="baby-shower">Baby Shower</option>
                         </select>
-                        <textarea id="description" placeholder="Description" rows="4" class="w-full p-3 border rounded-lg bg-gray-50"></textarea>
+                        <textarea id="description" placeholder="Description" rows="3" class="w-full p-3 border rounded-lg bg-gray-50"></textarea>
                         
-                        <div class="border rounded-lg p-3 bg-gray-50">
+                        <div class="border-t pt-4">
+                            <label class="block text-xs font-bold text-gray-500 mb-1">Package Includes (Comma Separated)</label>
+                            <textarea id="package-includes" placeholder="e.g. 100 Balloons, 1 Happy Birthday Foil, Ribbon" rows="2" class="w-full p-3 border rounded-lg bg-gray-50 text-sm"></textarea>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 mb-1">Product FAQs (Format: Question | Answer)</label>
+                            <textarea id="product-faqs" placeholder="How long does it last? | 24 Hours&#10;Can I change colors? | Yes, add a note" rows="3" class="w-full p-3 border rounded-lg bg-gray-50 text-sm leading-relaxed"></textarea>
+                        </div>
+
+                        <div class="border rounded-lg p-3 bg-gray-50 mt-4">
                             <label class="block text-xs font-bold text-gray-500 mb-1">Upload Decoration Image</label>
                             <input type="file" id="image-upload" accept="image/*" class="w-full text-sm">
                             <input type="hidden" id="existing-image-url"> </div>
 
-                        <button type="submit" id="submit-btn" class="w-full bg-pink-500 text-white py-3 rounded-xl font-bold transition-colors">Save Listing</button>
+                        <button type="submit" id="submit-btn" class="w-full bg-pink-500 text-white py-3 rounded-xl font-bold transition-colors mt-2">Save Listing</button>
                         <button type="button" id="cancel-edit-btn" onclick="resetForm()" class="hidden w-full bg-gray-200 text-gray-700 py-3 rounded-xl font-bold mt-2 hover:bg-gray-300 transition-colors">Cancel Edit</button>
                     </form>
                 </div>
@@ -70,7 +80,7 @@
             <h2 class="text-2xl font-bold mb-6">Global Site FAQs</h2>
             <div class="bg-white p-6 rounded-2xl shadow-sm border">
                 <p class="text-gray-500 mb-4 text-sm">Enter your global FAQs here (you can use HTML formatting):</p>
-                <textarea id="faqs-content" class="w-full p-4 border rounded-xl bg-gray-50 h-[30rem] focus:ring-2 focus:ring-pink-500 outline-none" placeholder="Q: What is your cancellation policy?&#10;A: We offer full refunds..."></textarea>
+                <textarea id="faqs-content" class="w-full p-4 border rounded-xl bg-gray-50 h-[30rem] focus:ring-2 focus:ring-pink-500 outline-none"></textarea>
                 <button onclick="saveSetting(this, 'faqs', 'faqs-content')" class="mt-4 bg-pink-500 hover:bg-pink-600 text-white px-8 py-3 rounded-xl font-bold transition-colors shadow-sm">Save FAQs</button>
             </div>
         </div>
@@ -78,7 +88,7 @@
         <div id="tab-tnc" class="tab-content max-w-4xl">
             <h2 class="text-2xl font-bold mb-6">Terms & Conditions</h2>
             <div class="bg-white p-6 rounded-2xl shadow-sm border">
-                <textarea id="tnc-content" class="w-full p-4 border rounded-xl bg-gray-50 h-[30rem] focus:ring-2 focus:ring-pink-500 outline-none" placeholder="Enter terms and conditions..."></textarea>
+                <textarea id="tnc-content" class="w-full p-4 border rounded-xl bg-gray-50 h-[30rem] focus:ring-2 focus:ring-pink-500 outline-none"></textarea>
                 <button onclick="saveSetting(this, 'tnc', 'tnc-content')" class="mt-4 bg-pink-500 hover:bg-pink-600 text-white px-8 py-3 rounded-xl font-bold transition-colors shadow-sm">Save Terms</button>
             </div>
         </div>
@@ -86,7 +96,7 @@
         <div id="tab-refunds" class="tab-content max-w-4xl">
             <h2 class="text-2xl font-bold mb-6">Refunds & Returns</h2>
             <div class="bg-white p-6 rounded-2xl shadow-sm border">
-                <textarea id="refunds-content" class="w-full p-4 border rounded-xl bg-gray-50 h-[30rem] focus:ring-2 focus:ring-pink-500 outline-none" placeholder="Enter refund policy..."></textarea>
+                <textarea id="refunds-content" class="w-full p-4 border rounded-xl bg-gray-50 h-[30rem] focus:ring-2 focus:ring-pink-500 outline-none"></textarea>
                 <button onclick="saveSetting(this, 'refunds', 'refunds-content')" class="mt-4 bg-pink-500 hover:bg-pink-600 text-white px-8 py-3 rounded-xl font-bold transition-colors shadow-sm">Save Policy</button>
             </div>
         </div>
@@ -94,7 +104,7 @@
         <div id="tab-about" class="tab-content max-w-4xl">
             <h2 class="text-2xl font-bold mb-6">About Us</h2>
             <div class="bg-white p-6 rounded-2xl shadow-sm border">
-                <textarea id="about-content" class="w-full p-4 border rounded-xl bg-gray-50 h-[30rem] focus:ring-2 focus:ring-pink-500 outline-none" placeholder="Enter about us details..."></textarea>
+                <textarea id="about-content" class="w-full p-4 border rounded-xl bg-gray-50 h-[30rem] focus:ring-2 focus:ring-pink-500 outline-none"></textarea>
                 <button onclick="saveSetting(this, 'about', 'about-content')" class="mt-4 bg-pink-500 hover:bg-pink-600 text-white px-8 py-3 rounded-xl font-bold transition-colors shadow-sm">Save About Us</button>
             </div>
         </div>
@@ -102,7 +112,7 @@
         <div id="tab-disclaimer" class="tab-content max-w-4xl">
             <h2 class="text-2xl font-bold mb-6">Disclaimer</h2>
             <div class="bg-white p-6 rounded-2xl shadow-sm border">
-                <textarea id="disclaimer-content" class="w-full p-4 border rounded-xl bg-gray-50 h-[30rem] focus:ring-2 focus:ring-pink-500 outline-none" placeholder="Enter disclaimer..."></textarea>
+                <textarea id="disclaimer-content" class="w-full p-4 border rounded-xl bg-gray-50 h-[30rem] focus:ring-2 focus:ring-pink-500 outline-none"></textarea>
                 <button onclick="saveSetting(this, 'disclaimer', 'disclaimer-content')" class="mt-4 bg-pink-500 hover:bg-pink-600 text-white px-8 py-3 rounded-xl font-bold transition-colors shadow-sm">Save Disclaimer</button>
             </div>
         </div>
@@ -118,11 +128,9 @@
             window.location.href = 'admin-login.html';
         }
 
-        // Tab Switching Logic
         function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
-            
             document.getElementById('tab-' + tabId).classList.add('active');
             document.getElementById('btn-' + tabId).classList.add('active');
         }
@@ -131,20 +139,14 @@
         async function saveSetting(btnElement, key, textareaId) {
             const content = document.getElementById(textareaId).value;
             const originalText = btnElement.textContent;
-            
             btnElement.textContent = "Saving...";
             btnElement.disabled = true;
-            
             try {
                 const res = await fetch(`/api/settings/${key}`, {
                     method: 'POST',
-                    headers: { 
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}` 
-                    },
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
                     body: JSON.stringify({ content })
                 });
-                
                 if (res.ok) {
                     btnElement.textContent = "Saved!";
                     btnElement.classList.replace('bg-pink-500', 'bg-green-500');
@@ -154,7 +156,7 @@
                         btnElement.disabled = false;
                     }, 2000);
                 } else {
-                    alert("Failed to save. Check server logs.");
+                    alert("Failed to save.");
                     btnElement.textContent = originalText;
                     btnElement.disabled = false;
                 }
@@ -169,18 +171,15 @@
             try {
                 const res = await fetch('/api/settings');
                 const settings = await res.json();
-                
                 if (settings['faqs']) document.getElementById('faqs-content').value = settings['faqs'];
                 if (settings['tnc']) document.getElementById('tnc-content').value = settings['tnc'];
                 if (settings['refunds']) document.getElementById('refunds-content').value = settings['refunds'];
                 if (settings['about']) document.getElementById('about-content').value = settings['about'];
                 if (settings['disclaimer']) document.getElementById('disclaimer-content').value = settings['disclaimer'];
-            } catch (e) {
-                console.error("Failed to load global settings");
-            }
+            } catch (e) { console.error("Failed to load global settings"); }
         }
 
-        // --- LISTING MANAGEMENT LOGIC (With Base64 Uploads) ---
+        // --- LISTING MANAGEMENT LOGIC ---
         async function loadAdminProducts() {
             const res = await fetch('/api/decorations');
             const data = await res.json();
@@ -212,12 +211,11 @@
             const existingImage = document.getElementById('existing-image-url').value;
             let finalImageUrl = existingImage;
 
-            // Convert file to Base64 string if a new file was selected
             if (fileInput.files.length > 0) {
                 const file = fileInput.files[0];
                 finalImageUrl = await new Promise((resolve, reject) => {
                     const reader = new FileReader();
-                    reader.readAsDataURL(file); // Converts to base64 string
+                    reader.readAsDataURL(file);
                     reader.onload = () => resolve(reader.result);
                     reader.onerror = error => reject(error);
                 });
@@ -230,7 +228,21 @@
                 return;
             }
 
-            // Generate URL-friendly slug from title
+            // --- NEW: Parse Package Includes and FAQs ---
+            // 1. Convert comma-separated string to an Array of Strings
+            const pkgString = document.getElementById('package-includes').value;
+            const packageIncludesArray = pkgString ? pkgString.split(',').map(s => s.trim()).filter(s => s !== "") : [];
+
+            // 2. Convert "Q | A" string to an Array of Objects
+            const faqString = document.getElementById('product-faqs').value;
+            const faqsArray = faqString ? faqString.split('\n').map(line => {
+                const parts = line.split('|');
+                if (parts.length >= 2) {
+                    return { q: parts[0].trim(), a: parts.slice(1).join('|').trim() };
+                }
+                return null;
+            }).filter(f => f !== null) : [];
+
             const generatedSlug = document.getElementById('title').value.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
 
             const payload = {
@@ -239,29 +251,26 @@
                 price_range: document.getElementById('price').value,
                 category: document.getElementById('category').value,
                 description: document.getElementById('description').value,
-                image_url: finalImageUrl // This is now the Base64 text string
+                image_url: finalImageUrl,
+                package_includes: packageIncludesArray, // Send to backend
+                faqs: faqsArray // Send to backend
             };
 
             try {
                 const res = await fetch('/api/decorations', {
-                    method: 'POST', // Note: Make sure your index.py POST route handles upserts (ON CONFLICT DO UPDATE) if you want the same route to handle edits securely.
-                    headers: { 
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    },
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
                     body: JSON.stringify(payload)
                 });
 
                 if (res.ok) {
                     alert("Listing saved successfully!");
                     resetForm();
-                    loadAdminProducts(); // Refresh the list
+                    loadAdminProducts(); 
                 } else {
                     alert("Failed to save. Check your inputs.");
                 }
-            } catch (err) {
-                alert("Server error.");
-            }
+            } catch (err) { alert("Server error."); }
             
             btn.disabled = false;
             btn.textContent = "Save Listing";
@@ -276,19 +285,30 @@
                 document.getElementById('price').value = item.price_range;
                 document.getElementById('category').value = item.category;
                 document.getElementById('description').value = item.description;
-                
-                // Store the existing Base64 string in the hidden input
                 document.getElementById('existing-image-url').value = item.image_url;
                 
-                // Update UI to show edit mode
+                // --- NEW: Populate Package Includes & FAQs back into text areas ---
+                let parsedPkg = [];
+                let parsedFaqs = [];
+                
+                // Handle strings vs arrays (depends on how psycopg2 returns JSON)
+                if (typeof item.package_includes === 'string') {
+                    try { parsedPkg = JSON.parse(item.package_includes); } catch(e) {}
+                } else { parsedPkg = item.package_includes || []; }
+
+                if (typeof item.faqs === 'string') {
+                    try { parsedFaqs = JSON.parse(item.faqs); } catch(e) {}
+                } else { parsedFaqs = item.faqs || []; }
+
+                document.getElementById('package-includes').value = parsedPkg.join(', ');
+                document.getElementById('product-faqs').value = parsedFaqs.map(f => `${f.q} | ${f.a}`).join('\n');
+                
+                // UI Updates
                 const btn = document.getElementById('submit-btn');
-                document.getElementById('form-title').innerText = "Edit Listing (Leave image blank to keep current)";
+                document.getElementById('form-title').innerText = "Edit Listing";
                 btn.textContent = "Update Listing";
                 btn.classList.replace('bg-pink-500', 'bg-blue-600');
-                
                 document.getElementById('cancel-edit-btn').classList.remove('hidden');
-                
-                // Switch back to listings tab and scroll to top
                 switchTab('listings');
                 document.getElementById('tab-listings').scrollTo({top: 0, behavior:'smooth'});
             } catch (e) {
@@ -299,25 +319,18 @@
         async function deleteProduct(slug) {
             if(!confirm("Are you sure you want to delete this listing permanently?")) return;
             try {
-                await fetch(`/api/decorations/${slug}`, { 
-                    method: 'DELETE', 
-                    headers: { 'Authorization': `Bearer ${token}` } 
-                });
+                await fetch(`/api/decorations/${slug}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` } });
                 loadAdminProducts();
-            } catch (e) {
-                alert("Failed to delete.");
-            }
+            } catch (e) { alert("Failed to delete."); }
         }
 
         function resetForm() {
             document.getElementById('add-form').reset();
             document.getElementById('existing-image-url').value = '';
             document.getElementById('form-title').innerText = "Add New Listing";
-            
             const btn = document.getElementById('submit-btn');
             btn.textContent = "Save Listing";
             btn.classList.replace('bg-blue-600', 'bg-pink-500');
-            
             document.getElementById('cancel-edit-btn').classList.add('hidden');
         }
 
