@@ -1,23 +1,82 @@
-// Add this inside your admin.html <script>
-async function editProduct(slug) {
-    // 1. Fetch current data
-    const res = await fetch(`/api/decorations/${slug}`);
-    const item = await res.json();
-    
-    // 2. Fill the form with existing data
-    document.getElementById('title').value = item.title;
-    document.getElementById('category').value = item.category;
-    document.getElementById('price').value = item.price_range;
-    document.getElementById('description').value = item.description;
-    
-    // 3. Scroll user to the top so they can edit
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    
-    // 4. Change Save button text to "Update"
-    const btn = document.getElementById('submit-btn');
-    btn.textContent = "Update Existing Listing";
-    btn.classList.replace('bg-pink-500', 'bg-blue-600');
-}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel | Celebrift</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 flex flex-col min-h-screen">
+    <nav class="bg-gray-900 text-white p-4 flex justify-between">
+        <h1 class="text-xl font-bold">Celebrift Admin</h1>
+        <a href="index.html" class="text-sm">View Site</a>
+    </nav>
 
-// Update your admin-product-list renderer to include:
-// <button onclick="editProduct('${item.slug}')" class="bg-blue-100 text-blue-600 px-3 py-2 rounded-lg text-sm mr-2">Edit</button>
+    <div class="max-w-7xl mx-auto w-full p-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div class="lg:col-span-1 bg-white p-6 rounded-2xl shadow border">
+            <h2 id="form-title" class="text-lg font-bold mb-6">Add New Decoration</h2>
+            <form id="add-form" class="space-y-4">
+                <input type="text" id="title" placeholder="Title" class="w-full p-3 border rounded-lg">
+                <input type="text" id="price" placeholder="Price (e.g. ₹2,499)" class="w-full p-3 border rounded-lg">
+                <select id="category" class="w-full p-3 border rounded-lg">
+                    <option value="birthday">Birthday</option>
+                    <option value="anniversary">Anniversary</option>
+                </select>
+                <textarea id="description" placeholder="Description" class="w-full p-3 border rounded-lg"></textarea>
+                <input type="text" id="image" placeholder="Image URL" class="w-full p-3 border rounded-lg">
+                <button type="submit" id="submit-btn" class="w-full bg-pink-500 text-white py-3 rounded-xl font-bold">Save Listing</button>
+            </form>
+        </div>
+
+        <div class="lg:col-span-2 bg-white p-6 rounded-2xl shadow border">
+            <h2 class="text-lg font-bold mb-6">Current Listings</h2>
+            <div id="admin-product-list" class="space-y-4"></div>
+        </div>
+    </div>
+
+    <script>
+        const token = localStorage.getItem('adminToken');
+        if (!token) window.location.href = 'admin-login.html';
+
+        async function loadAdminProducts() {
+            const res = await fetch('/api/decorations');
+            const data = await res.json();
+            document.getElementById('admin-product-list').innerHTML = data.map(item => `
+                <div class="flex items-center justify-between p-4 border rounded-xl">
+                    <div class="flex items-center gap-4">
+                        <img src="${item.image_url}" class="w-16 h-16 object-cover rounded-lg">
+                        <div><h3 class="font-bold">${item.title}</h3><p class="text-sm text-gray-500">${item.category}</p></div>
+                    </div>
+                    <div>
+                        <button onclick="editProduct('${item.slug}')" class="bg-blue-100 text-blue-600 px-4 py-2 rounded-lg text-sm font-bold mr-2">Edit</button>
+                        <button onclick="deleteProduct('${item.slug}')" class="bg-red-100 text-red-600 px-4 py-2 rounded-lg text-sm font-bold">Delete</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        async function editProduct(slug) {
+            const res = await fetch(`/api/decorations/${slug}`);
+            const item = await res.json();
+            document.getElementById('title').value = item.title;
+            document.getElementById('price').value = item.price_range;
+            document.getElementById('category').value = item.category;
+            document.getElementById('description').value = item.description;
+            document.getElementById('image').value = item.image_url;
+            
+            const btn = document.getElementById('submit-btn');
+            btn.textContent = "Update Listing";
+            btn.classList.replace('bg-pink-500', 'bg-blue-600');
+            window.scrollTo({top: 0, behavior:'smooth'});
+        }
+
+        async function deleteProduct(slug) {
+            if(!confirm("Delete?")) return;
+            await fetch(`/api/decorations/${slug}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` } });
+            loadAdminProducts();
+        }
+
+        loadAdminProducts();
+    </script>
+</body>
+</html>

@@ -3,26 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Setup Details | Celebrift</title>
+    <title>Details | Celebrift</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-50 flex flex-col min-h-screen">
-
+<body class="bg-gray-50 flex flex-col min-h-screen relative">
     <nav class="bg-white shadow-sm sticky top-0 z-50 p-4 border-b">
         <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <a href="index.html" class="text-2xl font-black text-gray-800 tracking-tighter">Celebrift 👑</a>
+            <a href="index.html" class="text-2xl font-black text-gray-800">Celebrift 👑</a>
             <a href="index.html" class="text-pink-500 font-bold">&larr; Back to Store</a>
         </div>
     </nav>
 
-    <div id="loading-state" class="text-center py-20 font-bold text-pink-500">Loading Magic...</div>
+    <div id="loading-state" class="text-center py-20 font-bold text-pink-500">Loading...</div>
 
     <div id="detail-container" class="hidden flex-grow max-w-7xl mx-auto w-full px-4 mt-8 flex-col">
-        
         <div class="max-w-6xl mx-auto w-full flex flex-col md:flex-row gap-10 bg-white p-6 md:p-10 rounded-3xl shadow-sm border">
-            <img id="decor-image" class="w-full md:w-1/2 aspect-square object-cover rounded-2xl shadow-md">
-            <div class="w-full md:w-1/2 flex flex-col">
-                <h1 id="decor-title" class="text-3xl md:text-5xl font-black mb-4"></h1>
+            <img id="decor-image" class="w-full md:w-1/2 aspect-square object-cover rounded-2xl">
+            <div class="w-full md:w-1/2">
+                <h1 id="decor-title" class="text-4xl font-black mb-4"></h1>
                 <div id="decor-rating-stars" class="text-yellow-400 flex gap-1 mb-4 text-xl"></div>
                 <p id="decor-price" class="text-3xl font-bold text-pink-600 mb-8"></p>
                 <p id="decor-desc" class="text-gray-600 mb-10 text-lg leading-relaxed"></p>
@@ -30,10 +28,6 @@
                 <a id="whatsapp-btn" href="#" target="_blank" class="bg-[#25D366] text-white py-5 rounded-2xl font-black text-center text-xl shadow-lg block hover:bg-[#1ebe57] transition-all transform hover:scale-[1.02]">
                     Book on WhatsApp
                 </a>
-
-                <div class="mt-8 space-y-4">
-                    <details class="border-b py-4 group cursor-pointer"><summary class="font-bold flex justify-between">Package Includes <span class="group-open:rotate-180 transition">▼</span></summary><div id="desktop-package-list" class="pt-4 text-gray-500"></div></details>
-                </div>
             </div>
         </div>
 
@@ -43,23 +37,25 @@
             <h3 class="text-3xl font-black text-gray-900 mb-10 text-center">Customer Feedback</h3>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
                 <div class="bg-pink-50 p-8 rounded-3xl border border-pink-100">
-                    <h4 class="font-bold mb-6 text-xl">Add Your Review</h4>
                     <form id="review-form" class="space-y-4">
-                        <input id="rev-name" required placeholder="Name" class="w-full p-4 border rounded-xl outline-none focus:ring-2 focus:ring-pink-500">
-                        <select id="rev-rating" class="w-full p-4 border rounded-xl"><option value="5">5 Stars</option><option value="4">4 Stars</option></select>
-                        <textarea id="rev-text" required placeholder="Comment..." rows="4" class="w-full p-4 border rounded-xl outline-none focus:ring-2 focus:ring-pink-500"></textarea>
-                        <button type="submit" id="rev-submit" class="w-full bg-pink-500 text-white py-4 rounded-xl font-black text-lg">Submit Review</button>
+                        <input id="rev-name" required placeholder="Name" class="w-full p-4 border rounded-xl">
+                        <select id="rev-rating" class="w-full p-4 border rounded-xl"><option value="5">5 Stars</option></select>
+                        <textarea id="rev-text" required placeholder="Comment..." rows="4" class="w-full p-4 border rounded-xl"></textarea>
+                        <button type="submit" class="w-full bg-pink-500 text-white py-4 rounded-xl font-black">Submit Review</button>
                     </form>
                 </div>
-                <div class="bg-white p-8 rounded-3xl border">
-                    <h4 class="font-bold mb-8 text-xl border-b pb-4">Recent Reviews</h4>
-                    <div id="reviews-list" class="space-y-6"></div>
-                </div>
+                <div id="reviews-list" class="space-y-6"></div>
             </div>
         </div>
     </div>
 
-    <footer class="bg-blue-50 py-10 text-center text-xs font-bold mt-auto border-t uppercase tracking-widest">© 2026 Celebrift</footer>
+    <footer class="bg-blue-50 py-10 text-center text-xs font-bold mt-auto border-t">© 2026 CELEBRIFT</footer>
+    
+    <div class="fixed bottom-8 right-6 z-50 flex flex-col gap-4">
+        <a href="tel:+919594328008" class="w-14 h-14 bg-indigo-600 text-white rounded-2xl flex items-center justify-center shadow-2xl text-2xl">📞</a>
+        <a href="https://wa.me/919594328008" target="_blank" class="w-14 h-14 bg-green-500 text-white rounded-2xl flex items-center justify-center shadow-2xl text-2xl">💬</a>
+    </div>
+
     <script src="details.js"></script>
 </body>
 </html>
