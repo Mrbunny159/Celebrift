@@ -95,6 +95,34 @@ def delete_decoration(slug):
     cur.close()
     conn.close()
     return jsonify({'success': True, 'message': 'Deleted successfully'})
-
+@app.route('/api/reviews/<slug>', methods=['POST'])
+def add_review(slug):
+    data = request.json
+    conn = get_db_connection()
+    cur = conn.cursor()
+    try:
+        # 1. Insert the new review
+        cur.execute('''
+            INSERT INTO reviews (decoration_slug, reviewer_name, rating, review_text)
+            VALUES (%s, %s, %s, %s)
+        ''', (slug, data['name'], data['rating'], data['review']))
+        
+        # 2. Automatically recalculate the new average rating for this product
+        cur.execute('''
+            UPDATE decorations 
+            SET average_rating = (
+                SELECT ROUND(AVG(rating), 2) FROM reviews WHERE decoration_slug = %s
+            )
+            WHERE slug = %s
+        ''', (slug, slug))
+        
+        conn.commit()
+        return jsonify({'success': True, 'message': 'Review added!'})
+    except Exception as e:
+        conn.rollback()
+        return jsonify({'error': str(e)}), 400
+    finally:
+        cur.close()
+        conn.close()
 if __name__ == '__main__':
     app.run(debug=True, port=5000)

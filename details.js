@@ -85,3 +85,72 @@ packageList.innerHTML = '<p class="text-gray-500">Standard setup included.</p>';
 }
 
 fetchProductDetails();
+// Populate the Accordions and Mobile lists simultaneously
+function renderLists(data) {
+    const includes = typeof data.package_includes === 'string' ? JSON.parse(data.package_includes) : data.package_includes;
+    const desktopPack = document.getElementById('desktop-package-list');
+    const mobilePack = document.getElementById('mobile-package-list');
+    
+    let packHtml = '';
+    if(includes && includes.length > 0) {
+        includes.forEach(item => {
+            packHtml += `<li class="flex items-start gap-2"><span class="text-green-500">✓</span> ${item}</li>`;
+        });
+    } else {
+        packHtml = "<p>Standard setup included.</p>";
+    }
+    if(desktopPack) desktopPack.innerHTML = packHtml;
+    if(mobilePack) mobilePack.innerHTML = packHtml;
+
+    const faqs = typeof data.faqs === 'string' ? JSON.parse(data.faqs) : data.faqs;
+    const desktopFaq = document.getElementById('desktop-faq-list');
+    const mobileFaq = document.getElementById('mobile-faq-list');
+    
+    let faqHtml = '';
+    if(faqs && faqs.length > 0) {
+        faqs.forEach(faq => {
+            faqHtml += `<div class="border-b pb-2"><h4 class="font-bold text-gray-800">${faq.q}</h4><p class="text-gray-600 text-sm">${faq.a}</p></div>`;
+        });
+    } else {
+        faqHtml = "<p>No FAQs available.</p>";
+    }
+    if(desktopFaq) desktopFaq.innerHTML = faqHtml;
+    if(mobileFaq) mobileFaq.innerHTML = faqHtml;
+}
+
+// Ensure you call renderLists(data) right after you set the Title and Price inside fetchProductDetails()!
+// Just add: renderLists(data); right under: document.getElementById('decor-price').textContent = data.price_range;
+
+// Review Submission Logic
+document.getElementById('review-form')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = document.getElementById('rev-submit');
+    const msg = document.getElementById('rev-msg');
+    btn.textContent = 'Submitting...';
+
+    const payload = {
+        name: document.getElementById('rev-name').value,
+        rating: parseInt(document.getElementById('rev-rating').value),
+        review: document.getElementById('rev-text').value
+    };
+
+    try {
+        const res = await fetch(`/api/reviews/${decorId}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+        
+        if(res.ok) {
+            msg.textContent = 'Review added! Refreshing...';
+            msg.className = 'text-green-600 text-sm block mt-2';
+            setTimeout(() => window.location.reload(), 1500); // Reload to show new review
+        } else {
+            throw new Error('Failed');
+        }
+    } catch(err) {
+        msg.textContent = 'Error adding review.';
+        msg.className = 'text-red-600 text-sm block mt-2';
+        btn.textContent = 'Submit Review';
+    }
+});

@@ -20,26 +20,77 @@
 
     <div id="loading-state" class="text-center py-20 text-xl font-bold text-pink-500 animate-pulse">Loading Product...</div>
 
-    <div id="detail-container" class="max-w-5xl mx-auto mt-6 px-4 hidden">
-        <div class="flex flex-col md:flex-row gap-8 bg-white p-4 md:p-8 rounded-2xl shadow-sm border border-gray-100">
+    <div class="flex flex-col md:flex-row gap-8 bg-white p-4 md:p-8 rounded-2xl shadow-sm border border-gray-100">
             <div class="w-full md:w-1/2">
                 <img id="decor-image" src="" class="w-full aspect-square object-cover rounded-xl border border-gray-100">
             </div>
             
             <div class="w-full md:w-1/2 flex flex-col">
                 <h1 id="decor-title" class="text-2xl md:text-4xl font-bold text-gray-900 mb-2"></h1>
-                
-                <div id="decor-rating-stars" class="flex items-center gap-1 mb-4 text-yellow-400">
-                    </div>
-
+                <div id="decor-rating-stars" class="flex items-center gap-1 mb-4 text-yellow-400"></div>
                 <p id="decor-price" class="text-3xl font-extrabold text-gray-900 mb-6"></p>
-                <p id="decor-desc" class="text-gray-600 mb-8 leading-relaxed"></p>
+                <p id="decor-desc" class="text-gray-600 mb-6 leading-relaxed"></p>
+
+                <div class="hidden md:block mb-8 space-y-2 border-t pt-4">
+                    <details class="group border border-gray-200 rounded-lg bg-gray-50">
+                        <summary class="flex justify-between items-center font-bold cursor-pointer list-none p-4 text-gray-800">
+                            <span>Package Includes</span>
+                            <span class="transition group-open:rotate-180">▼</span>
+                        </summary>
+                        <div class="p-4 border-t border-gray-200 text-gray-600">
+                            <ul id="desktop-package-list" class="space-y-2"></ul>
+                        </div>
+                    </details>
+                    <details class="group border border-gray-200 rounded-lg bg-gray-50">
+                        <summary class="flex justify-between items-center font-bold cursor-pointer list-none p-4 text-gray-800">
+                            <span>Frequently Asked Questions</span>
+                            <span class="transition group-open:rotate-180">▼</span>
+                        </summary>
+                        <div id="desktop-faq-list" class="p-4 border-t border-gray-200 text-gray-600 space-y-4"></div>
+                    </details>
+                </div>
 
                 <div class="fixed bottom-0 left-0 w-full p-4 bg-white border-t md:relative md:p-0 md:bg-transparent md:border-t-0 z-40 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] md:shadow-none">
                     <a id="whatsapp-btn" href="#" target="_blank" class="bg-[#25D366] hover:bg-[#1ebe57] text-white w-full py-4 rounded-xl text-lg font-bold flex justify-center items-center gap-2 shadow-lg transition-transform hover:scale-[1.02]">
-                        <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M12.031 0C5.385 0 0 5.385 0 12.031c0 2.126.554 4.153 1.579 5.952L.471 23.53l5.698-1.492c1.745.932 3.69 1.424 5.862 1.424 6.646 0 12.031-5.385 12.031-12.031S18.677 0 12.031 0zm0 21.439c-1.803 0-3.565-.483-5.11-1.397l-.367-.217-3.794.994.994-3.794-.217-.367C2.624 15.112 2.14 13.35 2.14 12.031c0-5.452 4.439-9.891 9.891-9.891 5.452 0 9.891 4.439 9.891 9.891 0 5.452-4.439 9.891-9.891 9.891zm5.422-7.41c-.297-.149-1.758-.868-2.031-.967-.272-.099-.471-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.463-2.39-1.475-.882-.787-1.477-1.76-1.65-2.057-.173-.297-.018-.458.13-.606.134-.134.297-.347.446-.52.149-.173.198-.297.297-.495.099-.198.05-.371-.025-.52-.074-.149-.669-1.61-.916-2.205-.24-.583-.485-.504-.669-.513l-.57-.009c-.198 0-.52.074-.793.371-.272.297-1.04 1.016-1.04 2.478 0 1.462 1.065 2.875 1.214 3.074.149.198 2.095 3.2 5.077 4.487.71.307 1.264.49 1.694.627.714.227 1.365.195 1.881.118.574-.086 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.569-.347z"/></svg>
                         Book on WhatsApp
                     </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="md:col-span-2 space-y-6 md:hidden">
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4 border-b pb-2">Package Includes</h3>
+                    <ul id="mobile-package-list" class="space-y-3 text-gray-700"></ul>
+                </div>
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4 border-b pb-2">Frequently Asked Questions</h3>
+                    <div id="mobile-faq-list" class="space-y-4"></div>
+                </div>
+            </div>
+
+            <div class="md:col-span-3 lg:col-span-1 space-y-6">
+                <div class="bg-pink-50 p-6 rounded-2xl shadow-sm border border-pink-100">
+                    <h3 class="text-lg font-bold text-gray-800 mb-4">Leave Feedback</h3>
+                    <form id="review-form" class="space-y-3">
+                        <input type="text" id="rev-name" required placeholder="Your Name" class="w-full px-3 py-2 rounded-lg border outline-none focus:ring-2 focus:ring-pink-500">
+                        <select id="rev-rating" class="w-full px-3 py-2 rounded-lg border outline-none focus:ring-2 focus:ring-pink-500">
+                            <option value="5">5 Stars - Excellent!</option>
+                            <option value="4">4 Stars - Very Good</option>
+                            <option value="3">3 Stars - Good</option>
+                            <option value="2">2 Stars - Fair</option>
+                            <option value="1">1 Star - Poor</option>
+                        </select>
+                        <textarea id="rev-text" required rows="2" placeholder="Write your review..." class="w-full px-3 py-2 rounded-lg border outline-none focus:ring-2 focus:ring-pink-500"></textarea>
+                        <button type="submit" id="rev-submit" class="w-full bg-pink-500 hover:bg-pink-600 text-white font-bold py-2 rounded-lg transition-colors">Submit Review</button>
+                        <p id="rev-msg" class="text-sm font-bold hidden"></p>
+                    </form>
+                </div>
+
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4 border-b pb-2">Customer Reviews</h3>
+                    <div id="reviews-list" class="space-y-4"></div>
                 </div>
             </div>
         </div>
