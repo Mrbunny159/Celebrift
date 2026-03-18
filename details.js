@@ -37,8 +37,7 @@ async function fetchProductDetails() {
                     packageList.innerHTML += `<li class="flex items-start gap-2"><svg class="w-5 h-5 text-green-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> ${item}</li>`;
                 });
             } else {
-                packageList.innerHTML = "<p class="text-gray-500">Standard setup included.</p>";
-            }
+packageList.innerHTML = '<p class="text-gray-500">Standard setup included.</p>';            }
 
             // 4. FAQs (JSON Array)
             const faqList = document.getElementById('faq-list');
