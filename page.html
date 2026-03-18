@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Information | Celebrift</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 flex flex-col min-h-screen">
+
+    <nav class="bg-white/90 backdrop-blur-md shadow-sm sticky top-0 z-50 border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-3xl font-black text-gray-800 tracking-tighter">
+                <span class="text-pink-500">Celebr</span>ift 👑
+            </a>
+            <a href="index.html" class="text-pink-500 font-bold hover:underline">&larr; Back to Home</a>
+        </div>
+    </nav>
+
+    <main class="flex-grow max-w-4xl mx-auto w-full px-4 py-16">
+        <div id="loading" class="text-center font-bold text-pink-500 animate-pulse">Loading content...</div>
+        <div id="content-container" class="bg-white p-8 md:p-12 rounded-3xl shadow-sm border border-gray-100 hidden prose prose-pink max-w-none">
+            </div>
+    </main>
+
+    <footer class="bg-blue-50 py-8 text-center text-xs font-bold border-t mt-auto uppercase tracking-widest text-gray-400">
+        © 2026 CELEBRIFT.COM
+    </footer>
+
+    <script>
+        // Get which page the user wants from the URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const pageId = urlParams.get('id'); // e.g., 'about', 'tnc', 'faqs'
+
+        async function loadPageContent() {
+            if (!pageId) {
+                document.getElementById('content-container').innerHTML = "<h1 class='text-2xl font-bold'>Page not found.</h1>";
+                document.getElementById('loading').classList.add('hidden');
+                document.getElementById('content-container').classList.remove('hidden');
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/settings');
+                const settings = await response.json();
+                
+                document.getElementById('loading').classList.add('hidden');
+                document.getElementById('content-container').classList.remove('hidden');
+
+                if (settings[pageId]) {
+                    // Inject the HTML stored in the database
+                    document.getElementById('content-container').innerHTML = settings[pageId];
+                } else {
+                    document.getElementById('content-container').innerHTML = "<h1 class='text-2xl font-bold'>Content coming soon...</h1>";
+                }
+            } catch (error) {
+                document.getElementById('loading').textContent = "Failed to load content.";
+            }
+        }
+
+        loadPageContent();
+    </script>
+</body>
+</html>
