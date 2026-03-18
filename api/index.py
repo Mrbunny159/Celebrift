@@ -9,9 +9,9 @@ app = Flask(__name__)
 CORS(app)
 
 DATABASE_URL = os.environ.get('DATABASE_URL')
-# This is your admin password. You can change 'celebrift123' to anything you want!
-ADMIN_PASSWORD = os.environ.get('ADMIN_PASSWORD', 'celebrift123') 
-SECRET_TOKEN = 'admin_secret_token_123'
+# We removed the hardcoded fallback passwords!
+ADMIN_PASSWORD = os.environ.get('ADMIN_PASSWORD') 
+SECRET_TOKEN = os.environ.get('SECRET_TOKEN')
 
 def get_db_connection():
     return psycopg2.connect(DATABASE_URL)
