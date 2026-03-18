@@ -3,49 +3,51 @@ from flask_cors import CORS
 import psycopg2
 from psycopg2.extras import RealDictCursor
 import os
+import json
 
 app = Flask(__name__)
-CORS(app) # Allows your frontend to talk to your backend
+CORS(app)
 
-# You will add your Neon DB URL here, or set it as an Environment Variable in Vercel
-DATABASE_URL = os.environ.get('DATABASE_URL', 'your_neon_db_connection_string_here')
+DATABASE_URL = os.environ.get('DATABASE_URL')
 
 def get_db_connection():
-    conn = psycopg2.connect(DATABASE_URL)
-    return conn
+    return psycopg2.connect(DATABASE_URL)
 
+# 1. Fetch all products (for the Home Page Mini Cards)
 @app.route('/api/decorations', methods=['GET'])
 def get_decorations():
     category = request.args.get('category')
-    
     conn = get_db_connection()
     cur = conn.cursor(cursor_factory=RealDictCursor)
     
-    # If a category is selected, filter by it. Otherwise, return all, sorted by views!
     if category and category != 'all':
-        cur.execute('SELECT * FROM decorations WHERE category = %s ORDER BY views DESC;', (category,))
+        cur.execute('SELECT slug, title, category, image_url, price_range, average_rating FROM decorations WHERE category = %s ORDER BY views DESC;', (category,))
     else:
-        cur.execute('SELECT * FROM decorations ORDER BY views DESC;')
+        cur.execute('SELECT slug, title, category, image_url, price_range, average_rating FROM decorations ORDER BY views DESC;')
         
     decorations = cur.fetchall()
     cur.close()
     conn.close()
-    
     return jsonify(decorations)
 
+# 2. Fetch a single product WITH Reviews (For the Detail Page)
 @app.route('/api/decorations/<slug>', methods=['GET'])
 def get_single_decoration(slug):
     conn = get_db_connection()
     cur = conn.cursor(cursor_factory=RealDictCursor)
     
-    # 1. Fetch the item
+    # Fetch the product
     cur.execute('SELECT * FROM decorations WHERE slug = %s;', (slug,))
     decoration = cur.fetchone()
     
     if decoration:
-        # 2. Add +1 to the views column (Most viewed logic!)
+        # Add +1 view
         cur.execute('UPDATE decorations SET views = views + 1 WHERE slug = %s;', (slug,))
         conn.commit()
+        
+        # Fetch the reviews for this product
+        cur.execute('SELECT reviewer_name, rating, review_text, created_at FROM reviews WHERE decoration_slug = %s ORDER BY created_at DESC;', (slug,))
+        decoration['reviews'] = cur.fetchall()
     
     cur.close()
     conn.close()
@@ -54,12 +56,5 @@ def get_single_decoration(slug):
         return jsonify(decoration)
     return jsonify({'error': 'Not found'}), 404
 
-# --- ADMIN ROUTES (Placeholder for Phase 3) ---
-@app.route('/api/admin/login', methods=['POST'])
-def admin_login():
-    # We will build the JWT auth logic here later
-    pass
-
-# Vercel requires the app variable to be exposed
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
