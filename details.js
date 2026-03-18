@@ -12,10 +12,9 @@ async function fetchProductDetails() {
         const data = await response.json();
 
         if (response.ok) {
-            // Un-hide UI
+            // Un-hide UI (REMOVED THE ROGUE FLEX CLASS HERE!)
             document.getElementById('loading-state').classList.add('hidden');
             document.getElementById('detail-container').classList.remove('hidden');
-            document.getElementById('detail-container').classList.add('flex');
 
             // Set Data Safely
             document.getElementById('decor-image').src = data.image_url || '';
