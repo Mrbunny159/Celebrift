@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Decoration Details | Celebrift</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-white font-sans min-h-screen py-12 px-5">
+
+    <div class="max-w-5xl mx-auto">
+        <a href="index.html" class="inline-flex items-center text-pink-500 hover:text-pink-600 font-medium mb-8 transition-colors">
+            <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            Back to Categories
+        </a>
+
+        <div id="detail-container" class="hidden flex-col md:flex-row gap-12 items-center">
+            <img id="decor-image" src="" alt="" class="w-full md:w-1/2 h-[400px] md:h-[500px] object-cover rounded-3xl shadow-lg border border-gray-100">
+            
+            <div class="w-full md:w-1/2 flex flex-col justify-center">
+                <h1 id="decor-title" class="text-4xl md:text-5xl font-extrabold text-gray-800 mb-6 leading-tight"></h1>
+                <p id="decor-desc" class="text-lg text-gray-600 mb-6 leading-relaxed"></p>
+                <div class="bg-pink-50 rounded-2xl p-6 mb-8 inline-block self-start">
+                    <p class="text-sm text-gray-500 uppercase tracking-wider font-semibold mb-1">Estimated Price</p>
+                    <p id="decor-price" class="text-2xl font-bold text-pink-600"></p>
+                </div>
+                
+                <a id="whatsapp-btn" href="#" target="_blank" rel="noopener noreferrer" class="bg-[#25D366] hover:bg-[#1ebe57] text-white text-center text-xl font-bold py-4 px-8 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 w-full md:w-auto flex items-center justify-center gap-3">
+                    <svg class="w-7 h-7 fill-current" viewBox="0 0 24 24">
+                        <path d="M12.031 0C5.385 0 0 5.385 0 12.031c0 2.126.554 4.153 1.579 5.952L.471 23.53l5.698-1.492c1.745.932 3.69 1.424 5.862 1.424 6.646 0 12.031-5.385 12.031-12.031S18.677 0 12.031 0zm0 21.439c-1.803 0-3.565-.483-5.11-1.397l-.367-.217-3.794.994.994-3.794-.217-.367C2.624 15.112 2.14 13.35 2.14 12.031c0-5.452 4.439-9.891 9.891-9.891 5.452 0 9.891 4.439 9.891 9.891 0 5.452-4.439 9.891-9.891 9.891zm5.422-7.41c-.297-.149-1.758-.868-2.031-.967-.272-.099-.471-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.463-2.39-1.475-.882-.787-1.477-1.76-1.65-2.057-.173-.297-.018-.458.13-.606.134-.134.297-.347.446-.52.149-.173.198-.297.297-.495.099-.198.05-.371-.025-.52-.074-.149-.669-1.61-.916-2.205-.24-.583-.485-.504-.669-.513l-.57-.009c-.198 0-.52.074-.793.371-.272.297-1.04 1.016-1.04 2.478 0 1.462 1.065 2.875 1.214 3.074.149.198 2.095 3.2 5.077 4.487.71.307 1.264.49 1.694.627.714.227 1.365.195 1.881.118.574-.086 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.569-.347z"/>
+                    </svg>
+                    Book on WhatsApp
+                </a>
+            </div>
+        </div>
+
+        <div id="error-state" class="hidden text-center mt-20">
+            <h2 class="text-3xl font-bold text-gray-800 mb-4">Decoration Not Found</h2>
+            <p class="text-gray-600 mb-6">We couldn't find the setup you're looking for.</p>
+            <a href="index.html" class="bg-pink-500 hover:bg-pink-600 text-white font-bold py-3 px-6 rounded-full transition-colors">Return Home</a>
+        </div>
+    </div>
+
+    <script src="details.js"></script>
+</body>
+</html>
