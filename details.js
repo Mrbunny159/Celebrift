@@ -119,11 +119,10 @@ async function loadRelatedProducts() {
         const res = await fetch('/api/decorations');
         const data = await res.json();
         
-        const related = data.filter(item => item.slug !== decorId).slice(0, 4);
+        const related = data.filter(item => item.slug !== decorId).slice(0, 12);
 
         if(related.length > 0) {
-            let html = '<h3 class="text-2xl font-bold text-gray-900 mb-6 border-b pb-2">You Might Also Like</h3><div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">';
-
+            let html = '<h3 class="text-3xl font-extrabold text-gray-900 mb-8 border-b pb-4 text-center">You Might Also Like</h3><div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">';
             related.forEach(item => {
                 let starsHtml = '';
                 const rating = Math.round(item.average_rating || 5);
