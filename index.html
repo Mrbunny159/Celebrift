@@ -5,55 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Celebrift | Event Decorations</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    
     <style>
-        @keyframes float {
-            0% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(5deg); }
-            100% { transform: translateY(0px) rotate(0deg); }
-        }
-        .animate-float {
-            animation: float 6s ease-in-out infinite;
-        }
-        .animate-float-delayed {
-            animation: float 6s ease-in-out infinite;
-            animation-delay: 3s;
-        }
-        /* Subtle glitter pattern background */
-        body {
-            background-color: #fdf2f8;
-            background-image: radial-gradient(#f9a8d4 1px, transparent 1px);
-            background-size: 40px 40px;
-        }
+        body { background-color: #fdf2f8; background-image: radial-gradient(#f9a8d4 1px, transparent 1px); background-size: 40px 40px; }
     </style>
 </head>
-<body class="font-sans min-h-screen py-12 px-5 relative overflow-x-hidden">
+<body class="font-sans min-h-screen py-8 px-4 relative overflow-x-hidden">
 
-    <div class="absolute top-10 left-10 text-4xl animate-float opacity-50">✨</div>
-    <div class="absolute top-40 right-20 text-5xl animate-float-delayed opacity-50">🎈</div>
-    <div class="absolute bottom-40 left-20 text-4xl animate-float-delayed opacity-50">🎉</div>
-    <div class="absolute top-20 right-1/4 text-3xl animate-float opacity-50">✨</div>
-
-    <div class="max-w-6xl mx-auto relative z-10">
-        <header class="text-center mb-12">
-            <h1 class="text-6xl font-extrabold text-gray-800 tracking-tight mb-4 relative inline-block">
-                <span class="text-pink-500">Celebr</span>ift
-                <span class="absolute -top-6 -right-6 text-3xl transform rotate-12">👑</span>
+    <div class="max-w-7xl mx-auto relative z-10">
+        <header class="text-center mb-10">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-gray-800 tracking-tight mb-3">
+                <span class="text-pink-500">Celebr</span>ift 👑
             </h1>
-            <p class="text-xl text-gray-700 max-w-2xl mx-auto bg-white/60 p-4 rounded-2xl backdrop-blur-sm border border-pink-100">
-                Making your special moments unforgettable. Explore our most popular setups below!
+            <p class="text-sm md:text-lg text-gray-700 max-w-2xl mx-auto bg-white/60 p-2 md:p-4 rounded-xl backdrop-blur-sm border border-pink-100">
+                Premium Event Decorations. Book your perfect setup today.
             </p>
         </header>
 
-        <div class="flex flex-wrap justify-center gap-4 mb-12" id="category-filters">
-            <button onclick="fetchDecorations('all')" class="filter-btn bg-pink-500 text-white px-6 py-2 rounded-full font-bold shadow-md hover:bg-pink-600 hover:scale-105 transition-all">All</button>
-            <button onclick="fetchDecorations('birthday')" class="filter-btn bg-white text-gray-700 border border-pink-200 px-6 py-2 rounded-full font-semibold hover:bg-pink-50 hover:scale-105 transition-all">Birthdays</button>
-            <button onclick="fetchDecorations('baby-shower')" class="filter-btn bg-white text-gray-700 border border-pink-200 px-6 py-2 rounded-full font-semibold hover:bg-pink-50 hover:scale-105 transition-all">Baby Showers</button>
-            <button onclick="fetchDecorations('anniversary')" class="filter-btn bg-white text-gray-700 border border-pink-200 px-6 py-2 rounded-full font-semibold hover:bg-pink-50 hover:scale-105 transition-all">Anniversaries</button>
-            <button onclick="fetchDecorations('romantic')" class="filter-btn bg-white text-gray-700 border border-pink-200 px-6 py-2 rounded-full font-semibold hover:bg-pink-50 hover:scale-105 transition-all">Romantic</button>
+        <div class="flex overflow-x-auto pb-4 mb-8 gap-3 hide-scroll-bar" id="category-filters">
+            <button onclick="fetchDecorations('all')" class="filter-btn shrink-0 bg-pink-500 text-white px-5 py-2 rounded-full text-sm font-bold shadow-sm transition-all">All</button>
+            <button onclick="fetchDecorations('birthday')" class="filter-btn shrink-0 bg-white text-gray-700 border border-pink-200 px-5 py-2 rounded-full text-sm font-semibold transition-all">Birthdays</button>
+            <button onclick="fetchDecorations('baby-shower')" class="filter-btn shrink-0 bg-white text-gray-700 border border-pink-200 px-5 py-2 rounded-full text-sm font-semibold transition-all">Baby Showers</button>
+            <button onclick="fetchDecorations('anniversary')" class="filter-btn shrink-0 bg-white text-gray-700 border border-pink-200 px-5 py-2 rounded-full text-sm font-semibold transition-all">Anniversaries</button>
+            <button onclick="fetchDecorations('romantic')" class="filter-btn shrink-0 bg-white text-gray-700 border border-pink-200 px-5 py-2 rounded-full text-sm font-semibold transition-all">Romantic</button>
         </div>
 
-        <div id="decor-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div id="decor-container" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
             </div>
     </div>
 

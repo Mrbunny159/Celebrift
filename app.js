@@ -1,85 +1,62 @@
 const container = document.getElementById('decor-container');
 
-// Function to fetch and display data from your Flask API
 async function fetchDecorations(category = 'all') {
-    // Show a loading state
-    container.innerHTML = '<div class="col-span-full text-center py-10 text-2xl animate-pulse text-pink-500 font-bold">✨ Bringing the magic...</div>';
+    container.innerHTML = '<div class="col-span-full text-center py-10 text-xl animate-pulse text-pink-500 font-bold">Loading products...</div>';
 
     try {
-        // Construct the API URL based on the category
-        let apiUrl = '/api/decorations';
-        if (category !== 'all') {
-            apiUrl += `?category=${category}`;
-        }
-
-        // Call the Flask Backend
+        let apiUrl = category !== 'all' ? `/api/decorations?category=${category}` : '/api/decorations';
         const response = await fetch(apiUrl);
         const data = await response.json();
 
-        // If no data comes back
         if (data.length === 0) {
-            container.innerHTML = '<div class="col-span-full text-center py-10 text-gray-500">No decorations found for this category.</div>';
+            container.innerHTML = '<div class="col-span-full text-center py-10 text-gray-500">No products found.</div>';
             return;
         }
 
-        // Generate HTML for each item
         let htmlContent = '';
         data.forEach(item => {
+            // Generate Stars based on DB rating
+            let starsHtml = '';
+            const rating = Math.round(item.average_rating || 5);
+            for(let i = 1; i <= 5; i++) {
+                starsHtml += `<svg class="w-3 h-3 md:w-4 md:h-4 ${i <= rating ? 'text-yellow-400' : 'text-gray-300'} fill-current" viewBox="0 0 24 24"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z"/></svg>`;
+            }
+
             htmlContent += `
-                <a href="details.html?id=${item.slug}" class="group block relative">
-                    ${item.views > 5 ? `<span class="absolute top-4 right-4 z-20 bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg animate-bounce">🔥 Popular</span>` : ''}
-                    
-                    <div class="bg-white/90 backdrop-blur-sm rounded-3xl shadow-sm hover:shadow-2xl transition-all duration-300 overflow-hidden cursor-pointer border border-pink-100 h-full flex flex-col relative z-10">
-                        <div class="overflow-hidden">
-                            <img src="${item.image_url}" alt="${item.title}" class="w-full h-60 object-cover group-hover:scale-110 transition-transform duration-700">
+                <a href="details.html?id=${item.slug}" class="bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-200 overflow-hidden border border-gray-100 flex flex-col h-full group">
+                    <div class="relative w-full pb-[100%] overflow-hidden bg-gray-50">
+                        <img src="${item.image_url}" alt="${item.title}" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                    </div>
+                    <div class="p-3 md:p-4 flex flex-col flex-grow">
+                        <h3 class="text-sm md:text-base font-semibold text-gray-800 line-clamp-2 mb-1">${item.title}</h3>
+                        <div class="flex items-center gap-1 mb-2">
+                            ${starsHtml}
+                            <span class="text-xs text-gray-500 ml-1">(${item.average_rating})</span>
                         </div>
-                        <div class="p-6 flex-grow flex flex-col justify-between">
-                            <div>
-                                <h3 class="text-2xl font-bold text-gray-800 mb-2">${item.title}</h3>
-                                <p class="text-gray-600 text-sm leading-relaxed line-clamp-2">${item.description}</p>
-                            </div>
-                            <div class="mt-4 flex justify-between items-center">
-                                <span class="text-pink-600 font-bold">${item.price_range}</span>
-                                <div class="inline-flex items-center text-pink-500 font-semibold group-hover:text-pink-600 transition-colors">
-                                    Book 
-                                    <svg class="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                                    </svg>
-                                </div>
-                            </div>
+                        <div class="mt-auto flex justify-between items-end">
+                            <span class="text-base md:text-lg font-bold text-gray-900">${item.price_range}</span>
                         </div>
                     </div>
                 </a>
             `;
         });
 
-        // Inject the HTML
         container.innerHTML = htmlContent;
-
-        // Update button styling to show which one is active
         updateActiveButton(category);
-
     } catch (error) {
-        console.error("Error fetching decorations:", error);
-        container.innerHTML = '<div class="col-span-full text-center py-10 text-red-500 font-bold">Oops! Could not load the decorations. Please try again later.</div>';
+        container.innerHTML = '<div class="col-span-full text-center py-10 text-red-500 font-bold">Error loading products.</div>';
     }
 }
 
-// Function to handle the styling of the category buttons
 function updateActiveButton(activeCategory) {
     const buttons = document.querySelectorAll('.filter-btn');
     buttons.forEach(btn => {
         if (btn.getAttribute('onclick').includes(activeCategory)) {
-            btn.classList.remove('bg-white', 'text-gray-700');
-            btn.classList.add('bg-pink-500', 'text-white');
+            btn.className = "filter-btn shrink-0 bg-pink-500 text-white px-5 py-2 rounded-full text-sm font-bold shadow-sm transition-all";
         } else {
-            btn.classList.remove('bg-pink-500', 'text-white');
-            btn.classList.add('bg-white', 'text-gray-700');
+            btn.className = "filter-btn shrink-0 bg-white text-gray-700 border border-pink-200 px-5 py-2 rounded-full text-sm font-semibold transition-all";
         }
     });
 }
 
-// Load all decorations when the page first loads
-window.onload = () => {
-    fetchDecorations('all');
-};
+window.onload = () => fetchDecorations('all');
