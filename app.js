@@ -1,3 +1,45 @@
+async function renderHeroSection() {
+    try {
+        const res = await fetch('/api/settings');
+        const settings = await res.json();
+        
+        if (settings['hero_title']) document.getElementById('hero-main-title').textContent = settings['hero_title'];
+        if (settings['hero_subtitle']) document.getElementById('hero-sub-title').textContent = settings['hero_subtitle'];
+        
+        const container = document.getElementById('hero-categories-container');
+        
+        if (settings['hero_items']) {
+            const items = JSON.parse(settings['hero_items']);
+            
+            if (items.length === 0) {
+                container.innerHTML = "<p class='text-gray-400 font-bold'>No categories added yet.</p>";
+                return;
+            }
+
+            container.innerHTML = items.map(item => {
+                // Determine Tailwind classes based on the chosen shape
+                let shapeClasses = "w-28 h-28 md:w-36 md:h-36 rounded-full"; // Default Circle
+                
+                if (item.shape === 'square') shapeClasses = "w-28 h-28 md:w-36 md:h-36";
+                if (item.shape === 'rounded-square') shapeClasses = "w-28 h-28 md:w-36 md:h-36 rounded-2xl";
+                if (item.shape === 'rectangle') shapeClasses = "w-40 h-28 md:w-56 md:h-36";
+                if (item.shape === 'rounded-rectangle') shapeClasses = "w-40 h-28 md:w-56 md:h-36 rounded-3xl";
+
+                return `
+                <div onclick="document.getElementById('cat-${item.target}')?.scrollIntoView({behavior:'smooth'})" class="flex flex-col items-center gap-3 cursor-pointer group flex-shrink-0">
+                    <img src="${item.image}" class="${shapeClasses} border-4 border-white shadow-lg group-hover:border-pink-500 transition-all object-cover">
+                    <span class="font-bold text-gray-700 whitespace-nowrap">${item.title}</span>
+                </div>
+                `;
+            }).join('');
+        }
+    } catch (e) {
+        console.error("Failed to load hero section", e);
+    }
+}
+
+// Call the function to load it when the page opens
+renderHeroSection();
 async function renderNetflixHome() {
     const container = document.getElementById('rows-container');
     try {
