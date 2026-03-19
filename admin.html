@@ -45,10 +45,13 @@
                         <input type="text" id="title" placeholder="Title" class="w-full p-3 border rounded-lg bg-gray-50" required>
                         <input type="text" id="price" placeholder="Price (e.g. ₹2,499)" class="w-full p-3 border rounded-lg bg-gray-50" required>
                         <select id="category" class="w-full p-3 border rounded-lg bg-gray-50">
-                            <option value="birthday">Birthday</option>
-                            <option value="anniversary">Anniversary</option>
-                            <option value="baby-shower">Baby Shower</option>
-                        </select>
+    <option value="birthday-decor">Birthday Decor</option>
+    <option value="baby-shower-decor">Baby Shower Decor</option>
+    <option value="store-decor">Store Decor</option>
+    <option value="naming-ceremony">Naming Ceremony</option>
+    <option value="anniversary-decor">Anniversary Decor</option>
+    <option value="romantic-decor">Romantic Decor</option>
+</select>
                         <textarea id="description" placeholder="Description" rows="3" class="w-full p-3 border rounded-lg bg-gray-50"></textarea>
                         
                         <div class="border-t pt-4">
@@ -91,17 +94,23 @@
                         <button onclick="saveHeroText(this)" class="w-full bg-gray-900 text-white py-3 rounded-xl font-bold mt-4">Save Text</button>
                     </div>
 
-                    <div class="bg-white p-6 rounded-2xl shadow-sm border">
-                        <h3 class="text-lg font-bold mb-4 border-b pb-2">2. Add Category Item</h3>
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border h-fit">
+                        <h3 id="hero-form-title" class="text-lg font-bold mb-4 border-b pb-2">2. Add Category Item</h3>
                         <form id="add-hero-form" class="space-y-4">
+                            <input type="hidden" id="hero-edit-id">
+                            <input type="hidden" id="hero-existing-image">
+
                             <input type="text" id="hero-item-title" placeholder="Icon Label (e.g. Birthday)" class="w-full p-3 border rounded-lg bg-gray-50" required>
                             
                             <select id="hero-item-target" class="w-full p-3 border rounded-lg bg-gray-50" required>
-                                <option value="" disabled selected>Scrolls to which category?</option>
-                                <option value="birthday">Birthday</option>
-                                <option value="anniversary">Anniversary</option>
-                                <option value="baby-shower">Baby Shower</option>
-                            </select>
+    <option value="" disabled selected>Scrolls to which category?</option>
+    <option value="birthday-decor">Birthday Decor</option>
+    <option value="baby-shower-decor">Baby Shower Decor</option>
+    <option value="store-decor">Store Decor</option>
+    <option value="naming-ceremony">Naming Ceremony</option>
+    <option value="anniversary-decor">Anniversary Decor</option>
+    <option value="romantic-decor">Romantic Decor</option>
+</select>
 
                             <select id="hero-item-shape" class="w-full p-3 border rounded-lg bg-gray-50" required>
                                 <option value="circle">Circle 🟢</option>
@@ -112,11 +121,12 @@
                             </select>
 
                             <div class="border rounded-lg p-3 bg-gray-50">
-                                <label class="block text-xs font-bold text-gray-500 mb-1">Upload Icon/Image</label>
-                                <input type="file" id="hero-item-image" accept="image/*" class="w-full text-sm" required>
+                                <label class="block text-xs font-bold text-gray-500 mb-1">Upload Icon/Image (Leave blank to keep current if editing)</label>
+                                <input type="file" id="hero-item-image" accept="image/*" class="w-full text-sm">
                             </div>
 
-                            <button type="submit" id="hero-submit-btn" class="w-full bg-pink-500 text-white py-3 rounded-xl font-bold mt-2">Add to Hero Section</button>
+                            <button type="submit" id="hero-submit-btn" class="w-full bg-pink-500 text-white py-3 rounded-xl font-bold mt-2 transition-colors">Add to Hero Section</button>
+                            <button type="button" id="hero-cancel-btn" onclick="resetHeroForm()" class="hidden w-full bg-gray-200 text-gray-700 py-3 rounded-xl font-bold mt-2 hover:bg-gray-300 transition-colors">Cancel Edit</button>
                         </form>
                     </div>
                 </div>
@@ -127,10 +137,9 @@
                         <button onclick="saveHeroLayout(this)" class="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-lg font-bold transition shadow">Save Live Layout</button>
                     </div>
                     
-                    <p class="text-sm text-gray-400 mb-4">You must click "Save Live Layout" after adding or deleting items.</p>
+                    <p class="text-sm text-gray-400 mb-4">You must click "Save Live Layout" after adding, editing, or deleting items to push changes to the site.</p>
                     
-                    <div id="hero-items-list" class="space-y-3">
-                        </div>
+                    <div id="hero-items-list" class="space-y-3"></div>
                 </div>
 
             </div>
@@ -157,26 +166,16 @@
             document.getElementById('btn-' + tabId).classList.add('active');
         }
 
-        // --- GLOBAL SETTINGS LOGIC ---
         async function saveSetting(btnElement, key, textareaId) {
             const content = document.getElementById(textareaId).value;
             const originalText = btnElement.textContent;
             btnElement.textContent = "Saving...";
             btnElement.disabled = true;
             try {
-                const res = await fetch(`/api/settings/${key}`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-                    body: JSON.stringify({ content })
-                });
+                const res = await fetch(`/api/settings/${key}`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }, body: JSON.stringify({ content }) });
                 if (res.ok) {
-                    btnElement.textContent = "Saved!";
-                    btnElement.classList.replace('bg-pink-500', 'bg-green-500');
-                    setTimeout(() => {
-                        btnElement.textContent = originalText;
-                        btnElement.classList.replace('bg-green-500', 'bg-pink-500');
-                        btnElement.disabled = false;
-                    }, 2000);
+                    btnElement.textContent = "Saved!"; btnElement.classList.replace('bg-pink-500', 'bg-green-500');
+                    setTimeout(() => { btnElement.textContent = originalText; btnElement.classList.replace('bg-green-500', 'bg-pink-500'); btnElement.disabled = false; }, 2000);
                 } else { alert("Failed to save."); btnElement.textContent = originalText; btnElement.disabled = false;}
             } catch (e) { alert("Error connecting to server."); btnElement.textContent = originalText; btnElement.disabled = false; }
         }
@@ -186,21 +185,15 @@
                 const res = await fetch('/api/settings');
                 const settings = await res.json();
                 
-                // Text pages
                 if (settings['faqs']) document.getElementById('faqs-content').value = settings['faqs'];
                 if (settings['tnc']) document.getElementById('tnc-content').value = settings['tnc'];
                 if (settings['refunds']) document.getElementById('refunds-content').value = settings['refunds'];
                 if (settings['about']) document.getElementById('about-content').value = settings['about'];
                 if (settings['disclaimer']) document.getElementById('disclaimer-content').value = settings['disclaimer'];
                 
-                // Hero Section Data
                 if (settings['hero_title']) document.getElementById('hero-title-input').value = settings['hero_title'];
                 if (settings['hero_subtitle']) document.getElementById('hero-subtitle-input').value = settings['hero_subtitle'];
-                if (settings['hero_items']) {
-                    heroItems = JSON.parse(settings['hero_items']);
-                    renderHeroAdminList();
-                }
-
+                if (settings['hero_items']) { heroItems = JSON.parse(settings['hero_items']); renderHeroAdminList(); }
             } catch (e) { console.error("Failed to load global settings"); }
         }
 
@@ -210,7 +203,6 @@
         async function saveHeroText(btnElement) {
             const title = document.getElementById('hero-title-input').value;
             const subtitle = document.getElementById('hero-subtitle-input').value;
-            
             btnElement.textContent = "Saving...";
             await fetch(`/api/settings/hero_title`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }, body: JSON.stringify({ content: title }) });
             await fetch(`/api/settings/hero_subtitle`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }, body: JSON.stringify({ content: subtitle }) });
@@ -220,12 +212,14 @@
         document.getElementById('add-hero-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             const btn = document.getElementById('hero-submit-btn');
-            btn.textContent = "Processing Image...";
+            btn.textContent = "Processing...";
             btn.disabled = true;
 
+            const editId = document.getElementById('hero-edit-id').value;
             const fileInput = document.getElementById('hero-item-image');
-            let base64Image = "";
+            let base64Image = document.getElementById('hero-existing-image').value;
 
+            // Check if user uploaded a new image
             if (fileInput.files.length > 0) {
                 const file = fileInput.files[0];
                 base64Image = await new Promise((resolve, reject) => {
@@ -234,21 +228,37 @@
                     reader.onload = () => resolve(reader.result);
                     reader.onerror = error => reject(error);
                 });
+            } else if (!editId && fileInput.files.length === 0) {
+                // Prevent adding new item without an image
+                alert("Please select an image for the new category.");
+                btn.textContent = "Add to Hero Section";
+                btn.disabled = false;
+                return;
             }
 
-            const newItem = {
-                id: Date.now().toString(), // unique id
-                title: document.getElementById('hero-item-title').value,
-                target: document.getElementById('hero-item-target').value,
-                shape: document.getElementById('hero-item-shape').value,
-                image: base64Image
-            };
+            if (editId) {
+                // Update existing item
+                const index = heroItems.findIndex(i => i.id === editId);
+                if (index !== -1) {
+                    heroItems[index].title = document.getElementById('hero-item-title').value;
+                    heroItems[index].target = document.getElementById('hero-item-target').value;
+                    heroItems[index].shape = document.getElementById('hero-item-shape').value;
+                    heroItems[index].image = base64Image;
+                }
+            } else {
+                // Add new item
+                const newItem = {
+                    id: Date.now().toString(),
+                    title: document.getElementById('hero-item-title').value,
+                    target: document.getElementById('hero-item-target').value,
+                    shape: document.getElementById('hero-item-shape').value,
+                    image: base64Image
+                };
+                heroItems.push(newItem);
+            }
 
-            heroItems.push(newItem);
             renderHeroAdminList();
-            document.getElementById('add-hero-form').reset();
-            
-            btn.textContent = "Add to Hero Section";
+            resetHeroForm();
             btn.disabled = false;
         });
 
@@ -270,11 +280,44 @@
                             <p class="text-xs text-gray-500 uppercase">Scrolls to: ${item.target} | Shape: ${item.shape}</p>
                         </div>
                     </div>
-                    <div>
+                    <div class="flex gap-2">
+                        <button onclick="editHeroItem('${item.id}')" class="text-blue-600 bg-blue-100 hover:bg-blue-200 px-3 py-1 rounded font-bold text-sm">Edit</button>
                         <button onclick="deleteHeroItem(${index})" class="text-red-500 bg-red-100 hover:bg-red-200 px-3 py-1 rounded font-bold text-sm">Remove</button>
                     </div>
                 </div>
             `).join('');
+        }
+
+        function editHeroItem(id) {
+            const item = heroItems.find(i => i.id === id);
+            if(!item) return;
+
+            document.getElementById('hero-edit-id').value = item.id;
+            document.getElementById('hero-existing-image').value = item.image;
+            document.getElementById('hero-item-title').value = item.title;
+            document.getElementById('hero-item-target').value = item.target;
+            document.getElementById('hero-item-shape').value = item.shape;
+            
+            // Update UI
+            document.getElementById('hero-form-title').innerText = "Edit Category Item";
+            const btn = document.getElementById('hero-submit-btn');
+            btn.textContent = "Update Hero Item";
+            btn.classList.replace('bg-pink-500', 'bg-blue-600');
+            document.getElementById('hero-cancel-btn').classList.remove('hidden');
+            
+            window.scrollTo({top: 0, behavior:'smooth'});
+        }
+
+        function resetHeroForm() {
+            document.getElementById('add-hero-form').reset();
+            document.getElementById('hero-edit-id').value = "";
+            document.getElementById('hero-existing-image').value = "";
+            
+            document.getElementById('hero-form-title').innerText = "2. Add Category Item";
+            const btn = document.getElementById('hero-submit-btn');
+            btn.textContent = "Add to Hero Section";
+            btn.classList.replace('bg-blue-600', 'bg-pink-500');
+            document.getElementById('hero-cancel-btn').classList.add('hidden');
         }
 
         function deleteHeroItem(index) {
@@ -286,26 +329,16 @@
             btnElement.textContent = "Saving Layout...";
             btnElement.disabled = true;
             try {
-                const res = await fetch(`/api/settings/hero_items`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-                    body: JSON.stringify({ content: JSON.stringify(heroItems) })
-                });
-                
+                const res = await fetch(`/api/settings/hero_items`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }, body: JSON.stringify({ content: JSON.stringify(heroItems) }) });
                 if (res.ok) {
-                    btnElement.textContent = "Layout Saved!";
-                    btnElement.classList.replace('bg-green-500', 'bg-blue-600');
-                    setTimeout(() => {
-                        btnElement.textContent = "Save Live Layout";
-                        btnElement.classList.replace('bg-blue-600', 'bg-green-500');
-                        btnElement.disabled = false;
-                    }, 2000);
+                    btnElement.textContent = "Layout Saved!"; btnElement.classList.replace('bg-green-500', 'bg-blue-600');
+                    setTimeout(() => { btnElement.textContent = "Save Live Layout"; btnElement.classList.replace('bg-blue-600', 'bg-green-500'); btnElement.disabled = false; }, 2000);
                 }
             } catch (e) { alert("Failed to save hero layout."); btnElement.disabled = false;}
         }
 
 
-        // --- LISTING MANAGEMENT LOGIC (Unchanged) ---
+        // --- LISTING MANAGEMENT LOGIC ---
         async function loadAdminProducts() {
             const res = await fetch('/api/decorations');
             const data = await res.json();
@@ -330,8 +363,7 @@
         document.getElementById('add-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             const btn = document.getElementById('submit-btn');
-            btn.textContent = "Processing Upload...";
-            btn.disabled = true;
+            btn.textContent = "Processing Upload..."; btn.disabled = true;
 
             const fileInput = document.getElementById('image-upload');
             const existingImage = document.getElementById('existing-image-url').value;
@@ -340,10 +372,8 @@
             if (fileInput.files.length > 0) {
                 const file = fileInput.files[0];
                 finalImageUrl = await new Promise((resolve, reject) => {
-                    const reader = new FileReader();
-                    reader.readAsDataURL(file);
-                    reader.onload = () => resolve(reader.result);
-                    reader.onerror = error => reject(error);
+                    const reader = new FileReader(); reader.readAsDataURL(file);
+                    reader.onload = () => resolve(reader.result); reader.onerror = error => reject(error);
                 });
             }
 
@@ -362,29 +392,18 @@
             const generatedSlug = document.getElementById('title').value.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
 
             const payload = {
-                slug: generatedSlug,
-                title: document.getElementById('title').value,
-                price_range: document.getElementById('price').value,
-                category: document.getElementById('category').value,
-                description: document.getElementById('description').value,
-                image_url: finalImageUrl,
-                package_includes: packageIncludesArray,
-                faqs: faqsArray
+                slug: generatedSlug, title: document.getElementById('title').value, price_range: document.getElementById('price').value,
+                category: document.getElementById('category').value, description: document.getElementById('description').value,
+                image_url: finalImageUrl, package_includes: packageIncludesArray, faqs: faqsArray
             };
 
             try {
-                const res = await fetch('/api/decorations', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-                    body: JSON.stringify(payload)
-                });
-
+                const res = await fetch('/api/decorations', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }, body: JSON.stringify(payload) });
                 if (res.ok) { alert("Listing saved successfully!"); resetForm(); loadAdminProducts(); } 
                 else { alert("Failed to save. Check your inputs."); }
             } catch (err) { alert("Server error."); }
             
-            btn.disabled = false;
-            btn.textContent = "Save Listing";
+            btn.disabled = false; btn.textContent = "Save Listing";
         });
 
         async function editProduct(slug) {
@@ -392,27 +411,20 @@
                 const res = await fetch(`/api/decorations/${slug}`);
                 const item = await res.json();
                 
-                document.getElementById('title').value = item.title;
-                document.getElementById('price').value = item.price_range;
-                document.getElementById('category').value = item.category;
-                document.getElementById('description').value = item.description;
+                document.getElementById('title').value = item.title; document.getElementById('price').value = item.price_range;
+                document.getElementById('category').value = item.category; document.getElementById('description').value = item.description;
                 document.getElementById('existing-image-url').value = item.image_url;
                 
-                let parsedPkg = [];
-                let parsedFaqs = [];
+                let parsedPkg = []; let parsedFaqs = [];
                 if (typeof item.package_includes === 'string') { try { parsedPkg = JSON.parse(item.package_includes); } catch(e) {} } else { parsedPkg = item.package_includes || []; }
                 if (typeof item.faqs === 'string') { try { parsedFaqs = JSON.parse(item.faqs); } catch(e) {} } else { parsedFaqs = item.faqs || []; }
 
                 document.getElementById('package-includes').value = parsedPkg.join(', ');
                 document.getElementById('product-faqs').value = parsedFaqs.map(f => `${f.q} | ${f.a}`).join('\n');
                 
-                const btn = document.getElementById('submit-btn');
-                document.getElementById('form-title').innerText = "Edit Listing";
-                btn.textContent = "Update Listing";
-                btn.classList.replace('bg-pink-500', 'bg-blue-600');
-                document.getElementById('cancel-edit-btn').classList.remove('hidden');
-                switchTab('listings');
-                document.getElementById('tab-listings').scrollTo({top: 0, behavior:'smooth'});
+                const btn = document.getElementById('submit-btn'); document.getElementById('form-title').innerText = "Edit Listing";
+                btn.textContent = "Update Listing"; btn.classList.replace('bg-pink-500', 'bg-blue-600'); document.getElementById('cancel-edit-btn').classList.remove('hidden');
+                switchTab('listings'); document.getElementById('tab-listings').scrollTo({top: 0, behavior:'smooth'});
             } catch (e) { alert("Failed to fetch product details."); }
         }
 
@@ -427,12 +439,10 @@
             document.getElementById('existing-image-url').value = '';
             document.getElementById('form-title').innerText = "Add New Listing";
             const btn = document.getElementById('submit-btn');
-            btn.textContent = "Save Listing";
-            btn.classList.replace('bg-blue-600', 'bg-pink-500');
+            btn.textContent = "Save Listing"; btn.classList.replace('bg-blue-600', 'bg-pink-500');
             document.getElementById('cancel-edit-btn').classList.add('hidden');
         }
 
-        // Initialize page
         loadAdminProducts();
         loadSettings();
     </script>

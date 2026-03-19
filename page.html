@@ -13,7 +13,26 @@
             <a href="index.html" class="text-3xl font-black text-gray-800 tracking-tighter">
                 <span class="text-pink-500">Celebr</span>ift 👑
             </a>
-            <a href="index.html" class="text-pink-500 font-bold hover:underline">&larr; Back to Home</a>
+            
+            <div class="hidden md:flex gap-8 text-sm font-bold text-gray-600 uppercase tracking-widest items-center">
+                <a href="index.html" class="hover:text-pink-500 transition-colors">Home</a>
+                
+                <div class="relative group">
+                    <a href="index.html#rows-container" class="hover:text-pink-500 cursor-pointer flex items-center gap-1 py-2">
+                        Categories <span class="text-xs">▼</span>
+                    </a>
+                    <div class="absolute left-0 mt-0 w-64 bg-white border border-gray-100 rounded-2xl shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all flex flex-col overflow-hidden z-50">
+                        <a href="index.html?category=birthday-decor" class="px-5 py-3 hover:bg-pink-50 hover:text-pink-500 border-b last:border-0 transition-colors">Birthday Decor</a>
+                        <a href="index.html?category=baby-shower-decor" class="px-5 py-3 hover:bg-pink-50 hover:text-pink-500 border-b last:border-0 transition-colors">Baby Shower Decor</a>
+                        <a href="index.html?category=store-decor" class="px-5 py-3 hover:bg-pink-50 hover:text-pink-500 border-b last:border-0 transition-colors">Store Decor</a>
+                        <a href="index.html?category=naming-ceremony" class="px-5 py-3 hover:bg-pink-50 hover:text-pink-500 border-b last:border-0 transition-colors">Naming Ceremony</a>
+                        <a href="index.html?category=anniversary-decor" class="px-5 py-3 hover:bg-pink-50 hover:text-pink-500 border-b last:border-0 transition-colors">Anniversary Decor</a>
+                        <a href="index.html?category=romantic-decor" class="px-5 py-3 hover:bg-pink-50 hover:text-pink-500 transition-colors">Romantic Decor</a>
+                    </div>
+                </div>
+            </div>
+
+            <a href="index.html" class="md:hidden text-pink-500 font-bold hover:underline">&larr; Back to Home</a>
         </div>
     </nav>
 
@@ -23,9 +42,41 @@
             </div>
     </main>
 
-    <footer class="bg-blue-50 py-8 text-center text-xs font-bold border-t mt-auto uppercase tracking-widest text-gray-400">
-        © 2026 CELEBRIFT.COM
+    <footer class="bg-gradient-to-b from-white to-blue-50 pt-20 pb-10 px-6 border-t mt-auto">
+        <div class="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-12 text-sm text-gray-600 mb-16">
+            <div>
+                <h4 class="font-bold text-gray-900 mb-6 text-lg">Important Links</h4>
+                <a href="page.html?id=about" class="block mb-3 hover:text-pink-500 transition-colors">About Us</a>
+                <a href="page.html?id=faqs" class="block mb-3 hover:text-pink-500 transition-colors">FAQs</a>
+                <a href="page.html?id=tnc" class="block mb-3 hover:text-pink-500 transition-colors">Terms & Conditions</a>
+            </div>
+            <div>
+                <h4 class="font-bold text-gray-900 mb-6 text-lg">Categories</h4>
+                <a href="index.html?category=birthday-decor" class="block mb-3 hover:text-pink-500 transition-colors">Birthday Decor</a>
+                <a href="index.html?category=baby-shower-decor" class="block mb-3 hover:text-pink-500 transition-colors">Baby Shower Decor</a>
+                <a href="index.html?category=store-decor" class="block mb-3 hover:text-pink-500 transition-colors">Store Decor</a>
+                <a href="index.html?category=naming-ceremony" class="block mb-3 hover:text-pink-500 transition-colors">Naming Ceremony</a>
+                <a href="index.html?category=anniversary-decor" class="block mb-3 hover:text-pink-500 transition-colors">Anniversary Decor</a>
+                <a href="index.html?category=romantic-decor" class="block hover:text-pink-500 transition-colors">Romantic Decor</a>
+            </div>
+            <div>
+                <h4 class="font-bold text-gray-900 mb-6 text-lg">Cities</h4>
+                <p class="mb-3">Mira Bhayandar</p>
+                <p>Mumbai</p>
+            </div>
+            <div>
+                <h4 class="font-bold text-gray-900 mb-6 text-lg">Legal Info</h4>
+                <a href="page.html?id=refunds" class="block mb-3 hover:text-pink-500 transition-colors">Refunds & Returns</a>
+                <a href="page.html?id=disclaimer" class="block mb-3 hover:text-pink-500 transition-colors">Disclaimer</a>
+            </div>
+        </div>
+        <p class="text-center text-xs text-gray-400 font-bold tracking-widest">© 2026 CELEBRIFT.COM</p>
     </footer>
+
+    <div class="fixed bottom-8 right-6 z-50 flex flex-col gap-4">
+        <a href="tel:+919594328008" class="w-14 h-14 bg-indigo-600 text-white rounded-2xl flex items-center justify-center shadow-2xl hover:scale-110 transition text-2xl">📞</a>
+        <a href="https://wa.me/919594328008" target="_blank" class="w-14 h-14 bg-green-500 text-white rounded-2xl flex items-center justify-center shadow-2xl hover:scale-110 transition text-2xl">💬</a>
+    </div>
 
     <script>
         // Get which page the user wants from the URL
@@ -51,7 +102,7 @@
                     // Inject the HTML stored in the database
                     document.getElementById('content-container').innerHTML = settings[pageId];
                 } else {
-                    document.getElementById('content-container').innerHTML = "<h1 class='text-2xl font-bold'>Content coming soon...</h1>";
+                    document.getElementById('content-container').innerHTML = "<h1 class='text-2xl font-bold text-gray-800'>Content coming soon...</h1><p class='text-gray-500 mt-2'>The admin has not added content for this section yet.</p>";
                 }
             } catch (error) {
                 document.getElementById('loading').textContent = "Failed to load content.";

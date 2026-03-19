@@ -42,28 +42,40 @@ async function renderHeroSection() {
 renderHeroSection();
 async function renderNetflixHome() {
     const container = document.getElementById('rows-container');
+    
+    // Check if the user clicked a specific category link
+    const urlParams = new URLSearchParams(window.location.search);
+    const selectedCategory = urlParams.get('category');
+    
     try {
-        const response = await fetch('/api/decorations');
+        // Ask API for specific category, or get all if none selected
+        const fetchUrl = selectedCategory ? `/api/decorations?category=${selectedCategory}` : '/api/decorations';
+        const response = await fetch(fetchUrl);
         const allItems = await response.json();
         
-        // Group data
         const categories = [...new Set(allItems.map(item => item.category))];
         
+        if (allItems.length === 0) {
+            container.innerHTML = "<p class='text-center text-gray-500 font-bold py-10'>No decorations found for this category yet.</p>";
+            return;
+        }
+
         container.innerHTML = categories.map(cat => {
             const items = allItems.filter(i => i.category === cat);
+            // Formats "birthday-decor" into "Birthday Decor"
             const title = cat.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
             
             return `
                 <section id="cat-${cat}" class="scroll-mt-32">
                     <div class="flex justify-between items-center mb-6">
-                        <h2 class="text-2xl font-extrabold text-indigo-900">${title} Balloon Decoration</h2>
-                        <a href="index.html?category=${cat}" class="text-pink-500 font-bold text-sm border-b-2 border-pink-500 pb-0.5">View All &rarr;</a>
+                        <h2 class="text-2xl font-extrabold text-indigo-900">${title}</h2>
+                        ${!selectedCategory ? `<a href="index.html?category=${cat}" class="text-pink-500 font-bold text-sm border-b-2 border-pink-500 pb-0.5 hover:text-indigo-900 transition-colors">View All &rarr;</a>` : ''}
                     </div>
                     <div class="flex overflow-x-auto gap-5 pb-6 hide-scroll-bar">
                         ${items.map(item => `
                             <a href="details.html?id=${item.slug}" class="flex-none w-64 md:w-80 group">
                                 <div class="bg-white rounded-2xl shadow-sm border overflow-hidden transition-all group-hover:shadow-lg">
-                                    <div class="h-48 overflow-hidden">
+                                    <div class="h-48 overflow-hidden bg-gray-100">
                                         <img src="${item.image_url}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
                                     </div>
                                     <div class="p-4">
