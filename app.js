@@ -1,3 +1,7 @@
+const urlParams = new URLSearchParams(window.location.search);
+const filterCat = urlParams.get('category');
+
+// RESTORED: Fetch Hero Section Data from Database
 async function renderHeroSection() {
     try {
         const res = await fetch('/api/settings');
@@ -12,61 +16,54 @@ async function renderHeroSection() {
             if (items.length === 0) return;
 
             container.innerHTML = items.map(item => {
-                let shapeClasses = "w-28 h-28 md:w-36 md:h-36 rounded-full"; 
-                if (item.shape === 'square') shapeClasses = "w-28 h-28 md:w-36 md:h-36";
-                if (item.shape === 'rounded-square') shapeClasses = "w-28 h-28 md:w-36 md:h-36 rounded-2xl";
-                if (item.shape === 'rectangle') shapeClasses = "w-40 h-28 md:w-56 md:h-36";
-                if (item.shape === 'rounded-rectangle') shapeClasses = "w-40 h-28 md:w-56 md:h-36 rounded-3xl";
+                // Handle the dynamic shapes
+                let shapeClasses = "w-24 h-24 md:w-32 md:h-32 rounded-full"; 
+                if (item.shape === 'square') shapeClasses = "w-24 h-24 md:w-32 md:h-32 rounded-none";
+                if (item.shape === 'rounded-square') shapeClasses = "w-24 h-24 md:w-32 md:h-32 rounded-2xl";
+                if (item.shape === 'rectangle') shapeClasses = "w-32 h-24 md:w-40 md:h-32 rounded-none";
+                if (item.shape === 'rounded-rectangle') shapeClasses = "w-32 h-24 md:w-40 md:h-32 rounded-3xl";
 
                 return `
-                <div onclick="window.location.href='index.html?category=${item.target}'" class="flex flex-col items-center gap-3 cursor-pointer group flex-shrink-0">
-                    <img src="${item.image}" class="${shapeClasses} border-4 border-white shadow-lg group-hover:border-pink-500 transition-all object-cover">
-                    <span class="font-bold text-gray-700 whitespace-nowrap">${item.title}</span>
+                <div onclick="window.location.href='index.html?category=${item.target}'" class="flex flex-col items-center gap-3 cursor-pointer group flex-none">
+                    <img src="${item.image}" class="${shapeClasses} object-cover border-4 border-white shadow-lg group-hover:border-pink-400 transition-all">
+                    <span class="text-sm font-bold text-indigo-900 text-center w-24 md:w-32 line-clamp-2 leading-tight">${item.title}</span>
                 </div>`;
             }).join('');
         }
     } catch (e) { console.error("Hero error", e); }
 }
 
-async function renderNetflixHome() {
-    const container = document.getElementById('rows-container');
-    const urlParams = new URLSearchParams(window.location.search);
-    const selectedCategory = urlParams.get('category');
-    
+async function loadHome() {
     try {
-        const fetchUrl = selectedCategory ? `/api/decorations?category=${selectedCategory}` : '/api/decorations';
-        const response = await fetch(fetchUrl);
-        const allItems = await response.json();
+        // Render rows of products
+        const res = await fetch('/api/decorations');
+        const allItems = await res.json();
         
-        const categories = [...new Set(allItems.map(item => item.category))];
-        
-        if (allItems.length === 0) {
-            container.innerHTML = "<p class='text-center text-gray-500 font-bold py-10'>No decorations found for this category yet.</p>";
-            return;
-        }
+        let categories = [...new Set(allItems.map(i => i.category))];
+        if(filterCat) categories = [filterCat]; 
 
-        container.innerHTML = categories.map(cat => {
+        document.getElementById('rows-container').innerHTML = categories.map(cat => {
             const items = allItems.filter(i => i.category === cat);
             const title = cat.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
             
             return `
-                <section id="cat-${cat}" class="scroll-mt-32">
+                <section>
                     <div class="flex justify-between items-center mb-6">
-                        <h2 class="text-2xl font-extrabold text-indigo-900">${title}</h2>
-                        ${!selectedCategory ? `<a href="index.html?category=${cat}" class="text-pink-500 font-bold text-sm border-b-2 border-pink-500 pb-0.5 hover:text-indigo-900 transition-colors">View All &rarr;</a>` : ''}
+                        <h2 class="text-2xl md:text-3xl font-black text-indigo-900">${title}</h2>
+                        ${!filterCat ? `<a href="index.html?category=${cat}" class="text-pink-500 font-bold text-sm border-b-2 border-pink-500 pb-0.5">View All &rarr;</a>` : ''}
                     </div>
-                    <div class="flex overflow-x-auto gap-5 pb-6 hide-scroll-bar">
+                    <div class="flex overflow-x-auto flex-nowrap gap-6 pb-8 hide-scroll-bar px-2">
                         ${items.map(item => `
                             <a href="details.html?id=${item.slug}" class="flex-none w-64 md:w-80 group">
-                                <div class="bg-white rounded-2xl shadow-sm border overflow-hidden transition-all group-hover:shadow-lg">
-                                    <div class="h-48 overflow-hidden bg-gray-100">
-                                        <img src="${item.image_url}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                                <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden transition-all group-hover:shadow-xl">
+                                    <div class="h-48 overflow-hidden">
+                                        <img src="${item.images ? JSON.parse(item.images)[0] : item.image_url}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
                                     </div>
-                                    <div class="p-4">
-                                        <h4 class="font-bold text-indigo-900 line-clamp-1">${item.title}</h4>
-                                        <div class="flex justify-between items-center mt-2">
-                                            <span class="text-pink-600 font-extrabold">${item.price_range}</span>
-                                            <span class="text-xs text-yellow-500">★ ${item.average_rating || '5.0'}</span>
+                                    <div class="p-5">
+                                        <h4 class="font-bold text-gray-800 line-clamp-1">${item.title}</h4>
+                                        <div class="flex justify-between mt-2">
+                                            <span class="text-pink-600 font-black">${item.price_range}</span>
+                                            <span class="text-sm text-yellow-500 font-bold">★ ${item.average_rating || '5.0'}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -75,31 +72,28 @@ async function renderNetflixHome() {
                     </div>
                 </section>`;
         }).join('');
-    } catch (e) {
-        container.innerHTML = "<p class='text-center text-red-500 font-bold'>Failed to load data.</p>";
-    }
-}
 
-async function loadHomeReviews() {
-    try {
-        const res = await fetch('/api/settings');
-        const settings = await res.json();
+        // Render Home Reviews
+        const revRes = await fetch('/api/settings');
+        const settings = await revRes.json();
         if (settings['home_reviews']) {
             const revs = JSON.parse(settings['home_reviews']);
             if (revs.length > 0) {
                 document.getElementById('home-reviews-section').classList.remove('hidden');
                 document.getElementById('home-reviews-container').innerHTML = revs.map(r => `
-                    <div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 relative">
-                    <span class="absolute top-4 right-6 text-4xl text-pink-100">"</span>
-                    <div class="text-yellow-400 mb-3 text-xl">${'★'.repeat(r.rating)}</div>
-                    <p class="text-gray-600 italic mb-4 relative z-10">"${r.text}"</p>
-                    <p class="font-bold text-indigo-900">- ${r.name}</p>
+                    <div class="flex-none w-72 md:w-80 bg-white p-6 rounded-3xl shadow-sm border border-pink-100 snap-center relative">
+                        <span class="absolute top-4 right-6 text-4xl text-pink-100">"</span>
+                        <div class="flex text-yellow-400 mb-3 text-lg">${'★'.repeat(r.rating)}</div>
+                        <p class="text-gray-600 italic mb-4 line-clamp-4 relative z-10">"${r.text}"</p>
+                        <p class="font-bold text-gray-900">- ${r.name}</p>
                     </div>
-                    `).join('');
-                }
+                `).join('');
             }
-        } catch (e) {}
-    }
-    renderHeroSection();
-    renderNetflixHome();
-loadHomeReviews();
+        }
+    } catch (e) { document.getElementById('rows-container').innerHTML = "Error loading data."; }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    renderHeroSection(); // Call the hero builder
+    loadHome(); // Call the content builder
+});
