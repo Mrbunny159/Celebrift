@@ -56,7 +56,7 @@
                     <h3 id="form-title" class="text-lg font-bold mb-6 text-gray-800">Add New Listing</h3>
                     <form id="add-form" class="space-y-4">
                         <input type="text" id="title" placeholder="Title" class="w-full p-3 border rounded-xl bg-gray-50 outline-none focus:ring-2 focus:ring-pink-500" required>
-                        <input type="text" id="price" placeholder="Price (e.g. ₹2,499)" class="w-full p-3 border rounded-xl bg-gray-50 outline-none focus:ring-2 focus:ring-pink-500" required>
+                        <input type="text" id="price" placeholder="Price (e.g. 2499 or ₹2499)" class="w-full p-3 border rounded-xl bg-gray-50 outline-none focus:ring-2 focus:ring-pink-500" required>
                         <select id="category" class="w-full p-3 border rounded-xl bg-gray-50 outline-none focus:ring-2 focus:ring-pink-500">
                             <option value="birthday-decor">Birthday Decor</option>
                             <option value="baby-shower-decor">Baby Shower Decor</option>
@@ -324,7 +324,10 @@
         }
 
         document.getElementById('add-form').addEventListener('submit', async (e) => {
-            e.preventDefault(); const btn = document.getElementById('submit-btn'); btn.textContent = "Compressing & Uploading..."; btn.disabled = true;
+            e.preventDefault(); 
+            const btn = document.getElementById('submit-btn'); 
+            btn.textContent = "Compressing & Uploading..."; 
+            btn.disabled = true;
             
             const fileInput = document.getElementById('image-upload');
             const existingImagesJSON = document.getElementById('existing-images-array').value;
@@ -339,7 +342,18 @@
                 finalImageArray = JSON.parse(existingImagesJSON); 
             }
 
-            if (finalImageArray.length === 0) { alert("Upload at least 1 image."); btn.textContent = "Save Listing"; btn.disabled = false; return; }
+            if (finalImageArray.length === 0) { 
+                alert("Upload at least 1 image."); 
+                btn.textContent = "Save Listing"; 
+                btn.disabled = false; 
+                return; 
+            }
+
+            // AUTO-₹ LOGIC: Check if user added a currency symbol, if not, add ₹
+            let priceInput = document.getElementById('price').value.trim();
+            if (!priceInput.includes('₹') && !priceInput.toLowerCase().includes('rs')) {
+                priceInput = '₹' + priceInput;
+            }
 
             const pkgString = document.getElementById('package-includes').value; 
             const packageIncludesArray = pkgString ? pkgString.split(',').map(s => s.trim()).filter(s => s !== "") : [];
@@ -348,16 +362,31 @@
             const generatedSlug = document.getElementById('title').value.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
 
             const payload = { 
-                slug: generatedSlug, title: document.getElementById('title').value, price_range: document.getElementById('price').value, 
-                category: document.getElementById('category').value, description: document.getElementById('description').value, 
-                image_url: finalImageArray[0], images: finalImageArray, package_includes: packageIncludesArray, faqs: faqsArray 
+                slug: generatedSlug, 
+                title: document.getElementById('title').value, 
+                price_range: priceInput, // Using the formatted price
+                category: document.getElementById('category').value, 
+                description: document.getElementById('description').value, 
+                image_url: finalImageArray[0], 
+                images: finalImageArray, 
+                package_includes: packageIncludesArray, 
+                faqs: faqsArray 
             };
 
             try {
                 const res = await fetch('/api/decorations', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }, body: JSON.stringify(payload) });
-                if (res.ok) { alert("Saved successfully!"); resetForm(); loadAdminProducts(); } else { alert("Failed to save."); }
-            } catch (err) { alert("Server error."); }
-            btn.disabled = false; btn.textContent = "Save Listing";
+                if (res.ok) { 
+                    alert("Saved successfully!"); 
+                    resetForm(); 
+                    loadAdminProducts(); 
+                } else { 
+                    alert("Failed to save."); 
+                }
+            } catch (err) { 
+                alert("Server error."); 
+            }
+            btn.disabled = false; 
+            btn.textContent = "Save Listing";
         });
 
         async function editProduct(slug) {
