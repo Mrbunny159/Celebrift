@@ -28,16 +28,16 @@
         </div>
         
         <nav class="flex-grow p-2 md:p-4 flex md:flex-col overflow-x-auto md:overflow-y-auto space-x-2 md:space-x-0 md:space-y-2 hide-scroll-bar">
-            <button onclick="switchTab('listings')" id="btn-listings" class="nav-btn active flex-none text-left px-4 py-3 rounded-xl text-sm md:text-base text-gray-600 transition whitespace-nowrap">📦 Listings</button>
-            <button onclick="switchTab('hero')" id="btn-hero" class="nav-btn flex-none text-left px-4 py-3 rounded-xl text-sm md:text-base text-gray-600 transition whitespace-nowrap">🌟 Hero Section</button>
-            <button onclick="switchTab('home-reviews')" id="btn-home-reviews" class="nav-btn flex-none text-left px-4 py-3 rounded-xl text-sm md:text-base text-gray-600 transition whitespace-nowrap">⭐ Home Reviews</button>
-            <button onclick="switchTab('product-reviews')" id="btn-product-reviews" class="nav-btn flex-none text-left px-4 py-3 rounded-xl text-sm md:text-base text-gray-600 transition whitespace-nowrap">💬 Prod Reviews</button>
-            <button onclick="switchTab('theme')" id="btn-theme" class="nav-btn flex-none text-left px-4 py-3 rounded-xl text-sm md:text-base text-gray-600 transition whitespace-nowrap">🎨 Site Theme</button>
-            <button onclick="switchTab('faqs')" id="btn-faqs" class="nav-btn flex-none text-left px-4 py-3 rounded-xl text-sm md:text-base text-gray-600 transition whitespace-nowrap">❓ Global FAQs</button>
-            <button onclick="switchTab('tnc')" id="btn-tnc" class="nav-btn flex-none text-left px-4 py-3 rounded-xl text-sm md:text-base text-gray-600 transition whitespace-nowrap">📄 Terms</button>
-            <button onclick="switchTab('refunds')" id="btn-refunds" class="nav-btn flex-none text-left px-4 py-3 rounded-xl text-sm md:text-base text-gray-600 transition whitespace-nowrap">💸 Refunds</button>
-            <button onclick="switchTab('about')" id="btn-about" class="nav-btn flex-none text-left px-4 py-3 rounded-xl text-sm md:text-base text-gray-600 transition whitespace-nowrap">🏢 About Us</button>
-            <button onclick="switchTab('disclaimer')" id="btn-disclaimer" class="nav-btn flex-none text-left px-4 py-3 rounded-xl text-sm md:text-base text-gray-600 transition whitespace-nowrap">⚠️ Disclaimer</button>
+            <button onclick="switchTab('listings')" id="btn-listings" class="nav-btn active flex-none md:w-full text-left px-4 py-3 rounded-xl text-sm md:text-base text-gray-600 transition whitespace-nowrap">📦 Listings</button>
+            <button onclick="switchTab('hero')" id="btn-hero" class="nav-btn flex-none md:w-full text-left px-4 py-3 rounded-xl text-sm md:text-base text-gray-600 transition whitespace-nowrap">🌟 Hero Section</button>
+            <button onclick="switchTab('home-reviews')" id="btn-home-reviews" class="nav-btn flex-none md:w-full text-left px-4 py-3 rounded-xl text-sm md:text-base text-gray-600 transition whitespace-nowrap">⭐ Home Reviews</button>
+            <button onclick="switchTab('product-reviews')" id="btn-product-reviews" class="nav-btn flex-none md:w-full text-left px-4 py-3 rounded-xl text-sm md:text-base text-gray-600 transition whitespace-nowrap">💬 Prod Reviews</button>
+            <button onclick="switchTab('theme')" id="btn-theme" class="nav-btn flex-none md:w-full text-left px-4 py-3 rounded-xl text-sm md:text-base text-gray-600 transition whitespace-nowrap">🎨 Site Theme</button>
+            <button onclick="switchTab('faqs')" id="btn-faqs" class="nav-btn flex-none md:w-full text-left px-4 py-3 rounded-xl text-sm md:text-base text-gray-600 transition whitespace-nowrap">❓ Global FAQs</button>
+            <button onclick="switchTab('tnc')" id="btn-tnc" class="nav-btn flex-none md:w-full text-left px-4 py-3 rounded-xl text-sm md:text-base text-gray-600 transition whitespace-nowrap">📄 Terms</button>
+            <button onclick="switchTab('refunds')" id="btn-refunds" class="nav-btn flex-none md:w-full text-left px-4 py-3 rounded-xl text-sm md:text-base text-gray-600 transition whitespace-nowrap">💸 Refunds</button>
+            <button onclick="switchTab('about')" id="btn-about" class="nav-btn flex-none md:w-full text-left px-4 py-3 rounded-xl text-sm md:text-base text-gray-600 transition whitespace-nowrap">🏢 About Us</button>
+            <button onclick="switchTab('disclaimer')" id="btn-disclaimer" class="nav-btn flex-none md:w-full text-left px-4 py-3 rounded-xl text-sm md:text-base text-gray-600 transition whitespace-nowrap">⚠️ Disclaimer</button>
         </nav>
         
         <div class="p-4 border-t hidden md:block">
@@ -50,6 +50,7 @@
         <div id="tab-listings" class="tab-content active max-w-7xl mx-auto">
             <div class="flex justify-between items-center mb-6">
                 <h2 class="text-2xl font-bold text-gray-800">Manage Listings</h2>
+                <button onclick="logout()" class="md:hidden bg-gray-900 text-white px-4 py-2 rounded-lg font-bold text-sm">Logout</button>
             </div>
             <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
                 <div class="xl:col-span-1 bg-white p-6 rounded-3xl shadow-sm border border-gray-100 h-fit">
@@ -80,6 +81,7 @@
                         <div class="border rounded-xl p-4 bg-gray-50 mt-4">
                             <label class="block text-xs font-bold text-gray-500 mb-2">Upload Images (Select Multiple)</label>
                             <input type="file" id="image-upload" accept="image/*" multiple class="w-full text-sm file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-pink-50 file:text-pink-700 hover:file:bg-pink-100">
+                            <p class="text-xs text-gray-400 mt-2">Uploading new images will overwrite existing ones.</p>
                             <input type="hidden" id="existing-images-array"> 
                         </div>
 
@@ -100,7 +102,7 @@
                 <div class="xl:col-span-1 space-y-6">
                     <div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100">
                         <h3 class="text-lg font-bold mb-4 border-b pb-2 text-gray-800">1. Section Text</h3>
-                        <input type="text" id="hero-title-input" placeholder="Main Title" class="w-full p-3 border rounded-xl bg-gray-50 mb-3 font-bold text-indigo-900 outline-none focus:ring-2 focus:ring-pink-500">
+                        <input type="text" id="hero-title-input" placeholder="Main Title (e.g. Top Categories)" class="w-full p-3 border rounded-xl bg-gray-50 mb-3 font-bold text-indigo-900 outline-none focus:ring-2 focus:ring-pink-500">
                         <input type="text" id="hero-subtitle-input" placeholder="Subtitle" class="w-full p-3 border rounded-xl bg-gray-50 text-gray-500 outline-none focus:ring-2 focus:ring-pink-500">
                         <button onclick="saveHeroText(this)" class="w-full bg-gray-900 hover:bg-gray-800 text-white py-3 rounded-xl font-bold mt-4 transition">Save Text</button>
                     </div>
@@ -111,7 +113,7 @@
                             <input type="hidden" id="hero-edit-id">
                             <input type="hidden" id="hero-existing-image">
 
-                            <input type="text" id="hero-item-title" placeholder="Icon Label" class="w-full p-3 border rounded-xl bg-gray-50 outline-none focus:ring-2 focus:ring-pink-500" required>
+                            <input type="text" id="hero-item-title" placeholder="Icon Label (e.g. Birthday)" class="w-full p-3 border rounded-xl bg-gray-50 outline-none focus:ring-2 focus:ring-pink-500" required>
                             
                             <select id="hero-item-target" class="w-full p-3 border rounded-xl bg-gray-50 outline-none focus:ring-2 focus:ring-pink-500" required>
                                 <option value="" disabled selected>Scrolls to which category?</option>
@@ -182,8 +184,30 @@
 
         <div id="tab-product-reviews" class="tab-content max-w-6xl mx-auto">
             <h2 class="text-2xl font-bold mb-6 text-gray-800">Manage Customer Product Reviews</h2>
-            <div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100">
-                <div id="admin-customer-reviews-list" class="space-y-4"></div>
+            
+            <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
+                <div id="prod-rev-edit-container" class="xl:col-span-1 bg-white p-6 rounded-3xl shadow-sm border border-pink-200 h-fit hidden">
+                    <h3 class="text-lg font-bold mb-4 border-b pb-2 text-indigo-900">Edit Customer Review</h3>
+                    <form id="edit-prod-rev-form" class="space-y-4">
+                        <input type="hidden" id="prod-rev-id">
+                        <input type="text" id="prod-rev-name" placeholder="Customer Name" class="w-full p-3 border rounded-xl bg-gray-50 outline-none focus:ring-2 focus:ring-pink-500" required>
+                        <select id="prod-rev-rating" class="w-full p-3 border rounded-xl bg-gray-50 outline-none focus:ring-2 focus:ring-pink-500">
+                            <option value="5">5 Stars</option>
+                            <option value="4">4 Stars</option>
+                            <option value="3">3 Stars</option>
+                            <option value="2">2 Stars</option>
+                            <option value="1">1 Star</option>
+                        </select>
+                        <textarea id="prod-rev-text" placeholder="Review content..." rows="4" class="w-full p-3 border rounded-xl bg-gray-50 outline-none focus:ring-2 focus:ring-pink-500" required></textarea>
+                        <button type="submit" id="prod-rev-submit-btn" class="w-full bg-indigo-600 text-white py-3 rounded-xl font-bold hover:bg-indigo-700 transition">Update Review</button>
+                        <button type="button" onclick="closeProdRevEdit()" class="w-full bg-gray-200 py-3 rounded-xl font-bold mt-2 hover:bg-gray-300">Cancel</button>
+                    </form>
+                </div>
+
+                <div id="prod-rev-list-container" class="xl:col-span-3 bg-white p-6 rounded-3xl shadow-sm border border-gray-100 transition-all">
+                    <p class="text-sm text-gray-500 mb-6">These are reviews submitted by customers directly on specific product detail pages.</p>
+                    <div id="admin-customer-reviews-list" class="space-y-4"></div>
+                </div>
             </div>
         </div>
 
@@ -219,45 +243,11 @@
             </div>
         </div>
 
-        <div id="tab-faqs" class="tab-content max-w-4xl">
-            <h2 class="text-2xl font-bold mb-6 text-gray-800">Global Site FAQs</h2>
-            <div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100">
-                <textarea id="faqs-content" class="w-full p-4 border rounded-xl bg-gray-50 h-[30rem] focus:ring-2 focus:ring-pink-500 outline-none"></textarea>
-                <button onclick="saveSetting(this, 'faqs', 'faqs-content')" class="mt-4 w-full md:w-auto bg-pink-500 text-white px-8 py-3 rounded-xl font-bold hover:bg-pink-600 transition">Save FAQs</button>
-            </div>
-        </div>
-
-        <div id="tab-tnc" class="tab-content max-w-4xl">
-            <h2 class="text-2xl font-bold mb-6 text-gray-800">Terms & Conditions</h2>
-            <div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100">
-                <textarea id="tnc-content" class="w-full p-4 border rounded-xl bg-gray-50 h-[30rem] focus:ring-2 focus:ring-pink-500 outline-none"></textarea>
-                <button onclick="saveSetting(this, 'tnc', 'tnc-content')" class="mt-4 w-full md:w-auto bg-pink-500 text-white px-8 py-3 rounded-xl font-bold hover:bg-pink-600 transition">Save Terms</button>
-            </div>
-        </div>
-
-        <div id="tab-refunds" class="tab-content max-w-4xl">
-            <h2 class="text-2xl font-bold mb-6 text-gray-800">Refunds & Returns</h2>
-            <div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100">
-                <textarea id="refunds-content" class="w-full p-4 border rounded-xl bg-gray-50 h-[30rem] focus:ring-2 focus:ring-pink-500 outline-none"></textarea>
-                <button onclick="saveSetting(this, 'refunds', 'refunds-content')" class="mt-4 w-full md:w-auto bg-pink-500 text-white px-8 py-3 rounded-xl font-bold hover:bg-pink-600 transition">Save Policy</button>
-            </div>
-        </div>
-
-        <div id="tab-about" class="tab-content max-w-4xl">
-            <h2 class="text-2xl font-bold mb-6 text-gray-800">About Us</h2>
-            <div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100">
-                <textarea id="about-content" class="w-full p-4 border rounded-xl bg-gray-50 h-[30rem] focus:ring-2 focus:ring-pink-500 outline-none"></textarea>
-                <button onclick="saveSetting(this, 'about', 'about-content')" class="mt-4 w-full md:w-auto bg-pink-500 text-white px-8 py-3 rounded-xl font-bold hover:bg-pink-600 transition">Save About Us</button>
-            </div>
-        </div>
-
-        <div id="tab-disclaimer" class="tab-content max-w-4xl">
-            <h2 class="text-2xl font-bold mb-6 text-gray-800">Disclaimer</h2>
-            <div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100">
-                <textarea id="disclaimer-content" class="w-full p-4 border rounded-xl bg-gray-50 h-[30rem] focus:ring-2 focus:ring-pink-500 outline-none"></textarea>
-                <button onclick="saveSetting(this, 'disclaimer', 'disclaimer-content')" class="mt-4 w-full md:w-auto bg-pink-500 text-white px-8 py-3 rounded-xl font-bold hover:bg-pink-600 transition">Save Disclaimer</button>
-            </div>
-        </div>
+        <div id="tab-faqs" class="tab-content max-w-4xl"><h2 class="text-2xl font-bold mb-6 text-gray-800">Global Site FAQs</h2><div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100"><textarea id="faqs-content" class="w-full p-4 border rounded-xl bg-gray-50 h-[30rem] focus:ring-2 focus:ring-pink-500 outline-none"></textarea><button onclick="saveSetting(this, 'faqs', 'faqs-content')" class="mt-4 w-full md:w-auto bg-pink-500 text-white px-8 py-3 rounded-xl font-bold hover:bg-pink-600 transition">Save FAQs</button></div></div>
+        <div id="tab-tnc" class="tab-content max-w-4xl"><h2 class="text-2xl font-bold mb-6 text-gray-800">Terms & Conditions</h2><div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100"><textarea id="tnc-content" class="w-full p-4 border rounded-xl bg-gray-50 h-[30rem] focus:ring-2 focus:ring-pink-500 outline-none"></textarea><button onclick="saveSetting(this, 'tnc', 'tnc-content')" class="mt-4 w-full md:w-auto bg-pink-500 text-white px-8 py-3 rounded-xl font-bold hover:bg-pink-600 transition">Save Terms</button></div></div>
+        <div id="tab-refunds" class="tab-content max-w-4xl"><h2 class="text-2xl font-bold mb-6 text-gray-800">Refunds & Returns</h2><div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100"><textarea id="refunds-content" class="w-full p-4 border rounded-xl bg-gray-50 h-[30rem] focus:ring-2 focus:ring-pink-500 outline-none"></textarea><button onclick="saveSetting(this, 'refunds', 'refunds-content')" class="mt-4 w-full md:w-auto bg-pink-500 text-white px-8 py-3 rounded-xl font-bold hover:bg-pink-600 transition">Save Policy</button></div></div>
+        <div id="tab-about" class="tab-content max-w-4xl"><h2 class="text-2xl font-bold mb-6 text-gray-800">About Us</h2><div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100"><textarea id="about-content" class="w-full p-4 border rounded-xl bg-gray-50 h-[30rem] focus:ring-2 focus:ring-pink-500 outline-none"></textarea><button onclick="saveSetting(this, 'about', 'about-content')" class="mt-4 w-full md:w-auto bg-pink-500 text-white px-8 py-3 rounded-xl font-bold hover:bg-pink-600 transition">Save About Us</button></div></div>
+        <div id="tab-disclaimer" class="tab-content max-w-4xl"><h2 class="text-2xl font-bold mb-6 text-gray-800">Disclaimer</h2><div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100"><textarea id="disclaimer-content" class="w-full p-4 border rounded-xl bg-gray-50 h-[30rem] focus:ring-2 focus:ring-pink-500 outline-none"></textarea><button onclick="saveSetting(this, 'disclaimer', 'disclaimer-content')" class="mt-4 w-full md:w-auto bg-pink-500 text-white px-8 py-3 rounded-xl font-bold hover:bg-pink-600 transition">Save Disclaimer</button></div></div>
 
     </main>
 
@@ -312,7 +302,8 @@
                         <img src="${primaryImage}" class="w-14 h-14 md:w-16 md:h-16 object-cover rounded-xl border bg-gray-50">
                         <div>
                             <h3 class="font-bold text-gray-800 text-sm md:text-base line-clamp-1">${item.title}</h3>
-                            <p class="text-xs text-gray-500 mt-1">${item.price_range} | ★ ${item.average_rating || 5}</p>
+                            <p class="text-[10px] md:text-xs font-bold text-pink-500 uppercase tracking-wider mt-1">${item.category.replace(/-/g, ' ')}</p>
+                            <p class="text-xs md:text-sm text-gray-500 mt-1">${item.price_range} | ★ ${item.average_rating || 5}</p>
                         </div>
                     </div>
                     <div class="flex flex-col gap-2">
@@ -349,7 +340,6 @@
                 return; 
             }
 
-            // AUTO-₹ LOGIC: Check if user added a currency symbol, if not, add ₹
             let priceInput = document.getElementById('price').value.trim();
             if (!priceInput.includes('₹') && !priceInput.toLowerCase().includes('rs')) {
                 priceInput = '₹' + priceInput;
@@ -364,7 +354,7 @@
             const payload = { 
                 slug: generatedSlug, 
                 title: document.getElementById('title').value, 
-                price_range: priceInput, // Using the formatted price
+                price_range: priceInput, 
                 category: document.getElementById('category').value, 
                 description: document.getElementById('description').value, 
                 image_url: finalImageArray[0], 
@@ -586,25 +576,80 @@
                 btn.textContent = "Saved!"; setTimeout(() => { btn.textContent = "Save Live Layout"; btn.disabled = false; }, 2000); } catch (e) { btn.disabled = false; }
         }
 
+        // --- PRODUCT REVIEWS MODERATION ---
+        let rawProductReviews = [];
         async function loadCustomerReviews() {
             try {
                 const res = await fetch('/api/admin/reviews', { headers: { 'Authorization': `Bearer ${token}` } });
-                const revs = await res.json();
+                rawProductReviews = await res.json();
                 const list = document.getElementById('admin-customer-reviews-list');
-                if (revs.length === 0) { list.innerHTML = "<p class='text-gray-500'>No customer reviews found.</p>"; return; }
                 
-                list.innerHTML = revs.map(r => `
+                // Adjust container layout
+                document.getElementById('prod-rev-list-container').classList.replace('xl:col-span-3', 'xl:col-span-2');
+                
+                if (rawProductReviews.length === 0) { list.innerHTML = "<p class='text-gray-500'>No customer reviews found.</p>"; return; }
+                
+                list.innerHTML = rawProductReviews.map(r => `
                     <div class="p-4 border rounded-2xl bg-white shadow-sm flex justify-between items-center hover:shadow-md transition">
                         <div>
                             <p class="text-xs text-pink-500 font-bold uppercase mb-1">Product: ${r.decoration_slug}</p>
                             <p class="text-yellow-400">${'★'.repeat(r.rating)} <span class="text-gray-800 font-bold ml-2">${r.reviewer_name}</span></p>
                             <p class="text-gray-600 mt-1">"${r.review_text}"</p>
                         </div>
-                        <button onclick="deleteCustomerReview(${r.id})" class="bg-red-50 text-red-600 px-4 py-2 rounded-xl font-bold shadow-sm hover:bg-red-100 transition">Delete</button>
+                        <div class="flex flex-col gap-2">
+                            <button onclick="editCustomerReview(${r.id})" class="bg-indigo-50 text-indigo-600 px-4 py-2 rounded-xl font-bold shadow-sm hover:bg-indigo-100 transition text-sm">Edit</button>
+                            <button onclick="deleteCustomerReview(${r.id})" class="bg-red-50 text-red-600 px-4 py-2 rounded-xl font-bold shadow-sm hover:bg-red-100 transition text-sm">Delete</button>
+                        </div>
                     </div>
                 `).join('');
             } catch (e) {}
         }
+
+        function editCustomerReview(id) {
+            const review = rawProductReviews.find(r => r.id === id);
+            if (!review) return;
+
+            document.getElementById('prod-rev-id').value = review.id;
+            document.getElementById('prod-rev-name').value = review.reviewer_name;
+            document.getElementById('prod-rev-rating').value = review.rating;
+            document.getElementById('prod-rev-text').value = review.review_text;
+
+            document.getElementById('prod-rev-edit-container').classList.remove('hidden');
+            window.scrollTo({top: 0, behavior:'smooth'});
+        }
+
+        function closeProdRevEdit() {
+            document.getElementById('edit-prod-rev-form').reset();
+            document.getElementById('prod-rev-edit-container').classList.add('hidden');
+        }
+
+        document.getElementById('edit-prod-rev-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('prod-rev-submit-btn');
+            btn.textContent = "Updating..."; btn.disabled = true;
+
+            const id = document.getElementById('prod-rev-id').value;
+            const payload = {
+                name: document.getElementById('prod-rev-name').value,
+                rating: parseInt(document.getElementById('prod-rev-rating').value),
+                review: document.getElementById('prod-rev-text').value
+            };
+
+            try {
+                const res = await fetch(`/api/admin/reviews/${id}`, { 
+                    method: 'PUT', 
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                    body: JSON.stringify(payload)
+                });
+                
+                if (res.ok) {
+                    closeProdRevEdit();
+                    loadCustomerReviews();
+                    loadAdminProducts(); 
+                } else { alert("Failed to update review."); }
+            } catch(e) { alert("Server error."); }
+            btn.textContent = "Update Review"; btn.disabled = false;
+        });
 
         async function deleteCustomerReview(id) {
             if(!confirm("Permanently delete this customer review?")) return;
@@ -615,6 +660,7 @@
             } catch (e) {}
         }
 
+        // Initialization
         loadAdminProducts();
         loadSettings();
     </script>

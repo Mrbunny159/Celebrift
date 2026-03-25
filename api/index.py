@@ -141,8 +141,9 @@ def get_all_reviews():
     conn.close()
     return jsonify(reviews)
 
-@app.route('/api/admin/reviews/<int:review_id>', methods=['DELETE'])
-def delete_review(review_id):
+# NEW: COMBINED UPDATE AND DELETE ROUTE FOR PRODUCT REVIEWS
+@app.route('/api/admin/reviews/<int:review_id>', methods=['DELETE', 'PUT'])
+def modify_review(review_id):
     if request.headers.get('Authorization') != f'Bearer {SECRET_TOKEN}':
         return jsonify({'error': 'Unauthorized'}), 401
     conn = get_db_connection()
@@ -151,11 +152,23 @@ def delete_review(review_id):
         # Get slug to update the average rating afterwards
         cur.execute('SELECT decoration_slug FROM reviews WHERE id = %s', (review_id,))
         res = cur.fetchone()
-        if res:
-            slug = res[0]
+        if not res:
+            return jsonify({'error': 'Not found'}), 404
+        slug = res[0]
+
+        if request.method == 'DELETE':
             cur.execute('DELETE FROM reviews WHERE id = %s', (review_id,))
-            cur.execute('UPDATE decorations SET average_rating = (SELECT ROUND(AVG(rating), 2) FROM reviews WHERE decoration_slug = %s) WHERE slug = %s', (slug, slug))
-            conn.commit()
+        elif request.method == 'PUT':
+            data = request.json
+            cur.execute('''
+                UPDATE reviews 
+                SET reviewer_name = %s, rating = %s, review_text = %s 
+                WHERE id = %s
+            ''', (data['name'], data['rating'], data['review'], review_id))
+
+        # Recalculate average
+        cur.execute('UPDATE decorations SET average_rating = (SELECT ROUND(AVG(rating), 2) FROM reviews WHERE decoration_slug = %s) WHERE slug = %s', (slug, slug))
+        conn.commit()
         return jsonify({'success': True})
     except Exception as e:
         conn.rollback()
