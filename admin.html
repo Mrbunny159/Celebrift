@@ -81,7 +81,6 @@
                         <div class="border rounded-xl p-4 bg-gray-50 mt-4">
                             <label class="block text-xs font-bold text-gray-500 mb-2">Upload Images (Select Multiple)</label>
                             <input type="file" id="image-upload" accept="image/*" multiple class="w-full text-sm file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-pink-50 file:text-pink-700 hover:file:bg-pink-100">
-                            <p class="text-xs text-gray-400 mt-2">Uploading new images will overwrite existing ones.</p>
                             <input type="hidden" id="existing-images-array"> 
                         </div>
 
@@ -102,7 +101,7 @@
                 <div class="xl:col-span-1 space-y-6">
                     <div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100">
                         <h3 class="text-lg font-bold mb-4 border-b pb-2 text-gray-800">1. Section Text</h3>
-                        <input type="text" id="hero-title-input" placeholder="Main Title (e.g. Top Categories)" class="w-full p-3 border rounded-xl bg-gray-50 mb-3 font-bold text-indigo-900 outline-none focus:ring-2 focus:ring-pink-500">
+                        <input type="text" id="hero-title-input" placeholder="Main Title" class="w-full p-3 border rounded-xl bg-gray-50 mb-3 font-bold text-indigo-900 outline-none focus:ring-2 focus:ring-pink-500">
                         <input type="text" id="hero-subtitle-input" placeholder="Subtitle" class="w-full p-3 border rounded-xl bg-gray-50 text-gray-500 outline-none focus:ring-2 focus:ring-pink-500">
                         <button onclick="saveHeroText(this)" class="w-full bg-gray-900 hover:bg-gray-800 text-white py-3 rounded-xl font-bold mt-4 transition">Save Text</button>
                     </div>
@@ -113,7 +112,7 @@
                             <input type="hidden" id="hero-edit-id">
                             <input type="hidden" id="hero-existing-image">
 
-                            <input type="text" id="hero-item-title" placeholder="Icon Label (e.g. Birthday)" class="w-full p-3 border rounded-xl bg-gray-50 outline-none focus:ring-2 focus:ring-pink-500" required>
+                            <input type="text" id="hero-item-title" placeholder="Icon Label" class="w-full p-3 border rounded-xl bg-gray-50 outline-none focus:ring-2 focus:ring-pink-500" required>
                             
                             <select id="hero-item-target" class="w-full p-3 border rounded-xl bg-gray-50 outline-none focus:ring-2 focus:ring-pink-500" required>
                                 <option value="" disabled selected>Scrolls to which category?</option>
@@ -161,6 +160,8 @@
                     <h3 id="home-rev-form-title" class="text-lg font-bold mb-4 border-b pb-2 text-gray-800">Add Home Review</h3>
                     <form id="add-home-rev-form" class="space-y-4">
                         <input type="hidden" id="home-rev-edit-id">
+                        <input type="hidden" id="home-rev-existing-media">
+
                         <input type="text" id="home-rev-name" placeholder="Customer Name" class="w-full p-3 border rounded-xl bg-gray-50 outline-none focus:ring-2 focus:ring-pink-500" required>
                         <select id="home-rev-rating" class="w-full p-3 border rounded-xl bg-gray-50 outline-none focus:ring-2 focus:ring-pink-500">
                             <option value="5">5 Stars</option>
@@ -168,6 +169,13 @@
                             <option value="3">3 Stars</option>
                         </select>
                         <textarea id="home-rev-text" placeholder="Review content..." rows="4" class="w-full p-3 border rounded-xl bg-gray-50 outline-none focus:ring-2 focus:ring-pink-500" required></textarea>
+                        
+                        <div class="border rounded-xl p-4 bg-gray-50">
+                            <label class="block text-xs font-bold text-gray-500 mb-2">Upload Photo/Video (Max 4MB)</label>
+                            <input type="file" id="home-rev-media" accept="image/*,video/mp4,video/webm" class="w-full text-sm file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-pink-50 file:text-pink-700 hover:file:bg-pink-100">
+                            <p class="text-xs text-gray-400 mt-2">Uploading media makes the review stand out!</p>
+                        </div>
+
                         <button type="submit" id="home-rev-submit-btn" class="w-full bg-pink-500 text-white py-3 rounded-xl font-bold hover:bg-pink-600 transition">Add to Home Page</button>
                         <button type="button" id="home-rev-cancel-btn" onclick="resetHomeRevForm()" class="hidden w-full bg-gray-200 py-3 rounded-xl font-bold mt-2">Cancel</button>
                     </form>
@@ -203,9 +211,7 @@
                         <button type="button" onclick="closeProdRevEdit()" class="w-full bg-gray-200 py-3 rounded-xl font-bold mt-2 hover:bg-gray-300">Cancel</button>
                     </form>
                 </div>
-
                 <div id="prod-rev-list-container" class="xl:col-span-3 bg-white p-6 rounded-3xl shadow-sm border border-gray-100 transition-all">
-                    <p class="text-sm text-gray-500 mb-6">These are reviews submitted by customers directly on specific product detail pages.</p>
                     <div id="admin-customer-reviews-list" class="space-y-4"></div>
                 </div>
             </div>
@@ -292,6 +298,7 @@
             });
         }
 
+        // --- LISTINGS LOGIC ---
         async function loadAdminProducts() {
             const res = await fetch('/api/decorations'); const data = await res.json();
             document.getElementById('admin-product-list').innerHTML = data.map(item => {
@@ -369,14 +376,9 @@
                     alert("Saved successfully!"); 
                     resetForm(); 
                     loadAdminProducts(); 
-                } else { 
-                    alert("Failed to save."); 
-                }
-            } catch (err) { 
-                alert("Server error."); 
-            }
-            btn.disabled = false; 
-            btn.textContent = "Save Listing";
+                } else { alert("Failed to save."); }
+            } catch (err) { alert("Server error."); }
+            btn.disabled = false; btn.textContent = "Save Listing";
         });
 
         async function editProduct(slug) {
@@ -408,6 +410,7 @@
             const btn = document.getElementById('submit-btn'); btn.textContent = "Save Listing"; btn.classList.replace('bg-blue-600', 'bg-pink-500'); document.getElementById('cancel-edit-btn').classList.add('hidden');
         }
 
+        // --- GLOBAL SETTINGS / TEXT EDITORS ---
         async function saveSetting(btnElement, key, textareaId) {
             const content = document.getElementById(textareaId).value;
             const originalText = btnElement.textContent;
@@ -439,6 +442,7 @@
             } catch (e) { }
         }
 
+        // --- THEME LOGIC ---
         function selectTheme(themeName) {
             document.querySelectorAll('.theme-card').forEach(el => el.classList.remove('active'));
             const selectedCard = document.getElementById(`theme-${themeName}`);
@@ -459,6 +463,7 @@
             } catch (e) { btnElement.disabled = false;}
         }
 
+        // --- HERO LOGIC ---
         let heroItems = [];
         async function saveHeroText(btnElement) {
             const title = document.getElementById('hero-title-input').value; const subtitle = document.getElementById('hero-subtitle-input').value;
@@ -534,42 +539,119 @@
 
         function deleteHeroItem(index) { heroItems.splice(index, 1); renderHeroAdminList(); }
         async function saveHeroLayout(btnElement) {
-            btnElement.textContent = "Saving Layout..."; btnElement.disabled = true;
+            btnElement.textContent = "Saving..."; btnElement.disabled = true;
             try {
                 const res = await fetch(`/api/settings/hero_items`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }, body: JSON.stringify({ content: JSON.stringify(heroItems) }) });
                 if (res.ok) {
-                    btnElement.textContent = "Layout Saved!"; btnElement.classList.replace('bg-green-500', 'bg-blue-600');
+                    btnElement.textContent = "Saved!"; btnElement.classList.replace('bg-green-500', 'bg-blue-600');
                     setTimeout(() => { btnElement.textContent = "Save Live Layout"; btnElement.classList.replace('bg-blue-600', 'bg-green-500'); btnElement.disabled = false; }, 2000);
                 }
             } catch (e) { btnElement.disabled = false;}
         }
 
+        // --- HOME REVIEWS (WITH MEDIA UPLOAD) LOGIC ---
         let homeRevs = [];
-        document.getElementById('add-home-rev-form').addEventListener('submit', (e) => {
-            e.preventDefault(); const editId = document.getElementById('home-rev-edit-id').value;
-            const rev = { id: editId || Date.now().toString(), name: document.getElementById('home-rev-name').value, rating: parseInt(document.getElementById('home-rev-rating').value), text: document.getElementById('home-rev-text').value };
-            if (editId) { const index = homeRevs.findIndex(r => r.id === editId); if (index !== -1) homeRevs[index] = rev; } else { homeRevs.push(rev); }
-            renderHomeRevsList(); resetHomeRevForm();
+        document.getElementById('add-home-rev-form').addEventListener('submit', async (e) => {
+            e.preventDefault(); 
+            const btn = document.getElementById('home-rev-submit-btn');
+            btn.textContent = "Processing Media..."; btn.disabled = true;
+
+            const editId = document.getElementById('home-rev-edit-id').value;
+            const fileInput = document.getElementById('home-rev-media');
+            let mediaData = document.getElementById('home-rev-existing-media').value;
+
+            if (fileInput.files.length > 0) {
+                const file = fileInput.files[0];
+                if (file.type.startsWith('video/')) {
+                    if (file.size > 4000000) { 
+                        alert("Video is too large! Please keep it under 4MB to prevent server issues.");
+                        btn.textContent = editId ? "Update" : "Add to Home Page"; btn.disabled = false;
+                        return;
+                    }
+                    mediaData = await new Promise((resolve, reject) => {
+                        const reader = new FileReader(); reader.readAsDataURL(file);
+                        reader.onload = () => resolve(reader.result); reader.onerror = reject;
+                    });
+                } else {
+                    mediaData = await compressImage(file);
+                }
+            }
+
+            const rev = { 
+                id: editId || Date.now().toString(), 
+                name: document.getElementById('home-rev-name').value, 
+                rating: parseInt(document.getElementById('home-rev-rating').value), 
+                text: document.getElementById('home-rev-text').value,
+                media: mediaData
+            };
+
+            if (editId) { 
+                const index = homeRevs.findIndex(r => r.id === editId); 
+                if (index !== -1) homeRevs[index] = rev; 
+            } else { 
+                homeRevs.push(rev); 
+            }
+            
+            renderHomeRevsList(); 
+            resetHomeRevForm();
+            btn.disabled = false;
         });
 
         function renderHomeRevsList() {
             const list = document.getElementById('home-revs-list'); document.getElementById('home-rev-count').textContent = `(${homeRevs.length} visible)`;
-            list.innerHTML = homeRevs.map((r, i) => `
+            list.innerHTML = homeRevs.map((r, i) => {
+                let mediaThumb = '';
+                if(r.media) {
+                    if(r.media.startsWith('data:video')) mediaThumb = `<video src="${r.media}" class="w-12 h-12 rounded-lg object-cover ml-4 border border-gray-200"></video>`;
+                    else mediaThumb = `<img src="${r.media}" class="w-12 h-12 rounded-lg object-cover ml-4 border border-gray-200">`;
+                }
+
+                return `
                 <div class="flex items-center justify-between p-4 border rounded-2xl bg-white shadow-sm">
-                    <div><p class="text-yellow-400 text-lg">${'★'.repeat(r.rating)}</p><p class="font-bold text-gray-800">${r.name}</p><p class="text-sm text-gray-600 line-clamp-1">${r.text}</p></div>
-                    <div class="flex gap-2"><button onclick="editHomeRev('${r.id}')" class="bg-blue-50 text-blue-600 px-4 py-2 rounded-lg font-bold text-sm">Edit</button><button onclick="deleteHomeRev(${i})" class="bg-red-50 text-red-600 px-4 py-2 rounded-lg font-bold text-sm">Del</button></div>
+                    <div class="flex items-center">
+                        <div>
+                            <p class="text-yellow-400 text-lg">${'★'.repeat(r.rating)}</p>
+                            <p class="font-bold text-gray-800">${r.name}</p>
+                            <p class="text-sm text-gray-600 line-clamp-1">"${r.text}"</p>
+                        </div>
+                        ${mediaThumb}
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="editHomeRev('${r.id}')" class="bg-blue-50 text-blue-600 px-4 py-2 rounded-lg font-bold text-sm">Edit</button>
+                        <button onclick="deleteHomeRev(${i})" class="bg-red-50 text-red-600 px-4 py-2 rounded-lg font-bold text-sm">Del</button>
+                    </div>
                 </div>
-            `).join('');
+            `}).join('');
         }
 
         function editHomeRev(id) {
             const r = homeRevs.find(x => x.id === id); if(!r) return;
-            document.getElementById('home-rev-edit-id').value = r.id; document.getElementById('home-rev-name').value = r.name; document.getElementById('home-rev-rating').value = r.rating; document.getElementById('home-rev-text').value = r.text;
-            document.getElementById('home-rev-form-title').innerText = "Edit Review"; document.getElementById('home-rev-submit-btn').textContent = "Update"; document.getElementById('home-rev-cancel-btn').classList.remove('hidden');
+            document.getElementById('home-rev-edit-id').value = r.id; 
+            document.getElementById('home-rev-name').value = r.name; 
+            document.getElementById('home-rev-rating').value = r.rating; 
+            document.getElementById('home-rev-text').value = r.text;
+            document.getElementById('home-rev-existing-media').value = r.media || "";
+            
+            document.getElementById('home-rev-form-title').innerText = "Edit Review"; 
+            const btn = document.getElementById('home-rev-submit-btn');
+            btn.textContent = "Update Review"; 
+            btn.classList.replace('bg-pink-500', 'bg-indigo-600');
+            document.getElementById('home-rev-cancel-btn').classList.remove('hidden');
         }
 
         function deleteHomeRev(index) { homeRevs.splice(index, 1); renderHomeRevsList(); }
-        function resetHomeRevForm() { document.getElementById('add-home-rev-form').reset(); document.getElementById('home-rev-edit-id').value = ""; document.getElementById('home-rev-form-title').innerText = "Add Home Review"; document.getElementById('home-rev-submit-btn').textContent = "Add to Home Page"; document.getElementById('home-rev-cancel-btn').classList.add('hidden'); }
+        
+        function resetHomeRevForm() { 
+            document.getElementById('add-home-rev-form').reset(); 
+            document.getElementById('home-rev-edit-id').value = ""; 
+            document.getElementById('home-rev-existing-media').value = "";
+            document.getElementById('home-rev-form-title').innerText = "Add Home Review"; 
+            const btn = document.getElementById('home-rev-submit-btn');
+            btn.textContent = "Add to Home Page"; 
+            btn.classList.replace('bg-indigo-600', 'bg-pink-500');
+            document.getElementById('home-rev-cancel-btn').classList.add('hidden'); 
+        }
+
         async function saveHomeReviewsLayout(btn) {
             btn.textContent = "Saving..."; btn.disabled = true;
             try { await fetch(`/api/settings/home_reviews`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }, body: JSON.stringify({ content: JSON.stringify(homeRevs) }) });
@@ -584,7 +666,6 @@
                 rawProductReviews = await res.json();
                 const list = document.getElementById('admin-customer-reviews-list');
                 
-                // Adjust container layout
                 document.getElementById('prod-rev-list-container').classList.replace('xl:col-span-3', 'xl:col-span-2');
                 
                 if (rawProductReviews.length === 0) { list.innerHTML = "<p class='text-gray-500'>No customer reviews found.</p>"; return; }

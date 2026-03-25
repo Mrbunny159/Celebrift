@@ -82,20 +82,36 @@ async function loadHome() {
                 </section>`;
         }).join('');
 
+        // HOME REVIEWS RENDERING WITH MEDIA SUPPORT
         const revRes = await fetch('/api/settings');
         const settings = await revRes.json();
         if (settings['home_reviews']) {
             const revs = JSON.parse(settings['home_reviews']);
             if (revs.length > 0) {
                 document.getElementById('home-reviews-section').classList.remove('hidden');
-                document.getElementById('home-reviews-container').innerHTML = revs.map(r => `
-                    <div class="flex-none w-72 md:w-80 bg-white p-6 rounded-3xl shadow-sm border border-pink-100 snap-center relative">
+                document.getElementById('home-reviews-container').innerHTML = revs.map(r => {
+                    
+                    let mediaHTML = '';
+                    if (r.media) {
+                        if (r.media.startsWith('data:video')) {
+                            mediaHTML = `<video src="${r.media}" autoplay loop muted playsinline class="w-full h-48 object-cover rounded-2xl mb-4 shadow-sm border border-gray-100"></video>`;
+                        } else {
+                            mediaHTML = `<img src="${r.media}" class="w-full h-48 object-cover rounded-2xl mb-4 shadow-sm border border-gray-100">`;
+                        }
+                    }
+
+                    return `
+                    <div class="flex-none w-80 md:w-96 bg-white p-6 md:p-8 rounded-3xl shadow-sm border border-pink-100 snap-center relative flex flex-col">
                         <span class="absolute top-4 right-6 text-4xl text-pink-100">"</span>
-                        <div class="flex text-yellow-400 mb-3 text-lg">${'★'.repeat(r.rating)}</div>
-                        <p class="text-gray-600 italic mb-4 line-clamp-4 relative z-10">"${r.text}"</p>
-                        <p class="font-bold text-gray-900">- ${r.name}</p>
+                        <div class="flex text-yellow-400 mb-4 text-xl">${'★'.repeat(r.rating)}</div>
+                        
+                        ${mediaHTML}
+                        
+                        <p class="text-gray-600 italic mb-6 relative z-10 flex-grow text-lg">"${r.text}"</p>
+                        <p class="font-black text-indigo-900 border-t pt-4">- ${r.name}</p>
                     </div>
-                `).join('');
+                    `;
+                }).join('');
             }
         }
     } catch (e) { document.getElementById('rows-container').innerHTML = "Error loading data."; }
