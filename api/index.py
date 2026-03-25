@@ -24,12 +24,6 @@ def manage_decorations():
         decorations = cur.fetchall()
         cur.close()
         conn.close()
-        
-        for d in decorations:
-            try:
-                d['images'] = json.loads(d['image_url']) if d['image_url'].startswith('[') else [d['image_url']]
-            except:
-                d['images'] = [d['image_url']]
         return jsonify(decorations)
 
     if request.method == 'POST':
@@ -38,14 +32,21 @@ def manage_decorations():
         data = request.json
         cur = conn.cursor()
         try:
+            # Check if updating existing listing (Edit feature)
             cur.execute("SELECT slug FROM decorations WHERE slug = %s", (data['slug'],))
             if cur.fetchone():
-                cur.execute('''UPDATE decorations SET title=%s, category=%s, image_url=%s, description=%s, price_range=%s WHERE slug=%s''',
-                            (data['title'], data['category'], json.dumps(data['images']), data['description'], data['price_range'], data['slug']))
+                cur.execute('''
+                    UPDATE decorations SET title=%s, category=%s, image_url=%s, description=%s, 
+                    price_range=%s, package_includes=%s, faqs=%s WHERE slug=%s
+                ''', (data['title'], data['category'], data['image_url'], data['description'], 
+                      data['price_range'], json.dumps(data.get('package_includes', [])), 
+                      json.dumps(data.get('faqs', [])), data['slug']))
             else:
-                cur.execute('''INSERT INTO decorations (slug, title, category, image_url, description, price_range, package_includes, faqs)
-                               VALUES (%s, %s, %s, %s, %s, %s, %s, %s)''', 
-                            (data['slug'], data['title'], data['category'], json.dumps(data['images']), data['description'], data['price_range'], json.dumps(data.get('package_includes', [])), json.dumps(data.get('faqs', []))))
+                cur.execute('''
+                    INSERT INTO decorations (slug, title, category, image_url, description, price_range, package_includes, faqs)
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+                ''', (data['slug'], data['title'], data['category'], data['image_url'], data['description'], 
+                      data['price_range'], json.dumps(data.get('package_includes', [])), json.dumps(data.get('faqs', []))))
             conn.commit()
             return jsonify({'success': True})
         finally:
@@ -60,10 +61,6 @@ def single_decoration(slug):
         cur.execute('SELECT * FROM decorations WHERE slug = %s;', (slug,))
         decoration = cur.fetchone()
         if decoration:
-            try:
-                decoration['images'] = json.loads(decoration['image_url']) if decoration['image_url'].startswith('[') else [decoration['image_url']]
-            except:
-                decoration['images'] = [decoration['image_url']]
             cur.execute('UPDATE decorations SET views = views + 1 WHERE slug = %s;', (slug,))
             conn.commit()
             cur.execute('SELECT * FROM reviews WHERE decoration_slug = %s ORDER BY created_at DESC;', (slug,))
@@ -94,41 +91,10 @@ def add_review(slug):
     conn.close()
     return jsonify({'success': True})
 
-@app.route('/api/home-reviews', methods=['GET'])
-def home_reviews():
-    conn = get_db_connection()
-    cur = conn.cursor(cursor_factory=RealDictCursor)
-    cur.execute('SELECT * FROM reviews WHERE rating >= 4 ORDER BY created_at DESC LIMIT 5;')
-    revs = cur.fetchall()
-    cur.close()
-    conn.close()
-    return jsonify(revs)
-
-@app.route('/api/admin/reviews', methods=['GET', 'DELETE'])
-def admin_reviews():
-    if request.headers.get('Authorization') != f'Bearer {SECRET_TOKEN}':
-        return jsonify({'error': 'Unauthorized'}), 401
-    conn = get_db_connection()
-    cur = conn.cursor(cursor_factory=RealDictCursor)
-    
-    if request.method == 'GET':
-        cur.execute('SELECT * FROM reviews ORDER BY created_at DESC;')
-        revs = cur.fetchall()
-        cur.close()
-        conn.close()
-        return jsonify(revs)
-        
-    if request.method == 'DELETE':
-        data = request.json
-        cur.execute('DELETE FROM reviews WHERE id = %s', (data['id'],))
-        conn.commit()
-        cur.close()
-        conn.close()
-        return jsonify({'success': True})
-
 @app.route('/api/admin/login', methods=['POST'])
 def admin_login():
-    if request.json and request.json.get('password') == ADMIN_PASSWORD:
+    data = request.json
+    if data and data.get('password') == ADMIN_PASSWORD:
         return jsonify({'success': True, 'token': SECRET_TOKEN})
     return jsonify({'success': False}), 401
 
