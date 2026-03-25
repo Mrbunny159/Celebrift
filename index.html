@@ -22,7 +22,7 @@
             animation: marquee 30s linear infinite;
         }
         .animate-marquee:hover {
-            animation-play-state: paused; /* Pauses when customer hovers over an item */
+            animation-play-state: paused;
         }
     </style>
 </head>
@@ -36,7 +36,19 @@
             </a>
             <div class="hidden md:flex gap-6 text-sm font-bold text-gray-600 items-center">
                 <a href="index.html" class="hover:text-pink-500 transition-colors">Home</a>
-                <a href="index.html#rows-container" class="hover:text-pink-500 transition-colors">All Decor</a>
+                <div class="relative group">
+                    <a href="index.html#rows-container" class="hover:text-pink-500 cursor-pointer flex items-center gap-1 py-2">
+                        Categories <span class="text-xs">▼</span>
+                    </a>
+                    <div class="absolute left-0 mt-0 w-64 bg-white border border-gray-100 rounded-2xl shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all flex flex-col overflow-hidden z-50">
+                        <a href="index.html?category=birthday-decor" class="px-5 py-3 hover:bg-pink-50 hover:text-pink-500 border-b">Birthday Decor</a>
+                        <a href="index.html?category=baby-shower-decor" class="px-5 py-3 hover:bg-pink-50 hover:text-pink-500 border-b">Baby Shower Decor</a>
+                        <a href="index.html?category=store-decor" class="px-5 py-3 hover:bg-pink-50 hover:text-pink-500 border-b">Store Decor</a>
+                        <a href="index.html?category=naming-ceremony" class="px-5 py-3 hover:bg-pink-50 hover:text-pink-500 border-b">Naming Ceremony</a>
+                        <a href="index.html?category=anniversary-decor" class="px-5 py-3 hover:bg-pink-50 hover:text-pink-500 border-b">Anniversary Decor</a>
+                        <a href="index.html?category=romantic-decor" class="px-5 py-3 hover:bg-pink-50 hover:text-pink-500">Romantic Decor</a>
+                    </div>
+                </div>
                 <a href="admin-login.html" class="hover:text-pink-500 transition-colors">Admin</a>
             </div>
         </div>
@@ -47,25 +59,24 @@
             <h2 id="hero-main-title" class="text-3xl md:text-4xl font-bold text-indigo-900 mb-2">Top Decoration Categories</h2>
             <p id="hero-sub-title" class="text-gray-500 font-medium">Trusted Decorators for All Events</p>
         </div>
-        
         <div class="w-full relative">
             <div id="hero-categories-track" class="animate-marquee pb-4">
                 </div>
         </div>
     </section>
 
-    <div class="flex-grow max-w-7xl mx-auto w-full px-4 py-8 relative z-10">
-        <div id="rows-container" class="space-y-12"></div>
+    <div class="flex-grow max-w-7xl mx-auto w-full px-4 py-12 relative z-10">
+        <div id="rows-container" class="space-y-16"></div>
     </div>
 
-    <section class="bg-pink-50/50 py-16 border-t border-pink-100 hidden" id="home-reviews-section">
+    <section class="bg-pink-50/50 py-16 border-t border-pink-100 hidden relative z-10" id="home-reviews-section">
         <div class="max-w-7xl mx-auto px-4">
             <h2 class="text-3xl font-black text-indigo-900 text-center mb-10">What Our Customers Say</h2>
             <div id="home-reviews-container" class="flex overflow-x-auto gap-6 pb-8 hide-scroll-bar snap-x px-2"></div>
         </div>
     </section>
 
-    <footer class="bg-gradient-to-r from-pink-50 via-purple-50 to-indigo-50 pt-16 pb-8 px-4 mt-auto border-t border-pink-200">
+    <footer class="bg-gradient-to-r from-pink-50 via-purple-50 to-indigo-50 pt-16 pb-8 px-4 mt-auto border-t border-pink-200 relative z-10">
         <div class="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 text-sm text-gray-700 mb-12">
             <div class="space-y-3">
                 <h4 class="font-bold text-indigo-900 text-lg mb-4">Important Links</h4>
@@ -99,7 +110,8 @@
     </footer>
 
     <div class="fixed bottom-6 right-6 z-50 flex flex-col gap-3">
-        <a href="https://wa.me/919594328008" target="_blank" class="w-14 h-14 bg-[#25D366] text-white rounded-2xl flex items-center justify-center shadow-2xl hover:scale-110 text-2xl transition-transform">💬</a>
+        <a href="tel:+919594328008" class="w-14 h-14 bg-[#5c4ac7] hover:bg-[#4a3b9e] text-white rounded-2xl flex items-center justify-center shadow-2xl transition-transform hover:scale-110 text-2xl">📞</a>
+        <a href="https://wa.me/919594328008" target="_blank" class="w-14 h-14 bg-[#25D366] hover:bg-[#1ebe57] text-white rounded-2xl flex items-center justify-center shadow-2xl transition-transform hover:scale-110 text-2xl">💬</a>
     </div>
 
     <script src="app.js"></script>

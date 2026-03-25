@@ -6,9 +6,8 @@ if (starSpans.length > 0) {
     starSpans.forEach(star => {
         star.addEventListener('click', () => {
             const val = parseInt(star.dataset.val);
-            ratingInput.value = val; // Store value for the backend
+            ratingInput.value = val; 
             
-            // Fill stars up to the clicked value
             starSpans.forEach((s, idx) => {
                 if (idx < val) {
                     s.classList.remove('text-gray-300');
@@ -22,9 +21,25 @@ if (starSpans.length > 0) {
     });
 }
 
-// --- PRODUCT DETAILS FETCHING LOGIC ---
+// --- PRODUCT DETAILS LOGIC ---
 const urlParams = new URLSearchParams(window.location.search);
 const decorId = urlParams.get('id');
+let imagesArray = [];
+
+// Helper to switch main image
+window.updateActiveThumb = function(activeIndex) {
+    imagesArray.forEach((_, idx) => {
+        const el = document.getElementById(`thumb-${idx}`);
+        if (el) {
+            el.classList.remove('border-pink-500');
+            el.classList.add('border-transparent');
+            if (idx === activeIndex) {
+                el.classList.remove('border-transparent');
+                el.classList.add('border-pink-500');
+            }
+        }
+    });
+}
 
 async function fetchProductDetails() {
     try {
@@ -34,50 +49,46 @@ async function fetchProductDetails() {
         
         document.getElementById('loading-state').classList.add('hidden');
         document.getElementById('detail-container').classList.remove('hidden');
+        document.getElementById('detail-footer').classList.remove('hidden');
         
-        // --- MULTIPLE IMAGES LOGIC ---
-        let imagesArray = [];
+        // Handle images array safely
         if (data.images) {
-            // Parse JSON array from database if it exists
             imagesArray = typeof data.images === 'string' ? JSON.parse(data.images) : data.images;
         } else if (data.image_url) {
-            // Fallback for older single-image listings
             imagesArray = [data.image_url];
         }
 
-        // Set Main Image
         const mainImg = document.getElementById('decor-image');
         if (imagesArray.length > 0) mainImg.src = imagesArray[0];
 
-        // Set Thumbnails (Only show if there is more than 1 image)
+        // AMAZON STYLE SCROLLING THUMBNAILS
         const thumbContainer = document.getElementById('decor-thumbnails');
         if (imagesArray.length > 1) {
-            thumbContainer.innerHTML = imagesArray.map(img => `
-                <img src="${img}" onclick="document.getElementById('decor-image').src='${img}'" 
-                     class="w-20 h-20 rounded-xl object-cover cursor-pointer border-2 border-transparent hover:border-pink-500 transition-all flex-none shadow-sm">
+            thumbContainer.innerHTML = imagesArray.map((img, index) => `
+                <img src="${img}" 
+                     onclick="document.getElementById('decor-image').src='${img}'; updateActiveThumb(${index})" 
+                     id="thumb-${index}"
+                     class="w-20 h-20 md:w-24 md:h-24 rounded-xl object-cover cursor-pointer border-2 ${index === 0 ? 'border-pink-500' : 'border-transparent'} hover:border-pink-400 transition-all flex-none shadow-sm snap-center">
             `).join('');
         }
 
-        // Populate Text Fields
         document.getElementById('decor-title').textContent = data.title;
         document.getElementById('decor-price').textContent = data.price_range;
         document.getElementById('decor-desc').textContent = data.description;
         
-        // Populate Rating Text
         const rating = Math.round(data.average_rating || 5);
-        document.getElementById('decor-rating-stars').innerHTML = '★'.repeat(rating) + '☆'.repeat(5-rating) + `<span class="text-sm text-gray-500 ml-2">(${data.average_rating || 5})</span>`;
+        document.getElementById('decor-rating-stars').innerHTML = '★'.repeat(rating) + '☆'.repeat(5-rating) + `<span class="text-sm text-gray-500 ml-2 font-bold text-indigo-900">(${data.average_rating || 5})</span>`;
 
-        // Configure WhatsApp Booking Button
         const whatsappBtn = document.getElementById('whatsapp-btn');
         const msg = encodeURIComponent(`Hi Celebrift! I want to book the ${data.title} setup.`);
         whatsappBtn.href = `https://wa.me/919594328008?text=${msg}`;
 
-        // --- SAFELY PARSE JSON ARRAYS FOR ACCORDIONS ---
+        // Safely parse JSON strings
         const pkgList = document.getElementById('desktop-package-list');
         let includes = [];
         try { includes = typeof data.package_includes === 'string' ? JSON.parse(data.package_includes) : data.package_includes; } catch(e){}
         if (includes && includes.length > 0) {
-            pkgList.innerHTML = `<ul class="list-disc pl-5 space-y-1 text-gray-600">${includes.map(item => `<li>${item}</li>`).join('')}</ul>`;
+            pkgList.innerHTML = `<ul class="space-y-2">${includes.map(item => `<li class="flex items-center gap-2"><span class="text-pink-500 font-bold">✓</span> ${item}</li>`).join('')}</ul>`;
         } else {
             pkgList.innerHTML = "<p>Standard package inclusions apply. Contact us for details.</p>";
         }
@@ -86,78 +97,63 @@ async function fetchProductDetails() {
         let faqs = [];
         try { faqs = typeof data.faqs === 'string' ? JSON.parse(data.faqs) : data.faqs; } catch(e){}
         if (faqs && faqs.length > 0) {
-            faqList.innerHTML = faqs.map(f => `<div class="mb-3"><p class="font-bold text-gray-800">Q: ${f.q}</p><p class="text-gray-600">A: ${f.a}</p></div>`).join('');
+            faqList.innerHTML = faqs.map(f => `<div class="mb-4 bg-gray-50 p-4 rounded-xl border border-gray-100"><p class="font-bold text-indigo-900 mb-1">Q: ${f.q}</p><p class="text-gray-600">A: ${f.a}</p></div>`).join('');
         } else {
             faqList.innerHTML = "<p>No specific FAQs for this setup.</p>";
         }
 
-        // Render Page Sections
         renderReviews(data.reviews || []);
         await loadRelated();
 
     } catch (e) { 
-        console.error("Data fetch failed:", e);
         document.getElementById('loading-state').textContent = "Failed to load product details.";
     }
 }
 
-// --- RELATED PRODUCTS ROW ---
+// --- RELATED PRODUCTS ---
 async function loadRelated() {
     try {
         const res = await fetch('/api/decorations');
         const data = await res.json();
         
-        // 2 Rows of 4 logic, filtering out the current item
         const related = data.filter(i => i.slug !== decorId).slice(0, 8); 
         const container = document.getElementById('related-products-container');
-        
-        if (related.length === 0) {
-            container.innerHTML = ""; 
-            return;
-        }
+        if (related.length === 0) return;
 
         container.innerHTML = `
-            <h3 class="text-3xl font-black mb-8 text-center text-gray-900 border-t border-gray-200 pt-16">More Designs for You</h3>
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 px-4">
+            <h3 class="text-3xl font-black mb-8 px-2 text-indigo-900">More Designs for You</h3>
+            <div class="flex overflow-x-auto gap-6 pb-10 hide-scroll-bar px-2 snap-x">
                 ${related.map(item => {
-                    // Get primary image safely whether it's the old single image or new array format
                     let primaryImg = item.image_url;
-                    if (item.images) {
-                        try { primaryImg = JSON.parse(item.images)[0] || item.image_url; } catch(e) {}
-                    }
+                    if (item.images) { try { primaryImg = JSON.parse(item.images)[0] || item.image_url; } catch(e) {} }
                     
                     return `
-                    <a href="details.html?id=${item.slug}" class="bg-white rounded-2xl shadow-sm border group overflow-hidden hover:shadow-lg transition-all">
-                        <div class="h-48 overflow-hidden bg-gray-100">
-                            <img src="${primaryImg}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
-                        </div>
-                        <div class="p-4">
-                            <h4 class="font-bold text-indigo-900 line-clamp-1">${item.title}</h4>
-                            <p class="text-pink-600 font-extrabold mt-1">${item.price_range}</p>
+                    <a href="details.html?id=${item.slug}" class="flex-none w-64 bg-white rounded-3xl shadow-sm border border-gray-100 group overflow-hidden snap-center">
+                        <img src="${primaryImg}" class="w-full h-48 object-cover group-hover:scale-105 transition duration-700">
+                        <div class="p-5">
+                            <h4 class="font-bold text-gray-800 line-clamp-1">${item.title}</h4>
+                            <p class="text-pink-600 font-black mt-1">${item.price_range}</p>
                         </div>
                     </a>
                     `;
                 }).join('')}
             </div>`;
-    } catch (e) {
-        console.error("Failed to load related products", e);
-    }
+    } catch (e) {}
 }
 
-// --- REVIEWS RENDERING AND SUBMISSION ---
 function renderReviews(reviews) {
     const container = document.getElementById('reviews-list');
     if (reviews.length === 0) {
-        container.innerHTML = "<p class='text-gray-500 font-medium italic'>No reviews yet. Be the first to review!</p>";
+        container.innerHTML = "<p class='text-gray-500 font-medium italic bg-gray-50 p-6 rounded-2xl border border-gray-100'>No reviews yet. Be the first to review!</p>";
         return;
     }
     container.innerHTML = reviews.map(r => `
-        <div class="border-b pb-4 mb-4 last:border-0">
-            <div class="flex justify-between items-center mb-2">
-                <span class="font-bold text-gray-800">${r.reviewer_name}</span>
-                <span class="text-yellow-400 text-lg">${'★'.repeat(r.rating)}${'☆'.repeat(5-r.rating)}</span>
+        <div class="border border-gray-100 bg-gray-50 p-6 rounded-2xl">
+            <div class="flex justify-between items-center mb-3">
+                <span class="font-black text-indigo-900">${r.reviewer_name}</span>
+                <span class="text-yellow-400 text-lg">${'★'.repeat(r.rating)}</span>
             </div>
-            <p class="text-gray-600">${r.review_text}</p>
+            <p class="text-gray-600 italic">"${r.review_text}"</p>
         </div>
     `).join('');
 }
@@ -174,20 +170,9 @@ document.getElementById('review-form')?.addEventListener('submit', async (e) => 
     };
 
     try {
-        const res = await fetch(`/api/reviews/${decorId}`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
-        });
-        if (res.ok) {
-            alert("Review submitted successfully!");
-            location.reload(); 
-        }
-    } catch (err) {
-        alert("Failed to submit review.");
-        btn.textContent = "Submit Review";
-    }
+        const res = await fetch(`/api/reviews/${decorId}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+        if (res.ok) location.reload(); 
+    } catch (err) { btn.textContent = "Submit Review"; }
 });
 
-// Initialize Page
 fetchProductDetails();

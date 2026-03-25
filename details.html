@@ -3,13 +3,86 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Details | Celebrift</title>
+    <title>Product Details | Celebrift</title>
+    <link rel="icon" type="image/jpeg" href="logo.jpg">
     <script src="https://cdn.tailwindcss.com"></script>
-    <h4 class="text-lg font-bold text-gray-800 mb-4">Leave a Review</h4>
-                    <form id="review-form" class="space-y-4">
-                        <input type="text" id="rev-name" required placeholder="Your Name" class="w-full px-4 py-3 rounded-xl border border-gray-200 outline-none focus:ring-2 focus:ring-pink-500">
+    <style> 
+        .hide-scroll-bar::-webkit-scrollbar { display: none; }
+        .hide-scroll-bar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="font-sans min-h-screen flex flex-col relative overflow-x-hidden bg-gradient-to-b from-pink-50 to-white">
+
+    <nav class="bg-white/90 backdrop-blur-md shadow-sm sticky top-0 z-50 border-b border-pink-100">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+            <a href="index.html" class="flex items-center gap-3 text-2xl md:text-3xl font-extrabold text-gray-800 tracking-tight">
+                <img src="logo.jpg" alt="Celebrift Logo" class="w-8 h-8 md:w-10 md:h-10 rounded-full object-cover shadow-sm">
+                <span><span class="text-pink-500">Celebr</span>ift 👑</span>
+            </a>
+            <div class="hidden md:flex gap-6 text-sm font-bold text-gray-600">
+                <a href="index.html" class="hover:text-pink-500 transition-colors">Home</a>
+                <a href="index.html#rows-container" class="hover:text-pink-500 transition-colors">All Decor</a>
+            </div>
+            <a href="index.html" class="md:hidden text-gray-600 hover:text-pink-500 font-bold transition-colors text-sm">&larr; Back</a>
+        </div>
+    </nav>
+
+    <div id="loading-state" class="text-center py-20 text-xl font-bold text-pink-500 animate-pulse relative z-10">Loading Product Details...</div>
+
+    <div id="detail-container" class="flex-grow max-w-7xl mx-auto mt-6 px-4 hidden w-full flex-col relative z-10">
+        
+        <div class="max-w-6xl mx-auto w-full flex flex-col md:flex-row gap-10 bg-white/80 backdrop-blur-md p-4 md:p-8 rounded-3xl shadow-sm border border-pink-100">
+            
+            <div class="w-full md:w-1/2 flex flex-col">
+                <div class="w-full aspect-square rounded-2xl bg-white border border-gray-100 shadow-sm overflow-hidden relative">
+                    <img id="decor-image" src="" alt="Decoration Setup" class="w-full h-full object-cover transition-opacity duration-300">
+                </div>
+                <div id="decor-thumbnails" class="flex gap-3 mt-4 overflow-x-auto hide-scroll-bar py-2 px-1 snap-x">
+                    </div>
+            </div>
+
+            <div class="w-full md:w-1/2 flex flex-col">
+                <h1 id="decor-title" class="text-3xl md:text-4xl font-black text-indigo-900 mb-2 leading-tight"></h1>
+                <div id="decor-rating-stars" class="flex items-center gap-1 mb-4 text-yellow-400 text-xl"></div>
+                <p id="decor-price" class="text-4xl font-black text-pink-600 mb-6"></p>
+                <p id="decor-desc" class="text-gray-600 mb-8 leading-relaxed text-lg"></p>
+
+                <a id="whatsapp-btn" href="#" target="_blank" class="bg-[#25D366] text-white py-4 rounded-2xl font-black text-center text-xl shadow-lg hover:bg-[#1ebe57] transition-all transform hover:scale-[1.02] mb-8">
+                    Book on WhatsApp
+                </a>
+
+                <div class="space-y-4 border-t pt-6">
+                    <details class="group border border-gray-200 rounded-xl bg-gray-50 shadow-sm overflow-hidden">
+                        <summary class="flex justify-between items-center font-bold cursor-pointer list-none p-4 text-indigo-900">
+                            <span>Package Includes</span>
+                            <span class="transition group-open:rotate-180 text-pink-500">▼</span>
+                        </summary>
+                        <div class="p-4 border-t border-gray-200 text-gray-600 bg-white">
+                            <ul id="desktop-package-list" class="space-y-2"></ul>
+                        </div>
+                    </details>
+                    <details class="group border border-gray-200 rounded-xl bg-gray-50 shadow-sm overflow-hidden">
+                        <summary class="flex justify-between items-center font-bold cursor-pointer list-none p-4 text-indigo-900">
+                            <span>Frequently Asked Questions</span>
+                            <span class="transition group-open:rotate-180 text-pink-500">▼</span>
+                        </summary>
+                        <div id="desktop-faq-list" class="p-4 border-t border-gray-200 text-gray-600 space-y-4 bg-white"></div>
+                    </details>
+                </div>
+            </div>
+        </div>
+
+        <div id="related-products-container" class="mt-20 w-full"></div>
+
+        <div class="max-w-6xl mx-auto w-full mt-20 mb-20 border-t border-pink-200 pt-16">
+            <h3 class="text-4xl font-black text-indigo-900 mb-12 text-center">Customer Feedback</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full">
+                <div class="bg-white p-6 md:p-8 rounded-3xl shadow-sm border border-pink-100 h-fit">
+                    <h4 class="text-xl font-black text-indigo-900 mb-6">Leave a Review</h4>
+                    <form id="review-form" class="space-y-5">
+                        <input type="text" id="rev-name" required placeholder="Your Name" class="w-full px-4 py-4 rounded-xl bg-gray-50 border border-gray-200 outline-none focus:ring-2 focus:ring-pink-500 font-medium">
                         
-                        <div class="flex flex-col gap-1">
+                        <div class="flex flex-col gap-2">
                             <label class="text-sm font-bold text-gray-600">Rate your experience</label>
                             <div id="star-selector" class="flex gap-2 text-4xl cursor-pointer select-none">
                                 <span data-val="1" class="text-yellow-400 transition-colors">★</span>
@@ -21,103 +94,35 @@
                             <input type="hidden" id="rev-rating" value="5">
                         </div>
 
-                        <textarea id="rev-text" required rows="4" placeholder="Tell us about your experience..." class="w-full px-4 py-3 rounded-xl border border-gray-200 outline-none focus:ring-2 focus:ring-pink-500"></textarea>
-                        <button type="submit" id="rev-submit" class="w-full bg-pink-500 hover:bg-pink-600 text-white font-bold py-4 rounded-xl transition-colors shadow-sm text-lg">Submit Review</button>
-                    </form>
-</head>
-<body class="bg-gray-50 flex flex-col min-h-screen relative overflow-x-hidden">
-
-    <nav class="bg-white/90 backdrop-blur-md shadow-sm sticky top-0 z-50 border-b border-gray-100">
-        <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-            <a href="index.html" class="text-3xl font-black text-gray-800 tracking-tighter">
-                <span class="text-pink-500">Celebr</span>ift 👑
-            </a>
-            
-            <div class="hidden md:flex gap-8 text-sm font-bold text-gray-600 uppercase tracking-widest items-center">
-                <a href="index.html" class="hover:text-pink-500 transition-colors">Home</a>
-                <div class="relative group">
-                    <a href="index.html#rows-container" class="hover:text-pink-500 cursor-pointer flex items-center gap-1 py-2">
-                        Categories <span class="text-xs">▼</span>
-                    </a>
-                    <div class="absolute left-0 mt-0 w-64 bg-white border border-gray-100 rounded-2xl shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all flex flex-col overflow-hidden z-50">
-                        <a href="index.html?category=birthday-decor" class="px-5 py-3 hover:bg-pink-50 hover:text-pink-500 border-b">Birthday Decor</a>
-                        <a href="index.html?category=baby-shower-decor" class="px-5 py-3 hover:bg-pink-50 hover:text-pink-500 border-b">Baby Shower Decor</a>
-                        <a href="index.html?category=store-decor" class="px-5 py-3 hover:bg-pink-50 hover:text-pink-500 border-b">Store Decor</a>
-                        <a href="index.html?category=naming-ceremony" class="px-5 py-3 hover:bg-pink-50 hover:text-pink-500 border-b">Naming Ceremony</a>
-                        <a href="index.html?category=anniversary-decor" class="px-5 py-3 hover:bg-pink-50 hover:text-pink-500 border-b">Anniversary Decor</a>
-                        <a href="index.html?category=romantic-decor" class="px-5 py-3 hover:bg-pink-50 hover:text-pink-500">Romantic Decor</a>
-                    </div>
-                </div>
-            </div>
-
-            <a href="index.html" class="md:hidden text-pink-500 font-bold hover:underline">&larr; Back</a>
-        </div>
-    </nav>
-
-    <div id="loading-state" class="text-center py-20 font-bold text-pink-500 animate-pulse">Fetching details...</div>
-
-    <div id="detail-container" class="hidden flex-grow max-w-7xl mx-auto w-full px-4 mt-8 flex-col pb-20">
-        
-        <div class="max-w-6xl mx-auto w-full flex flex-col md:flex-row gap-10 bg-white p-6 md:p-10 rounded-3xl shadow-sm border border-gray-100">
-            <img id="decor-image" class="w-full md:w-1/2 aspect-square object-cover rounded-2xl shadow-md">
-            <div class="w-full md:w-1/2">
-                <img id="decor-image" src="" class="w-full aspect-square object-cover rounded-2xl shadow-md border border-gray-100 transition-opacity duration-300">
-                <div id="decor-thumbnails" class="flex gap-3 mt-4 overflow-x-auto hide-scroll-bar py-1"></div>
-            </div>
-            <div class="w-full md:w-1/2 flex flex-col">
-                <h1 id="decor-title" class="text-3xl md:text-5xl font-black mb-4 text-gray-900"></h1>
-                <div id="decor-rating-stars" class="text-yellow-400 flex gap-1 mb-4 text-xl"></div>
-                <p id="decor-price" class="text-4xl font-bold text-pink-600 mb-8"></p>
-                <p id="decor-desc" class="text-gray-600 mb-10 text-lg leading-relaxed"></p>
-                
-                <a id="whatsapp-btn" href="#" target="_blank" class="bg-[#25D366] text-white py-5 rounded-2xl font-black text-center text-2xl shadow-lg block hover:bg-[#1ebe57] transition-all transform hover:scale-[1.02] mb-10">
-                    Book on WhatsApp
-                </a>
-
-                <div class="space-y-4">
-                    <details class="border-b py-4 group cursor-pointer"><summary class="font-bold flex justify-between text-lg">Package Includes <span class="group-open:rotate-180 transition">▼</span></summary><div id="desktop-package-list" class="pt-4 text-gray-500 space-y-2"></div></details>
-                    <details class="border-b py-4 group cursor-pointer"><summary class="font-bold flex justify-between text-lg">FAQs <span class="group-open:rotate-180 transition">▼</span></summary><div id="desktop-faq-list" class="pt-4 text-gray-500 space-y-2"></div></details>
-                </div>
-            </div>
-        </div>
-
-        <div id="related-products-container" class="mt-20"></div>
-
-        <div class="max-w-6xl mx-auto w-full mt-24 border-t border-gray-200 pt-16">
-            <h3 class="text-4xl font-black text-gray-900 mb-12 text-center">Customer Feedback</h3>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
-                <div class="bg-pink-50 p-8 rounded-3xl border border-pink-100 h-fit">
-                    <h4 class="font-bold mb-6 text-xl text-gray-800">Leave a Review</h4>
-                    <form id="review-form" class="space-y-5">
-                        <input id="rev-name" required placeholder="Your Name" class="w-full p-4 border rounded-xl outline-none focus:ring-2 focus:ring-pink-500">
-                        <select id="rev-rating" class="w-full p-4 border rounded-xl outline-none"><option value="5">5 Stars - Excellent</option><option value="4">4 Stars</option><option value="3">3 Stars</option><option value="2">2 Stars</option><option value="1">1 Star</option></select>
-                        <textarea id="rev-text" required placeholder="Share your experience..." rows="4" class="w-full p-4 border rounded-xl outline-none focus:ring-2 focus:ring-pink-500"></textarea>
-                        <button type="submit" id="rev-submit" class="w-full bg-pink-500 text-white py-5 rounded-2xl font-black text-lg shadow-md hover:bg-pink-600">Submit Feedback</button>
+                        <textarea id="rev-text" required rows="4" placeholder="Tell us about your experience..." class="w-full px-4 py-4 rounded-xl bg-gray-50 border border-gray-200 outline-none focus:ring-2 focus:ring-pink-500 font-medium"></textarea>
+                        <button type="submit" id="rev-submit" class="w-full bg-pink-500 hover:bg-pink-600 text-white font-black py-4 rounded-xl transition-colors shadow-md text-lg">Submit Review</button>
                     </form>
                 </div>
-                <div class="bg-white p-8 rounded-3xl border border-gray-100 h-fit">
-                    <h4 class="font-bold mb-8 text-xl border-b pb-4 text-gray-800">Recent Reviews</h4>
+                <div class="bg-white p-6 md:p-8 rounded-3xl shadow-sm border border-gray-100 h-fit">
+                    <h4 class="text-xl font-black text-indigo-900 mb-6 border-b pb-4">Recent Reviews</h4>
                     <div id="reviews-list" class="space-y-6"></div>
                 </div>
             </div>
         </div>
     </div>
 
-    <footer class="bg-gradient-to-b from-white to-blue-50 pt-20 pb-10 px-6 border-t mt-auto">
-        <div class="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-12 text-sm text-gray-600 mb-16">
-            <div><h4 class="font-bold text-gray-900 mb-6 text-lg">Important Links</h4><a href="page.html?id=about" class="block mb-3 hover:text-pink-500">About Us</a><a href="page.html?id=faqs" class="block mb-3 hover:text-pink-500">FAQs</a><a href="page.html?id=tnc" class="block mb-3 hover:text-pink-500">Terms & Conditions</a></div>
-            <div><h4 class="font-bold text-gray-900 mb-6 text-lg">Categories</h4><a href="index.html?category=birthday-decor" class="block mb-3 hover:text-pink-500">Birthday Decor</a><a href="index.html?category=baby-shower-decor" class="block mb-3 hover:text-pink-500">Baby Shower Decor</a><a href="index.html?category=store-decor" class="block mb-3 hover:text-pink-500">Store Decor</a><a href="index.html?category=naming-ceremony" class="block mb-3 hover:text-pink-500">Naming Ceremony</a><a href="index.html?category=anniversary-decor" class="block mb-3 hover:text-pink-500">Anniversary Decor</a><a href="index.html?category=romantic-decor" class="block hover:text-pink-500">Romantic Decor</a></div>
-            <div><h4 class="font-bold text-gray-900 mb-6 text-lg">Cities</h4><p class="mb-3">Mira Bhayandar</p><p>Mumbai</p></div>
-            <div><h4 class="font-bold text-gray-900 mb-6 text-lg">Legal Info</h4><a href="page.html?id=refunds" class="block mb-3 hover:text-pink-500">Refunds & Returns</a><a href="page.html?id=disclaimer" class="block mb-3 hover:text-pink-500">Disclaimer</a></div>
+    <footer class="bg-gradient-to-r from-pink-50 via-purple-50 to-indigo-50 pt-16 pb-8 px-4 mt-auto border-t border-pink-200 relative z-10 w-full hidden" id="detail-footer">
+        <div class="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 text-sm text-gray-700 mb-12">
+            <div class="space-y-3"><h4 class="font-bold text-indigo-900 text-lg mb-4">Important Links</h4><a href="page.html?id=about" class="block hover:text-pink-600 font-medium">About Us</a><a href="page.html?id=faqs" class="block hover:text-pink-600 font-medium">FAQs</a><a href="page.html?id=tnc" class="block hover:text-pink-600 font-medium">Terms & Conditions</a></div>
+            <div class="space-y-3"><h4 class="font-bold text-indigo-900 text-lg mb-4">Top Categories</h4><a href="index.html?category=birthday-decor" class="block hover:text-pink-600 font-medium">Birthday</a><a href="index.html?category=anniversary-decor" class="block hover:text-pink-600 font-medium">Anniversary</a><a href="index.html?category=baby-shower-decor" class="block hover:text-pink-600 font-medium">Baby Shower</a></div>
+            <div class="space-y-3"><h4 class="font-bold text-indigo-900 text-lg mb-4">Top Cities</h4><p class="block font-medium">Mira Bhayandar</p><p class="block font-medium">Mumbai</p></div>
+            <div class="space-y-3"><h4 class="font-bold text-indigo-900 text-lg mb-4">Legal Info</h4><a href="page.html?id=refunds" class="block hover:text-pink-600 font-medium">Refunds & Returns</a><a href="page.html?id=disclaimer" class="block hover:text-pink-600 font-medium">Disclaimer</a></div>
         </div>
-        <p class="text-center text-xs text-gray-400 font-bold tracking-widest">© 2026 CELEBRIFT.COM</p>
+        <div class="max-w-7xl mx-auto flex flex-col items-center">
+            <p class="text-xs text-gray-500 font-bold tracking-widest">© 2026 CELEBRIFT.COM</p>
+        </div>
     </footer>
 
-    <div class="fixed bottom-8 right-6 z-50 flex flex-col gap-4">
-        <a href="tel:+919594328008" class="w-14 h-14 bg-indigo-600 text-white rounded-2xl flex items-center justify-center shadow-2xl hover:scale-110 transition text-2xl">📞</a>
-        <a href="https://wa.me/919594328008" target="_blank" class="w-14 h-14 bg-green-500 text-white rounded-2xl flex items-center justify-center shadow-2xl hover:scale-110 transition text-2xl">💬</a>
+    <div class="fixed bottom-6 right-6 z-50 flex flex-col gap-3">
+        <a href="tel:+919594328008" class="w-14 h-14 bg-[#5c4ac7] hover:bg-[#4a3b9e] text-white rounded-2xl flex items-center justify-center shadow-2xl transition-transform hover:scale-110 text-2xl">📞</a>
+        <a href="https://wa.me/919594328008" target="_blank" class="w-14 h-14 bg-[#25D366] hover:bg-[#1ebe57] text-white rounded-2xl flex items-center justify-center shadow-2xl transition-transform hover:scale-110 text-2xl">💬</a>
     </div>
-    
+
     <script src="details.js"></script>
 
     <script>
@@ -161,7 +166,6 @@
                     @keyframes float { 0% { transform: translateY(0) rotate(0deg) scale(0.8); opacity: 0; } 10% { opacity: 0.7; } 50% { transform: translateY(-50vh) rotate(180deg) scale(1.2); } 90% { opacity: 0.7; } 100% { transform: translateY(-110vh) rotate(360deg) scale(0.8); opacity: 0; } }
                     .animate-float { animation: float linear infinite; }
                     main, section, footer, nav { position: relative; z-index: 10; }
-                    #detail-container { background: rgba(255,255,255,0.6); backdrop-filter: blur(10px); border-radius: 2rem; padding-top: 2rem; }
                 `;
                 document.head.appendChild(style);
             } catch(e) {}

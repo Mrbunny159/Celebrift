@@ -1,7 +1,6 @@
 const urlParams = new URLSearchParams(window.location.search);
 const filterCat = urlParams.get('category');
 
-// FETCH HERO SECTION WITH INFINITE MARQUEE
 async function renderHeroSection() {
     try {
         const res = await fetch('/api/settings');
@@ -29,19 +28,22 @@ async function renderHeroSection() {
                 </div>`;
             };
 
-            // Duplicate the items array multiple times to create the seamless infinite scroll effect
             const repeatedItems = [...items, ...items, ...items, ...items, ...items, ...items];
             track.innerHTML = repeatedItems.map(buildItemHTML).join('');
         }
     } catch (e) { console.error("Hero error", e); }
 }
 
-// LOAD PRODUCT ROWS HORIZONTALLY
 async function loadHome() {
     try {
         const res = await fetch('/api/decorations');
         const allItems = await res.json();
         
+        if (allItems.length === 0) {
+            document.getElementById('rows-container').innerHTML = "<p class='text-center text-gray-500 font-bold py-10'>No decorations added yet. Add some in the admin panel!</p>";
+            return;
+        }
+
         let categories = [...new Set(allItems.map(i => i.category))];
         if(filterCat) categories = [filterCat]; 
 
@@ -55,12 +57,16 @@ async function loadHome() {
                         <h2 class="text-2xl md:text-3xl font-black text-indigo-900">${title}</h2>
                         ${!filterCat ? `<a href="index.html?category=${cat}" class="text-pink-500 font-bold text-sm border-b-2 border-pink-500 pb-0.5">View All &rarr;</a>` : ''}
                     </div>
-                    <div class="flex overflow-x-auto flex-nowrap gap-6 pb-8 hide-scroll-bar px-2">
-                        ${items.map(item => `
-                            <a href="details.html?id=${item.slug}" class="flex-none w-64 md:w-80 group">
+                    <div class="flex overflow-x-auto flex-nowrap gap-6 pb-8 hide-scroll-bar px-2 snap-x">
+                        ${items.map(item => {
+                            let primaryImg = item.image_url;
+                            if (item.images) { try { primaryImg = JSON.parse(item.images)[0] || item.image_url; } catch(e) {} }
+
+                            return `
+                            <a href="details.html?id=${item.slug}" class="flex-none w-64 md:w-80 group snap-center">
                                 <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden transition-all group-hover:shadow-xl">
                                     <div class="h-48 overflow-hidden">
-                                        <img src="${item.images ? JSON.parse(item.images)[0] : item.image_url}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                                        <img src="${primaryImg}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
                                     </div>
                                     <div class="p-5">
                                         <h4 class="font-bold text-gray-800 line-clamp-1">${item.title}</h4>
@@ -70,13 +76,12 @@ async function loadHome() {
                                         </div>
                                     </div>
                                 </div>
-                            </a>
-                        `).join('')}
+                            </a>`
+                        }).join('')}
                     </div>
                 </section>`;
         }).join('');
 
-        // Render Home Reviews
         const revRes = await fetch('/api/settings');
         const settings = await revRes.json();
         if (settings['home_reviews']) {
