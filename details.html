@@ -1,84 +1,168 @@
-async function renderHeroSection() {
-    try {
-        const res = await fetch('/api/settings');
-        const settings = await res.json();
-        
-        if (settings['hero_title']) document.getElementById('hero-main-title').textContent = settings['hero_title'];
-        if (settings['hero_subtitle']) document.getElementById('hero-sub-title').textContent = settings['hero_subtitle'];
-        
-        const container = document.getElementById('hero-categories-container');
-        if (settings['hero_items']) {
-            const items = JSON.parse(settings['hero_items']);
-            if (items.length === 0) return;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Details | Celebrift</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <h4 class="text-lg font-bold text-gray-800 mb-4">Leave a Review</h4>
+                    <form id="review-form" class="space-y-4">
+                        <input type="text" id="rev-name" required placeholder="Your Name" class="w-full px-4 py-3 rounded-xl border border-gray-200 outline-none focus:ring-2 focus:ring-pink-500">
+                        
+                        <div class="flex flex-col gap-1">
+                            <label class="text-sm font-bold text-gray-600">Rate your experience</label>
+                            <div id="star-selector" class="flex gap-2 text-4xl cursor-pointer select-none">
+                                <span data-val="1" class="text-yellow-400 transition-colors">★</span>
+                                <span data-val="2" class="text-yellow-400 transition-colors">★</span>
+                                <span data-val="3" class="text-yellow-400 transition-colors">★</span>
+                                <span data-val="4" class="text-yellow-400 transition-colors">★</span>
+                                <span data-val="5" class="text-yellow-400 transition-colors">★</span>
+                            </div>
+                            <input type="hidden" id="rev-rating" value="5">
+                        </div>
 
-            container.innerHTML = items.map(item => {
-                let shapeClasses = "w-28 h-28 md:w-36 md:h-36 rounded-full"; 
-                if (item.shape === 'square') shapeClasses = "w-28 h-28 md:w-36 md:h-36";
-                if (item.shape === 'rounded-square') shapeClasses = "w-28 h-28 md:w-36 md:h-36 rounded-2xl";
-                if (item.shape === 'rectangle') shapeClasses = "w-40 h-28 md:w-56 md:h-36";
-                if (item.shape === 'rounded-rectangle') shapeClasses = "w-40 h-28 md:w-56 md:h-36 rounded-3xl";
+                        <textarea id="rev-text" required rows="4" placeholder="Tell us about your experience..." class="w-full px-4 py-3 rounded-xl border border-gray-200 outline-none focus:ring-2 focus:ring-pink-500"></textarea>
+                        <button type="submit" id="rev-submit" class="w-full bg-pink-500 hover:bg-pink-600 text-white font-bold py-4 rounded-xl transition-colors shadow-sm text-lg">Submit Review</button>
+                    </form>
+</head>
+<body class="bg-gray-50 flex flex-col min-h-screen relative overflow-x-hidden">
 
-                return `
-                <div onclick="window.location.href='index.html?category=${item.target}'" class="flex flex-col items-center gap-3 cursor-pointer group flex-shrink-0">
-                    <img src="${item.image}" class="${shapeClasses} border-4 border-white shadow-lg group-hover:border-pink-500 transition-all object-cover">
-                    <span class="font-bold text-gray-700 whitespace-nowrap">${item.title}</span>
-                </div>`;
-            }).join('');
-        }
-    } catch (e) { console.error("Hero error", e); }
-}
-
-async function renderNetflixHome() {
-    const container = document.getElementById('rows-container');
-    const urlParams = new URLSearchParams(window.location.search);
-    const selectedCategory = urlParams.get('category');
-    
-    try {
-        const fetchUrl = selectedCategory ? `/api/decorations?category=${selectedCategory}` : '/api/decorations';
-        const response = await fetch(fetchUrl);
-        const allItems = await response.json();
-        
-        const categories = [...new Set(allItems.map(item => item.category))];
-        
-        if (allItems.length === 0) {
-            container.innerHTML = "<p class='text-center text-gray-500 font-bold py-10'>No decorations found for this category yet.</p>";
-            return;
-        }
-
-        container.innerHTML = categories.map(cat => {
-            const items = allItems.filter(i => i.category === cat);
-            const title = cat.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+    <nav class="bg-white/90 backdrop-blur-md shadow-sm sticky top-0 z-50 border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-3xl font-black text-gray-800 tracking-tighter">
+                <span class="text-pink-500">Celebr</span>ift 👑
+            </a>
             
-            return `
-                <section id="cat-${cat}" class="scroll-mt-32">
-                    <div class="flex justify-between items-center mb-6">
-                        <h2 class="text-2xl font-extrabold text-indigo-900">${title}</h2>
-                        ${!selectedCategory ? `<a href="index.html?category=${cat}" class="text-pink-500 font-bold text-sm border-b-2 border-pink-500 pb-0.5 hover:text-indigo-900 transition-colors">View All &rarr;</a>` : ''}
+            <div class="hidden md:flex gap-8 text-sm font-bold text-gray-600 uppercase tracking-widest items-center">
+                <a href="index.html" class="hover:text-pink-500 transition-colors">Home</a>
+                <div class="relative group">
+                    <a href="index.html#rows-container" class="hover:text-pink-500 cursor-pointer flex items-center gap-1 py-2">
+                        Categories <span class="text-xs">▼</span>
+                    </a>
+                    <div class="absolute left-0 mt-0 w-64 bg-white border border-gray-100 rounded-2xl shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all flex flex-col overflow-hidden z-50">
+                        <a href="index.html?category=birthday-decor" class="px-5 py-3 hover:bg-pink-50 hover:text-pink-500 border-b">Birthday Decor</a>
+                        <a href="index.html?category=baby-shower-decor" class="px-5 py-3 hover:bg-pink-50 hover:text-pink-500 border-b">Baby Shower Decor</a>
+                        <a href="index.html?category=store-decor" class="px-5 py-3 hover:bg-pink-50 hover:text-pink-500 border-b">Store Decor</a>
+                        <a href="index.html?category=naming-ceremony" class="px-5 py-3 hover:bg-pink-50 hover:text-pink-500 border-b">Naming Ceremony</a>
+                        <a href="index.html?category=anniversary-decor" class="px-5 py-3 hover:bg-pink-50 hover:text-pink-500 border-b">Anniversary Decor</a>
+                        <a href="index.html?category=romantic-decor" class="px-5 py-3 hover:bg-pink-50 hover:text-pink-500">Romantic Decor</a>
                     </div>
-                    <div class="flex overflow-x-auto gap-5 pb-6 hide-scroll-bar">
-                        ${items.map(item => `
-                            <a href="details.html?id=${item.slug}" class="flex-none w-64 md:w-80 group">
-                                <div class="bg-white rounded-2xl shadow-sm border overflow-hidden transition-all group-hover:shadow-lg">
-                                    <div class="h-48 overflow-hidden bg-gray-100">
-                                        <img src="${item.image_url}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
-                                    </div>
-                                    <div class="p-4">
-                                        <h4 class="font-bold text-indigo-900 line-clamp-1">${item.title}</h4>
-                                        <div class="flex justify-between items-center mt-2">
-                                            <span class="text-pink-600 font-extrabold">${item.price_range}</span>
-                                            <span class="text-xs text-yellow-500">★ ${item.average_rating || '5.0'}</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        `).join('')}
-                    </div>
-                </section>`;
-        }).join('');
-    } catch (e) {
-        container.innerHTML = "<p class='text-center text-red-500 font-bold'>Failed to load data.</p>";
-    }
-}
+                </div>
+            </div>
 
-renderHeroSection();
-renderNetflixHome();
+            <a href="index.html" class="md:hidden text-pink-500 font-bold hover:underline">&larr; Back</a>
+        </div>
+    </nav>
+
+    <div id="loading-state" class="text-center py-20 font-bold text-pink-500 animate-pulse">Fetching details...</div>
+
+    <div id="detail-container" class="hidden flex-grow max-w-7xl mx-auto w-full px-4 mt-8 flex-col pb-20">
+        
+        <div class="max-w-6xl mx-auto w-full flex flex-col md:flex-row gap-10 bg-white p-6 md:p-10 rounded-3xl shadow-sm border border-gray-100">
+            <img id="decor-image" class="w-full md:w-1/2 aspect-square object-cover rounded-2xl shadow-md">
+            <div class="w-full md:w-1/2 flex flex-col">
+                <h1 id="decor-title" class="text-3xl md:text-5xl font-black mb-4 text-gray-900"></h1>
+                <div id="decor-rating-stars" class="text-yellow-400 flex gap-1 mb-4 text-xl"></div>
+                <p id="decor-price" class="text-4xl font-bold text-pink-600 mb-8"></p>
+                <p id="decor-desc" class="text-gray-600 mb-10 text-lg leading-relaxed"></p>
+                
+                <a id="whatsapp-btn" href="#" target="_blank" class="bg-[#25D366] text-white py-5 rounded-2xl font-black text-center text-2xl shadow-lg block hover:bg-[#1ebe57] transition-all transform hover:scale-[1.02] mb-10">
+                    Book on WhatsApp
+                </a>
+
+                <div class="space-y-4">
+                    <details class="border-b py-4 group cursor-pointer"><summary class="font-bold flex justify-between text-lg">Package Includes <span class="group-open:rotate-180 transition">▼</span></summary><div id="desktop-package-list" class="pt-4 text-gray-500 space-y-2"></div></details>
+                    <details class="border-b py-4 group cursor-pointer"><summary class="font-bold flex justify-between text-lg">FAQs <span class="group-open:rotate-180 transition">▼</span></summary><div id="desktop-faq-list" class="pt-4 text-gray-500 space-y-2"></div></details>
+                </div>
+            </div>
+        </div>
+
+        <div id="related-products-container" class="mt-20"></div>
+
+        <div class="max-w-6xl mx-auto w-full mt-24 border-t border-gray-200 pt-16">
+            <h3 class="text-4xl font-black text-gray-900 mb-12 text-center">Customer Feedback</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <div class="bg-pink-50 p-8 rounded-3xl border border-pink-100 h-fit">
+                    <h4 class="font-bold mb-6 text-xl text-gray-800">Leave a Review</h4>
+                    <form id="review-form" class="space-y-5">
+                        <input id="rev-name" required placeholder="Your Name" class="w-full p-4 border rounded-xl outline-none focus:ring-2 focus:ring-pink-500">
+                        <select id="rev-rating" class="w-full p-4 border rounded-xl outline-none"><option value="5">5 Stars - Excellent</option><option value="4">4 Stars</option><option value="3">3 Stars</option><option value="2">2 Stars</option><option value="1">1 Star</option></select>
+                        <textarea id="rev-text" required placeholder="Share your experience..." rows="4" class="w-full p-4 border rounded-xl outline-none focus:ring-2 focus:ring-pink-500"></textarea>
+                        <button type="submit" id="rev-submit" class="w-full bg-pink-500 text-white py-5 rounded-2xl font-black text-lg shadow-md hover:bg-pink-600">Submit Feedback</button>
+                    </form>
+                </div>
+                <div class="bg-white p-8 rounded-3xl border border-gray-100 h-fit">
+                    <h4 class="font-bold mb-8 text-xl border-b pb-4 text-gray-800">Recent Reviews</h4>
+                    <div id="reviews-list" class="space-y-6"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-gradient-to-b from-white to-blue-50 pt-20 pb-10 px-6 border-t mt-auto">
+        <div class="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-12 text-sm text-gray-600 mb-16">
+            <div><h4 class="font-bold text-gray-900 mb-6 text-lg">Important Links</h4><a href="page.html?id=about" class="block mb-3 hover:text-pink-500">About Us</a><a href="page.html?id=faqs" class="block mb-3 hover:text-pink-500">FAQs</a><a href="page.html?id=tnc" class="block mb-3 hover:text-pink-500">Terms & Conditions</a></div>
+            <div><h4 class="font-bold text-gray-900 mb-6 text-lg">Categories</h4><a href="index.html?category=birthday-decor" class="block mb-3 hover:text-pink-500">Birthday Decor</a><a href="index.html?category=baby-shower-decor" class="block mb-3 hover:text-pink-500">Baby Shower Decor</a><a href="index.html?category=store-decor" class="block mb-3 hover:text-pink-500">Store Decor</a><a href="index.html?category=naming-ceremony" class="block mb-3 hover:text-pink-500">Naming Ceremony</a><a href="index.html?category=anniversary-decor" class="block mb-3 hover:text-pink-500">Anniversary Decor</a><a href="index.html?category=romantic-decor" class="block hover:text-pink-500">Romantic Decor</a></div>
+            <div><h4 class="font-bold text-gray-900 mb-6 text-lg">Cities</h4><p class="mb-3">Mira Bhayandar</p><p>Mumbai</p></div>
+            <div><h4 class="font-bold text-gray-900 mb-6 text-lg">Legal Info</h4><a href="page.html?id=refunds" class="block mb-3 hover:text-pink-500">Refunds & Returns</a><a href="page.html?id=disclaimer" class="block mb-3 hover:text-pink-500">Disclaimer</a></div>
+        </div>
+        <p class="text-center text-xs text-gray-400 font-bold tracking-widest">© 2026 CELEBRIFT.COM</p>
+    </footer>
+
+    <div class="fixed bottom-8 right-6 z-50 flex flex-col gap-4">
+        <a href="tel:+919594328008" class="w-14 h-14 bg-indigo-600 text-white rounded-2xl flex items-center justify-center shadow-2xl hover:scale-110 transition text-2xl">📞</a>
+        <a href="https://wa.me/919594328008" target="_blank" class="w-14 h-14 bg-green-500 text-white rounded-2xl flex items-center justify-center shadow-2xl hover:scale-110 transition text-2xl">💬</a>
+    </div>
+    
+    <script src="details.js"></script>
+
+    <script>
+        async function applyFestiveTheme() {
+            try {
+                const res = await fetch('/api/settings');
+                const settings = await res.json();
+                const theme = settings['site_theme'] || 'default';
+                if (theme === 'default') return;
+
+                const themeData = {
+                    'christmas': { bg: 'linear-gradient(to bottom, #fdf2f8, #dcfce7, #fee2e2)', elements: ['🎄', '❄️', '🎁', '⭐', '🔔'] },
+                    'diwali': { bg: 'linear-gradient(to bottom, #fffbeb, #ffedd5, #fef3c7)', elements: ['🪔', '✨', '🎆', '🏵️', '🎇'] },
+                    'holi': { bg: 'linear-gradient(to bottom, #fdf4ff, #e0e7ff, #ecfeff)', elements: ['🎨', '💦', '🌈', '🎈', '✨'] },
+                    'new-year': { bg: 'linear-gradient(to bottom, #f1f5f9, #e2e8f0, #cbd5e1)', elements: ['🎇', '🥂', '🎊', '✨', '🕛'] },
+                    'eid': { bg: 'linear-gradient(to bottom, #f0fdf4, #dcfce7, #bbf7d0)', elements: ['🌙', '⭐', '🕌', '✨', '🤲'] },
+                    'national': { bg: 'linear-gradient(to bottom, #ffedd5, #f8fafc, #dcfce7)', elements: ['🇮🇳', '🕊️', '🌸', '✨', '🤍'] }
+                };
+
+                const current = themeData[theme];
+                if (!current) return;
+
+                document.body.style.background = current.bg;
+                const container = document.createElement('div');
+                container.className = 'fixed inset-0 pointer-events-none z-[1] overflow-hidden';
+                
+                for(let i=0; i<25; i++) {
+                    const el = document.createElement('div');
+                    el.innerText = current.elements[Math.floor(Math.random() * current.elements.length)];
+                    el.className = 'absolute opacity-50 text-3xl md:text-5xl animate-float drop-shadow-xl';
+                    el.style.left = Math.random() * 100 + 'vw';
+                    el.style.top = '100vh';
+                    el.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                    el.style.animationDelay = (Math.random() * 5) + 's';
+                    container.appendChild(el);
+                }
+                document.body.prepend(container);
+                
+                const style = document.createElement('style');
+                style.innerHTML = `
+                    @keyframes float { 0% { transform: translateY(0) rotate(0deg) scale(0.8); opacity: 0; } 10% { opacity: 0.7; } 50% { transform: translateY(-50vh) rotate(180deg) scale(1.2); } 90% { opacity: 0.7; } 100% { transform: translateY(-110vh) rotate(360deg) scale(0.8); opacity: 0; } }
+                    .animate-float { animation: float linear infinite; }
+                    main, section, footer, nav { position: relative; z-index: 10; }
+                    #detail-container { background: rgba(255,255,255,0.6); backdrop-filter: blur(10px); border-radius: 2rem; padding-top: 2rem; }
+                `;
+                document.head.appendChild(style);
+            } catch(e) {}
+        }
+        applyFestiveTheme();
+    </script>
+</body>
+</html>

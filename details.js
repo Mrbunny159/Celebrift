@@ -1,3 +1,27 @@
+
+// Task 5: Interactive Star Rating Logic
+const starSpans = document.querySelectorAll('#star-selector span');
+const ratingInput = document.getElementById('rev-rating');
+
+if (starSpans.length > 0) {
+    starSpans.forEach(star => {
+        star.addEventListener('click', () => {
+            const val = parseInt(star.dataset.val);
+            ratingInput.value = val; // Store value for the backend
+            
+            // Fill stars up to the clicked value
+            starSpans.forEach((s, idx) => {
+                if (idx < val) {
+                    s.classList.remove('text-gray-300');
+                    s.classList.add('text-yellow-400');
+                } else {
+                    s.classList.remove('text-yellow-400');
+                    s.classList.add('text-gray-300');
+                }
+            });
+        });
+    });
+}
 const urlParams = new URLSearchParams(window.location.search);
 const decorId = urlParams.get('id');
 
