@@ -1,5 +1,4 @@
-
-// Task 5: Interactive Star Rating Logic
+// --- INTERACTIVE STAR RATING LOGIC ---
 const starSpans = document.querySelectorAll('#star-selector span');
 const ratingInput = document.getElementById('rev-rating');
 
@@ -22,6 +21,8 @@ if (starSpans.length > 0) {
         });
     });
 }
+
+// --- PRODUCT DETAILS FETCHING LOGIC ---
 const urlParams = new URLSearchParams(window.location.search);
 const decorId = urlParams.get('id');
 
@@ -34,20 +35,44 @@ async function fetchProductDetails() {
         document.getElementById('loading-state').classList.add('hidden');
         document.getElementById('detail-container').classList.remove('hidden');
         
-        // Use image_url to match Postgres schema
-        document.getElementById('decor-image').src = data.image_url;
+        // --- MULTIPLE IMAGES LOGIC ---
+        let imagesArray = [];
+        if (data.images) {
+            // Parse JSON array from database if it exists
+            imagesArray = typeof data.images === 'string' ? JSON.parse(data.images) : data.images;
+        } else if (data.image_url) {
+            // Fallback for older single-image listings
+            imagesArray = [data.image_url];
+        }
+
+        // Set Main Image
+        const mainImg = document.getElementById('decor-image');
+        if (imagesArray.length > 0) mainImg.src = imagesArray[0];
+
+        // Set Thumbnails (Only show if there is more than 1 image)
+        const thumbContainer = document.getElementById('decor-thumbnails');
+        if (imagesArray.length > 1) {
+            thumbContainer.innerHTML = imagesArray.map(img => `
+                <img src="${img}" onclick="document.getElementById('decor-image').src='${img}'" 
+                     class="w-20 h-20 rounded-xl object-cover cursor-pointer border-2 border-transparent hover:border-pink-500 transition-all flex-none shadow-sm">
+            `).join('');
+        }
+
+        // Populate Text Fields
         document.getElementById('decor-title').textContent = data.title;
         document.getElementById('decor-price').textContent = data.price_range;
         document.getElementById('decor-desc').textContent = data.description;
         
+        // Populate Rating Text
         const rating = Math.round(data.average_rating || 5);
         document.getElementById('decor-rating-stars').innerHTML = '★'.repeat(rating) + '☆'.repeat(5-rating) + `<span class="text-sm text-gray-500 ml-2">(${data.average_rating || 5})</span>`;
 
+        // Configure WhatsApp Booking Button
         const whatsappBtn = document.getElementById('whatsapp-btn');
         const msg = encodeURIComponent(`Hi Celebrift! I want to book the ${data.title} setup.`);
         whatsappBtn.href = `https://wa.me/919594328008?text=${msg}`;
 
-        // Safely Parse JSON for Package Includes
+        // --- SAFELY PARSE JSON ARRAYS FOR ACCORDIONS ---
         const pkgList = document.getElementById('desktop-package-list');
         let includes = [];
         try { includes = typeof data.package_includes === 'string' ? JSON.parse(data.package_includes) : data.package_includes; } catch(e){}
@@ -57,7 +82,6 @@ async function fetchProductDetails() {
             pkgList.innerHTML = "<p>Standard package inclusions apply. Contact us for details.</p>";
         }
 
-        // Safely Parse JSON for FAQs
         const faqList = document.getElementById('desktop-faq-list');
         let faqs = [];
         try { faqs = typeof data.faqs === 'string' ? JSON.parse(data.faqs) : data.faqs; } catch(e){}
@@ -67,6 +91,7 @@ async function fetchProductDetails() {
             faqList.innerHTML = "<p>No specific FAQs for this setup.</p>";
         }
 
+        // Render Page Sections
         renderReviews(data.reviews || []);
         await loadRelated();
 
@@ -76,12 +101,13 @@ async function fetchProductDetails() {
     }
 }
 
+// --- RELATED PRODUCTS ROW ---
 async function loadRelated() {
     try {
         const res = await fetch('/api/decorations');
         const data = await res.json();
         
-        // 2 Rows of 4 logic
+        // 2 Rows of 4 logic, filtering out the current item
         const related = data.filter(i => i.slug !== decorId).slice(0, 8); 
         const container = document.getElementById('related-products-container');
         
@@ -93,23 +119,32 @@ async function loadRelated() {
         container.innerHTML = `
             <h3 class="text-3xl font-black mb-8 text-center text-gray-900 border-t border-gray-200 pt-16">More Designs for You</h3>
             <div class="grid grid-cols-2 md:grid-cols-4 gap-6 px-4">
-                ${related.map(item => `
+                ${related.map(item => {
+                    // Get primary image safely whether it's the old single image or new array format
+                    let primaryImg = item.image_url;
+                    if (item.images) {
+                        try { primaryImg = JSON.parse(item.images)[0] || item.image_url; } catch(e) {}
+                    }
+                    
+                    return `
                     <a href="details.html?id=${item.slug}" class="bg-white rounded-2xl shadow-sm border group overflow-hidden hover:shadow-lg transition-all">
                         <div class="h-48 overflow-hidden bg-gray-100">
-                            <img src="${item.image_url}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                            <img src="${primaryImg}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
                         </div>
                         <div class="p-4">
                             <h4 class="font-bold text-indigo-900 line-clamp-1">${item.title}</h4>
                             <p class="text-pink-600 font-extrabold mt-1">${item.price_range}</p>
                         </div>
                     </a>
-                `).join('')}
+                    `;
+                }).join('')}
             </div>`;
     } catch (e) {
         console.error("Failed to load related products", e);
     }
 }
 
+// --- REVIEWS RENDERING AND SUBMISSION ---
 function renderReviews(reviews) {
     const container = document.getElementById('reviews-list');
     if (reviews.length === 0) {
@@ -150,8 +185,9 @@ document.getElementById('review-form')?.addEventListener('submit', async (e) => 
         }
     } catch (err) {
         alert("Failed to submit review.");
-        btn.textContent = "Submit Feedback";
+        btn.textContent = "Submit Review";
     }
 });
 
+// Initialize Page
 fetchProductDetails();

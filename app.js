@@ -80,5 +80,26 @@ async function renderNetflixHome() {
     }
 }
 
-renderHeroSection();
-renderNetflixHome();
+async function loadHomeReviews() {
+    try {
+        const res = await fetch('/api/settings');
+        const settings = await res.json();
+        if (settings['home_reviews']) {
+            const revs = JSON.parse(settings['home_reviews']);
+            if (revs.length > 0) {
+                document.getElementById('home-reviews-section').classList.remove('hidden');
+                document.getElementById('home-reviews-container').innerHTML = revs.map(r => `
+                    <div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 relative">
+                    <span class="absolute top-4 right-6 text-4xl text-pink-100">"</span>
+                    <div class="text-yellow-400 mb-3 text-xl">${'★'.repeat(r.rating)}</div>
+                    <p class="text-gray-600 italic mb-4 relative z-10">"${r.text}"</p>
+                    <p class="font-bold text-indigo-900">- ${r.name}</p>
+                    </div>
+                    `).join('');
+                }
+            }
+        } catch (e) {}
+    }
+    renderHeroSection();
+    renderNetflixHome();
+loadHomeReviews();
