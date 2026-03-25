@@ -18,44 +18,30 @@
             <a href="index.html" class="text-3xl font-extrabold text-gray-800 tracking-tight">
                 <span class="text-pink-500">Celebr</span>ift 👑
             </a>
-            <div class="hidden md:flex gap-6 text-sm font-bold text-gray-600">
+            <div class="hidden md:flex gap-8 text-sm font-bold text-gray-600 uppercase tracking-widest items-center">
                 <a href="index.html" class="hover:text-pink-500 transition-colors">Home</a>
-                <a href="index.html" class="hover:text-pink-500 transition-colors">All Decor</a>
-                <a href="admin-login.html" class="hover:text-pink-500 transition-colors">Admin</a>
+                <div class="relative group">
+                    <a href="index.html#rows-container" class="hover:text-pink-500 cursor-pointer flex items-center gap-1 py-2">
+                        Categories <span class="text-xs">▼</span>
+                    </a>
+                    <div class="absolute left-0 mt-0 w-64 bg-white border border-gray-100 rounded-2xl shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all flex flex-col overflow-hidden z-50">
+                        <a href="index.html?category=birthday-decor" class="px-5 py-3 hover:bg-pink-50 hover:text-pink-500 border-b">Birthday Decor</a>
+                        <a href="index.html?category=baby-shower-decor" class="px-5 py-3 hover:bg-pink-50 hover:text-pink-500 border-b">Baby Shower Decor</a>
+                        <a href="index.html?category=store-decor" class="px-5 py-3 hover:bg-pink-50 hover:text-pink-500 border-b">Store Decor</a>
+                        <a href="index.html?category=naming-ceremony" class="px-5 py-3 hover:bg-pink-50 hover:text-pink-500 border-b">Naming Ceremony</a>
+                        <a href="index.html?category=anniversary-decor" class="px-5 py-3 hover:bg-pink-50 hover:text-pink-500 border-b">Anniversary Decor</a>
+                        <a href="index.html?category=romantic-decor" class="px-5 py-3 hover:bg-pink-50 hover:text-pink-500">Romantic Decor</a>
+                    </div>
+                </div>
             </div>
         </div>
     </nav>
 
-    <section class="bg-white py-10 border-b">
-        <div class="max-w-7xl mx-auto px-4 text-center mb-8">
-            <h2 class="text-3xl font-bold text-indigo-900">Top Balloon Decoration Categories</h2>
-            <p class="text-gray-500 font-medium">Trusted Decorators for All Events</p>
-        </div>
-        <div class="max-w-7xl mx-auto px-4 flex overflow-x-auto gap-6 md:gap-10 justify-start md:justify-center pb-4 hide-scroll-bar">
-            <div onclick="window.location.href='index.html?category=birthday'" class="flex flex-col items-center gap-3 cursor-pointer group flex-none">
-                <img src="https://images.unsplash.com/photo-1530103862676-de3c9de59f9e?w=200" class="w-24 h-24 md:w-32 md:h-32 rounded-full object-cover border-4 border-transparent group-hover:border-pink-400 transition-all shadow-md">
-                <span class="text-sm font-bold text-indigo-900 text-center w-24">Birthday Decoration</span>
-            </div>
-            <div onclick="window.location.href='index.html?category=kids-theme'" class="flex flex-col items-center gap-3 cursor-pointer group flex-none">
-                <img src="https://images.unsplash.com/photo-1519689680058-324335c77eba?w=200" class="w-24 h-24 md:w-32 md:h-32 rounded-full object-cover border-4 border-transparent group-hover:border-pink-400 transition-all shadow-md">
-                <span class="text-sm font-bold text-indigo-900 text-center w-24">Kids Decoration</span>
-            </div>
-            <div onclick="window.location.href='index.html?category=welcome-baby'" class="flex flex-col items-center gap-3 cursor-pointer group flex-none">
-                <img src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=200" class="w-24 h-24 md:w-32 md:h-32 rounded-full object-cover border-4 border-transparent group-hover:border-pink-400 transition-all shadow-md">
-                <span class="text-sm font-bold text-indigo-900 text-center w-24">Newborn Welcome</span>
-            </div>
-            <div onclick="window.location.href='index.html?category=anniversary'" class="flex flex-col items-center gap-3 cursor-pointer group flex-none">
-                <img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?w=200" class="w-24 h-24 md:w-32 md:h-32 rounded-full object-cover border-4 border-transparent group-hover:border-pink-400 transition-all shadow-md">
-                <span class="text-sm font-bold text-indigo-900 text-center w-24">Anniversary Decoration</span>
-            </div>
-            <div onclick="window.location.href='index.html?category=baby-shower'" class="flex flex-col items-center gap-3 cursor-pointer group flex-none">
-                <img src="https://images.unsplash.com/photo-1519689680058-324335c77eba?w=200" class="w-24 h-24 md:w-32 md:h-32 rounded-full object-cover border-4 border-transparent group-hover:border-pink-400 transition-all shadow-md">
-                <span class="text-sm font-bold text-indigo-900 text-center w-24">Baby Shower</span>
-            </div>
-            <div onclick="window.location.href='index.html?category=first-night'" class="flex flex-col items-center gap-3 cursor-pointer group flex-none">
-                <img src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=200" class="w-24 h-24 md:w-32 md:h-32 rounded-full object-cover border-4 border-transparent group-hover:border-pink-400 transition-all shadow-md">
-                <span class="text-sm font-bold text-indigo-900 text-center w-24">First Night</span>
-            </div>
+    <section class="bg-white py-12 border-b">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <h2 id="hero-main-title" class="text-3xl font-black text-indigo-900 mb-2">Top Decoration Categories</h2>
+            <p id="hero-sub-title" class="text-gray-500 mb-10 font-medium">Trusted Decorators for All Events</p>
+            <div id="hero-categories-container" class="flex overflow-x-auto gap-8 justify-start md:justify-center pb-6 hide-scroll-bar px-2"></div>
         </div>
     </section>
 
@@ -63,54 +49,14 @@
         <div id="rows-container" class="space-y-12"></div>
     </div>
 
-    <footer class="bg-gradient-to-r from-blue-100 via-indigo-50 to-purple-100 pt-16 pb-8 px-4 mt-auto border-t border-gray-200/60">
-        <div class="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 text-sm text-gray-600 mb-12">
-            <div class="space-y-3">
-                <h4 class="font-bold text-gray-900 text-lg mb-4">Important Links</h4>
-                <a href="#" class="block hover:text-pink-600">Terms & Conditions</a>
-                <a href="#" class="block hover:text-pink-600">Return & Refund</a>
-                <a href="#" class="block hover:text-pink-600">About Us</a>
-                <a href="#" class="block hover:text-pink-600">Disclaimer</a>
-            </div>
-            <div class="space-y-3">
-                <h4 class="font-bold text-gray-900 text-lg mb-4">Top Categories</h4>
-                <a href="#" class="block hover:text-pink-600">Birthday</a>
-                <a href="#" class="block hover:text-pink-600">Anniversary</a>
-                <a href="#" class="block hover:text-pink-600">Baby Shower</a>
-                <a href="#" class="block hover:text-pink-600">Welcome Baby</a>
-                <a href="#" class="block hover:text-pink-600">Kids Theme</a>
-                <a href="#" class="block hover:text-pink-600">Balloon Decoration</a>
-                <a href="#" class="block hover:text-pink-600">First Night Decorations</a>
-                <a href="#" class="block hover:text-pink-600">Baby Ceremony Decorations</a>
-            </div>
-            <div class="space-y-3">
-                <h4 class="font-bold text-gray-900 text-lg mb-4">Top Cities</h4>
-                <a href="#" class="block hover:text-pink-600">Bangalore</a>
-                <a href="#" class="block hover:text-pink-600">Mumbai</a>
-                <a href="#" class="block hover:text-pink-600">Delhi</a>
-                <a href="#" class="block hover:text-pink-600">Ahmedabad</a>
-                <a href="#" class="block hover:text-pink-600">Kolkata</a>
-                <a href="#" class="block hover:text-pink-600">Chennai</a>
-                <a href="#" class="block hover:text-pink-600">Hyderabad</a>
-                <a href="#" class="block hover:text-pink-600">Pune</a>
-            </div>
-            <div class="space-y-3">
-                <h4 class="font-bold text-gray-900 text-lg mb-4">Info</h4>
-                <a href="#" class="block hover:text-pink-600">Contact Us</a>
-                <a href="#" class="block hover:text-pink-600">Privacy Policy</a>
-                <a href="#" class="block hover:text-pink-600">Sitemap</a>
-            </div>
+    <footer class="bg-gradient-to-b from-white to-blue-50 pt-20 pb-10 px-6 border-t mt-auto">
+        <div class="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-12 text-sm text-gray-600 mb-16">
+            <div><h4 class="font-bold text-gray-900 mb-6 text-lg">Important Links</h4><a href="page.html?id=about" class="block mb-3 hover:text-pink-500">About Us</a><a href="page.html?id=faqs" class="block mb-3 hover:text-pink-500">FAQs</a><a href="page.html?id=tnc" class="block mb-3 hover:text-pink-500">Terms & Conditions</a></div>
+            <div><h4 class="font-bold text-gray-900 mb-6 text-lg">Categories</h4><a href="index.html?category=birthday-decor" class="block mb-3 hover:text-pink-500">Birthday Decor</a><a href="index.html?category=baby-shower-decor" class="block mb-3 hover:text-pink-500">Baby Shower</a><a href="index.html?category=anniversary-decor" class="block mb-3 hover:text-pink-500">Anniversary</a></div>
+            <div><h4 class="font-bold text-gray-900 mb-6 text-lg">Cities</h4><p class="mb-3">Mira Bhayandar</p><p>Mumbai</p></div>
+            <div><h4 class="font-bold text-gray-900 mb-6 text-lg">Legal Info</h4><a href="page.html?id=refunds" class="block mb-3 hover:text-pink-500">Refunds & Returns</a><a href="page.html?id=disclaimer" class="block mb-3 hover:text-pink-500">Disclaimer</a></div>
         </div>
-        <div class="max-w-7xl mx-auto flex flex-col items-center">
-            <div class="flex gap-4 mb-4">
-                <a href="#" class="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold text-xs hover:scale-110">f</a>
-                <a href="#" class="w-8 h-8 rounded-full bg-black flex items-center justify-center text-white font-bold text-xs hover:scale-110">𝕏</a>
-                <a href="#" class="w-8 h-8 rounded-full bg-pink-600 flex items-center justify-center text-white font-bold text-xs hover:scale-110">In</a>
-                <a href="#" class="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold text-xs hover:scale-110">li</a>
-                <a href="#" class="w-8 h-8 rounded-full bg-red-600 flex items-center justify-center text-white font-bold text-xs hover:scale-110">▶</a>
-            </div>
-            <p class="text-xs text-gray-500 font-bold">© 2026 Celebrift.com - All Rights Reserved</p>
-        </div>
+        <p class="text-center text-xs text-gray-400 font-bold tracking-widest">© 2026 CELEBRIFT.COM</p>
     </footer>
 
     <div class="fixed bottom-6 right-6 z-50 flex flex-col gap-3">
@@ -119,5 +65,53 @@
     </div>
 
     <script src="app.js"></script>
+    
+    <script>
+        async function applyFestiveTheme() {
+            try {
+                const res = await fetch('/api/settings');
+                const settings = await res.json();
+                const theme = settings['site_theme'] || 'default';
+                if (theme === 'default') return;
+
+                const themeData = {
+                    'christmas': { bg: 'linear-gradient(to bottom, #fdf2f8, #dcfce7, #fee2e2)', elements: ['🎄', '❄️', '🎁', '⭐', '🔔'] },
+                    'diwali': { bg: 'linear-gradient(to bottom, #fffbeb, #ffedd5, #fef3c7)', elements: ['🪔', '✨', '🎆', '🏵️', '🎇'] },
+                    'holi': { bg: 'linear-gradient(to bottom, #fdf4ff, #e0e7ff, #ecfeff)', elements: ['🎨', '💦', '🌈', '🎈', '✨'] },
+                    'new-year': { bg: 'linear-gradient(to bottom, #f1f5f9, #e2e8f0, #cbd5e1)', elements: ['🎇', '🥂', '🎊', '✨', '🕛'] },
+                    'eid': { bg: 'linear-gradient(to bottom, #f0fdf4, #dcfce7, #bbf7d0)', elements: ['🌙', '⭐', '🕌', '✨', '🤲'] },
+                    'national': { bg: 'linear-gradient(to bottom, #ffedd5, #f8fafc, #dcfce7)', elements: ['🇮🇳', '🕊️', '🌸', '✨', '🤍'] }
+                };
+
+                const current = themeData[theme];
+                if (!current) return;
+
+                document.body.style.background = current.bg;
+                const container = document.createElement('div');
+                container.className = 'fixed inset-0 pointer-events-none z-[1] overflow-hidden';
+                
+                for(let i=0; i<25; i++) {
+                    const el = document.createElement('div');
+                    el.innerText = current.elements[Math.floor(Math.random() * current.elements.length)];
+                    el.className = 'absolute opacity-50 text-3xl md:text-5xl animate-float drop-shadow-xl';
+                    el.style.left = Math.random() * 100 + 'vw';
+                    el.style.top = '100vh';
+                    el.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                    el.style.animationDelay = (Math.random() * 5) + 's';
+                    container.appendChild(el);
+                }
+                document.body.prepend(container);
+                
+                const style = document.createElement('style');
+                style.innerHTML = `
+                    @keyframes float { 0% { transform: translateY(0) rotate(0deg) scale(0.8); opacity: 0; } 10% { opacity: 0.7; } 50% { transform: translateY(-50vh) rotate(180deg) scale(1.2); } 90% { opacity: 0.7; } 100% { transform: translateY(-110vh) rotate(360deg) scale(0.8); opacity: 0; } }
+                    .animate-float { animation: float linear infinite; }
+                    main, section, footer, nav { position: relative; z-index: 10; }
+                `;
+                document.head.appendChild(style);
+            } catch(e) {}
+        }
+        applyFestiveTheme();
+    </script>
 </body>
 </html>

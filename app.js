@@ -1,36 +1,72 @@
-const urlParams = new URLSearchParams(window.location.search);
-const filterCat = urlParams.get('category');
-
-async function loadHome() {
+async function renderHeroSection() {
     try {
-        const res = await fetch('/api/decorations');
-        const allItems = await res.json();
+        const res = await fetch('/api/settings');
+        const settings = await res.json();
         
-        let categories = [...new Set(allItems.map(i => i.category))];
-        if(filterCat) categories = [filterCat]; 
+        if (settings['hero_title']) document.getElementById('hero-main-title').textContent = settings['hero_title'];
+        if (settings['hero_subtitle']) document.getElementById('hero-sub-title').textContent = settings['hero_subtitle'];
+        
+        const container = document.getElementById('hero-categories-container');
+        if (settings['hero_items']) {
+            const items = JSON.parse(settings['hero_items']);
+            if (items.length === 0) return;
 
-        document.getElementById('rows-container').innerHTML = categories.map(cat => {
+            container.innerHTML = items.map(item => {
+                let shapeClasses = "w-28 h-28 md:w-36 md:h-36 rounded-full"; 
+                if (item.shape === 'square') shapeClasses = "w-28 h-28 md:w-36 md:h-36";
+                if (item.shape === 'rounded-square') shapeClasses = "w-28 h-28 md:w-36 md:h-36 rounded-2xl";
+                if (item.shape === 'rectangle') shapeClasses = "w-40 h-28 md:w-56 md:h-36";
+                if (item.shape === 'rounded-rectangle') shapeClasses = "w-40 h-28 md:w-56 md:h-36 rounded-3xl";
+
+                return `
+                <div onclick="window.location.href='index.html?category=${item.target}'" class="flex flex-col items-center gap-3 cursor-pointer group flex-shrink-0">
+                    <img src="${item.image}" class="${shapeClasses} border-4 border-white shadow-lg group-hover:border-pink-500 transition-all object-cover">
+                    <span class="font-bold text-gray-700 whitespace-nowrap">${item.title}</span>
+                </div>`;
+            }).join('');
+        }
+    } catch (e) { console.error("Hero error", e); }
+}
+
+async function renderNetflixHome() {
+    const container = document.getElementById('rows-container');
+    const urlParams = new URLSearchParams(window.location.search);
+    const selectedCategory = urlParams.get('category');
+    
+    try {
+        const fetchUrl = selectedCategory ? `/api/decorations?category=${selectedCategory}` : '/api/decorations';
+        const response = await fetch(fetchUrl);
+        const allItems = await response.json();
+        
+        const categories = [...new Set(allItems.map(item => item.category))];
+        
+        if (allItems.length === 0) {
+            container.innerHTML = "<p class='text-center text-gray-500 font-bold py-10'>No decorations found for this category yet.</p>";
+            return;
+        }
+
+        container.innerHTML = categories.map(cat => {
             const items = allItems.filter(i => i.category === cat);
             const title = cat.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
             
             return `
-                <section>
+                <section id="cat-${cat}" class="scroll-mt-32">
                     <div class="flex justify-between items-center mb-6">
-                        <h2 class="text-2xl md:text-3xl font-black text-indigo-900">${title}</h2>
-                        ${!filterCat ? `<a href="index.html?category=${cat}" class="text-pink-500 font-bold text-sm border-b-2 border-pink-500 pb-0.5">View All &rarr;</a>` : ''}
+                        <h2 class="text-2xl font-extrabold text-indigo-900">${title}</h2>
+                        ${!selectedCategory ? `<a href="index.html?category=${cat}" class="text-pink-500 font-bold text-sm border-b-2 border-pink-500 pb-0.5 hover:text-indigo-900 transition-colors">View All &rarr;</a>` : ''}
                     </div>
-                    <div class="flex overflow-x-auto flex-nowrap gap-6 pb-8 hide-scroll-bar px-2">
+                    <div class="flex overflow-x-auto gap-5 pb-6 hide-scroll-bar">
                         ${items.map(item => `
                             <a href="details.html?id=${item.slug}" class="flex-none w-64 md:w-80 group">
-                                <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden transition-all group-hover:shadow-xl">
-                                    <div class="h-48 overflow-hidden">
-                                        <img src="${item.images[0]}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                                <div class="bg-white rounded-2xl shadow-sm border overflow-hidden transition-all group-hover:shadow-lg">
+                                    <div class="h-48 overflow-hidden bg-gray-100">
+                                        <img src="${item.image_url}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
                                     </div>
-                                    <div class="p-5">
-                                        <h4 class="font-bold text-gray-800 line-clamp-1">${item.title}</h4>
-                                        <div class="flex justify-between mt-2">
-                                            <span class="text-pink-600 font-black">${item.price_range}</span>
-                                            <span class="text-sm text-yellow-500 font-bold">★ ${item.average_rating || '5.0'}</span>
+                                    <div class="p-4">
+                                        <h4 class="font-bold text-indigo-900 line-clamp-1">${item.title}</h4>
+                                        <div class="flex justify-between items-center mt-2">
+                                            <span class="text-pink-600 font-extrabold">${item.price_range}</span>
+                                            <span class="text-xs text-yellow-500">★ ${item.average_rating || '5.0'}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -39,19 +75,10 @@ async function loadHome() {
                     </div>
                 </section>`;
         }).join('');
-
-        const revRes = await fetch('/api/home-reviews');
-        if (revRes.ok) {
-            const revs = await revRes.json();
-            document.getElementById('home-reviews').innerHTML = revs.map(r => `
-                <div class="flex-none w-72 md:w-80 bg-white p-6 rounded-3xl shadow-sm border border-pink-100 snap-center">
-                    <div class="flex text-yellow-400 mb-3 text-lg">${'★'.repeat(r.rating)}</div>
-                    <p class="text-gray-600 italic mb-4 line-clamp-3">"${r.review_text}"</p>
-                    <p class="font-bold text-gray-900">- ${r.reviewer_name}</p>
-                </div>
-            `).join('');
-        }
-    } catch (e) { document.getElementById('rows-container').innerHTML = "Error loading data."; }
+    } catch (e) {
+        container.innerHTML = "<p class='text-center text-red-500 font-bold'>Failed to load data.</p>";
+    }
 }
 
-document.addEventListener('DOMContentLoaded', loadHome);
+renderHeroSection();
+renderNetflixHome();
