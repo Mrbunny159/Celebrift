@@ -1,23 +1,21 @@
 const urlParams = new URLSearchParams(window.location.search);
 const decorId = urlParams.get('id');
 
-// 5. STAR RATING INTERACTIVITY
 const starSpans = document.querySelectorAll('#star-selector span');
 const ratingInput = document.getElementById('rev-rating');
 
-starSpans.forEach(star => {
-    star.addEventListener('click', () => {
-        const val = parseInt(star.dataset.val);
-        ratingInput.value = val;
-        starSpans.forEach((s, idx) => {
-            if (idx < val) {
-                s.classList.replace('text-gray-300', 'text-yellow-400');
-            } else {
-                s.classList.replace('text-yellow-400', 'text-gray-300');
-            }
+if (starSpans) {
+    starSpans.forEach(star => {
+        star.addEventListener('click', () => {
+            const val = parseInt(star.dataset.val);
+            ratingInput.value = val;
+            starSpans.forEach((s, idx) => {
+                if (idx < val) s.classList.replace('text-gray-300', 'text-yellow-400');
+                else s.classList.replace('text-yellow-400', 'text-gray-300');
+            });
         });
     });
-});
+}
 
 async function fetchProductDetails() {
     try {
@@ -28,7 +26,6 @@ async function fetchProductDetails() {
         document.getElementById('loading-state').classList.add('hidden');
         document.getElementById('detail-container').classList.remove('hidden');
         
-        // 4. MAIN IMAGE & THUMBNAILS
         document.getElementById('main-image').src = data.images[0];
         const thumbContainer = document.getElementById('thumbnail-container');
         if(data.images.length > 1) {
@@ -42,20 +39,16 @@ async function fetchProductDetails() {
         document.getElementById('decor-price').textContent = data.price_range;
         document.getElementById('decor-desc').textContent = data.description;
         
-        // Stars
         const rating = Math.round(data.average_rating || 5);
         document.getElementById('decor-rating-stars').innerHTML = '★'.repeat(rating) + '☆'.repeat(5-rating) + `<span class="text-sm text-gray-500 ml-2">(${data.average_rating || 5})</span>`;
         
-        // WhatsApp Button
         const msg = encodeURIComponent(`Hi Celebrift! I want to book the ${data.title} setup.`);
         document.getElementById('whatsapp-btn').href = `https://wa.me/919594328008?text=${msg}`;
 
-        // Lists
         let includes = [];
         try { includes = typeof data.package_includes === 'string' ? JSON.parse(data.package_includes) : data.package_includes; } catch(e){}
         document.getElementById('desktop-package-list').innerHTML = includes.map(i => `<li class="mb-1">✓ ${i}</li>`).join('');
 
-        // Reviews
         const revList = document.getElementById('reviews-list');
         revList.innerHTML = data.reviews.length ? data.reviews.map(r => `
             <div class="bg-gray-50 p-5 rounded-2xl border">
@@ -65,7 +58,6 @@ async function fetchProductDetails() {
             </div>
         `).join('') : '<p class="text-gray-500">No reviews yet. Be the first!</p>';
 
-        // Related Products
         const res = await fetch('/api/decorations');
         const all = await res.json();
         const related = all.filter(i => i.slug !== decorId).slice(0, 12);
@@ -81,20 +73,23 @@ async function fetchProductDetails() {
     } catch (e) { console.error(e); }
 }
 
-document.getElementById('review-form').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const btn = document.getElementById('rev-submit');
-    btn.textContent = 'Submitting...';
-    
-    await fetch(`/api/reviews/${decorId}`, {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-            name: document.getElementById('rev-name').value,
-            rating: parseInt(document.getElementById('rev-rating').value),
-            review: document.getElementById('rev-text').value
-        })
+const reviewForm = document.getElementById('review-form');
+if (reviewForm) {
+    reviewForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const btn = document.getElementById('rev-submit');
+        btn.textContent = 'Submitting...';
+        
+        await fetch(`/api/reviews/${decorId}`, {
+            method: 'POST', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                name: document.getElementById('rev-name').value,
+                rating: parseInt(document.getElementById('rev-rating').value),
+                review: document.getElementById('rev-text').value
+            })
+        });
+        window.location.reload();
     });
-    window.location.reload();
-});
+}
 
-fetchProductDetails();
+document.addEventListener('DOMContentLoaded', fetchProductDetails);

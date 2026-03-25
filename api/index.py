@@ -25,7 +25,6 @@ def manage_decorations():
         cur.close()
         conn.close()
         
-        # Parse image_url for multiple images
         for d in decorations:
             try:
                 d['images'] = json.loads(d['image_url']) if d['image_url'].startswith('[') else [d['image_url']]
@@ -39,7 +38,6 @@ def manage_decorations():
         data = request.json
         cur = conn.cursor()
         try:
-            # Check if updating
             cur.execute("SELECT slug FROM decorations WHERE slug = %s", (data['slug'],))
             if cur.fetchone():
                 cur.execute('''UPDATE decorations SET title=%s, category=%s, image_url=%s, description=%s, price_range=%s WHERE slug=%s''',
@@ -84,7 +82,6 @@ def single_decoration(slug):
         conn.close()
         return jsonify({'success': True})
 
-# --- REVIEWS LOGIC ---
 @app.route('/api/reviews/<slug>', methods=['POST'])
 def add_review(slug):
     data = request.json
@@ -101,7 +98,6 @@ def add_review(slug):
 def home_reviews():
     conn = get_db_connection()
     cur = conn.cursor(cursor_factory=RealDictCursor)
-    # Fetch 5 top reviews for the homepage
     cur.execute('SELECT * FROM reviews WHERE rating >= 4 ORDER BY created_at DESC LIMIT 5;')
     revs = cur.fetchall()
     cur.close()

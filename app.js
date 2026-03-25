@@ -13,7 +13,6 @@ async function loadHome() {
             const items = allItems.filter(i => i.category === cat);
             const title = cat.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
             
-            // 7. FIX: Uses 'flex overflow-x-auto flex-nowrap' so it ALWAYS scrolls horizontally on mobile
             return `
                 <section>
                     <div class="flex justify-between items-center mb-6">
@@ -41,7 +40,6 @@ async function loadHome() {
                 </section>`;
         }).join('');
 
-        // 3. FETCH HOME REVIEWS
         const revRes = await fetch('/api/home-reviews');
         if (revRes.ok) {
             const revs = await revRes.json();
@@ -56,4 +54,4 @@ async function loadHome() {
     } catch (e) { document.getElementById('rows-container').innerHTML = "Error loading data."; }
 }
 
-loadHome();
+document.addEventListener('DOMContentLoaded', loadHome);
