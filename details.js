@@ -10,37 +10,44 @@ async function fetchProductDetails() {
         document.getElementById('loading-state').classList.add('hidden');
         document.getElementById('detail-container').classList.remove('hidden');
         
+        // Use image_url to match Postgres schema
         document.getElementById('decor-image').src = data.image_url;
         document.getElementById('decor-title').textContent = data.title;
         document.getElementById('decor-price').textContent = data.price_range;
         document.getElementById('decor-desc').textContent = data.description;
+        
+        const rating = Math.round(data.average_rating || 5);
+        document.getElementById('decor-rating-stars').innerHTML = '★'.repeat(rating) + '☆'.repeat(5-rating) + `<span class="text-sm text-gray-500 ml-2">(${data.average_rating || 5})</span>`;
 
         const whatsappBtn = document.getElementById('whatsapp-btn');
         const msg = encodeURIComponent(`Hi Celebrift! I want to book the ${data.title} setup.`);
         whatsappBtn.href = `https://wa.me/919594328008?text=${msg}`;
 
+        // Safely Parse JSON for Package Includes
         const pkgList = document.getElementById('desktop-package-list');
         let includes = [];
         try { includes = typeof data.package_includes === 'string' ? JSON.parse(data.package_includes) : data.package_includes; } catch(e){}
         if (includes && includes.length > 0) {
             pkgList.innerHTML = `<ul class="list-disc pl-5 space-y-1 text-gray-600">${includes.map(item => `<li>${item}</li>`).join('')}</ul>`;
         } else {
-            pkgList.innerHTML = "<p>Standard package inclusions apply.</p>";
+            pkgList.innerHTML = "<p>Standard package inclusions apply. Contact us for details.</p>";
         }
 
+        // Safely Parse JSON for FAQs
         const faqList = document.getElementById('desktop-faq-list');
         let faqs = [];
         try { faqs = typeof data.faqs === 'string' ? JSON.parse(data.faqs) : data.faqs; } catch(e){}
         if (faqs && faqs.length > 0) {
             faqList.innerHTML = faqs.map(f => `<div class="mb-3"><p class="font-bold text-gray-800">Q: ${f.q}</p><p class="text-gray-600">A: ${f.a}</p></div>`).join('');
         } else {
-            faqList.innerHTML = "<p>No specific FAQs.</p>";
+            faqList.innerHTML = "<p>No specific FAQs for this setup.</p>";
         }
 
         renderReviews(data.reviews || []);
         await loadRelated();
 
     } catch (e) { 
+        console.error("Data fetch failed:", e);
         document.getElementById('loading-state').textContent = "Failed to load product details.";
     }
 }
@@ -49,10 +56,15 @@ async function loadRelated() {
     try {
         const res = await fetch('/api/decorations');
         const data = await res.json();
+        
+        // 2 Rows of 4 logic
         const related = data.filter(i => i.slug !== decorId).slice(0, 8); 
         const container = document.getElementById('related-products-container');
         
-        if (related.length === 0) return;
+        if (related.length === 0) {
+            container.innerHTML = ""; 
+            return;
+        }
 
         container.innerHTML = `
             <h3 class="text-3xl font-black mb-8 text-center text-gray-900 border-t border-gray-200 pt-16">More Designs for You</h3>
@@ -69,7 +81,9 @@ async function loadRelated() {
                     </a>
                 `).join('')}
             </div>`;
-    } catch (e) {}
+    } catch (e) {
+        console.error("Failed to load related products", e);
+    }
 }
 
 function renderReviews(reviews) {
@@ -94,16 +108,26 @@ document.getElementById('review-form')?.addEventListener('submit', async (e) => 
     const btn = document.getElementById('rev-submit');
     btn.textContent = "Submitting...";
     
-    await fetch(`/api/reviews/${decorId}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-            name: document.getElementById('rev-name').value,
-            rating: parseInt(document.getElementById('rev-rating').value),
-            review: document.getElementById('rev-text').value
-        })
-    });
-    location.reload(); 
+    const payload = {
+        name: document.getElementById('rev-name').value,
+        rating: parseInt(document.getElementById('rev-rating').value),
+        review: document.getElementById('rev-text').value
+    };
+
+    try {
+        const res = await fetch(`/api/reviews/${decorId}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+        if (res.ok) {
+            alert("Review submitted successfully!");
+            location.reload(); 
+        }
+    } catch (err) {
+        alert("Failed to submit review.");
+        btn.textContent = "Submit Feedback";
+    }
 });
 
 fetchProductDetails();

@@ -51,7 +51,7 @@ def manage_decorations():
     if request.method == 'GET':
         cur = conn.cursor(cursor_factory=RealDictCursor)
         category = request.args.get('category')
-        if category:
+        if category and category != 'all':
             cur.execute('SELECT * FROM decorations WHERE category = %s ORDER BY views DESC;', (category,))
         else:
             cur.execute('SELECT * FROM decorations ORDER BY views DESC;')
