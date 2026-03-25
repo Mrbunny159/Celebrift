@@ -71,7 +71,7 @@ async function loadHome() {
                                     <div class="p-5">
                                         <h4 class="font-bold text-gray-800 line-clamp-1">${item.title}</h4>
                                         <div class="flex justify-between mt-2">
-                                            <span class="text-pink-600 font-black">₹${item.price_range}</span>
+                                            <span class="text-pink-600 font-black">${item.price_range}</span>
                                             <span class="text-sm text-yellow-500 font-bold">★ ${item.average_rating || '5.0'}</span>
                                         </div>
                                     </div>
