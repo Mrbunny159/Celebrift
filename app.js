@@ -1,7 +1,7 @@
 const urlParams = new URLSearchParams(window.location.search);
 const filterCat = urlParams.get('category');
 
-// RESTORED: Fetch Hero Section Data from Database
+// FETCH HERO SECTION WITH INFINITE MARQUEE
 async function renderHeroSection() {
     try {
         const res = await fetch('/api/settings');
@@ -10,13 +10,12 @@ async function renderHeroSection() {
         if (settings['hero_title']) document.getElementById('hero-main-title').textContent = settings['hero_title'];
         if (settings['hero_subtitle']) document.getElementById('hero-sub-title').textContent = settings['hero_subtitle'];
         
-        const container = document.getElementById('hero-categories-container');
+        const track = document.getElementById('hero-categories-track');
         if (settings['hero_items']) {
             const items = JSON.parse(settings['hero_items']);
             if (items.length === 0) return;
 
-            container.innerHTML = items.map(item => {
-                // Handle the dynamic shapes
+            const buildItemHTML = (item) => {
                 let shapeClasses = "w-24 h-24 md:w-32 md:h-32 rounded-full"; 
                 if (item.shape === 'square') shapeClasses = "w-24 h-24 md:w-32 md:h-32 rounded-none";
                 if (item.shape === 'rounded-square') shapeClasses = "w-24 h-24 md:w-32 md:h-32 rounded-2xl";
@@ -24,18 +23,22 @@ async function renderHeroSection() {
                 if (item.shape === 'rounded-rectangle') shapeClasses = "w-32 h-24 md:w-40 md:h-32 rounded-3xl";
 
                 return `
-                <div onclick="window.location.href='index.html?category=${item.target}'" class="flex flex-col items-center gap-3 cursor-pointer group flex-none">
-                    <img src="${item.image}" class="${shapeClasses} object-cover border-4 border-white shadow-lg group-hover:border-pink-400 transition-all">
+                <div onclick="window.location.href='index.html?category=${item.target}'" class="flex flex-col items-center gap-3 cursor-pointer group flex-none mx-4 md:mx-6">
+                    <img src="${item.image}" class="${shapeClasses} object-cover border-4 border-white shadow-lg group-hover:border-pink-400 transition-all bg-white">
                     <span class="text-sm font-bold text-indigo-900 text-center w-24 md:w-32 line-clamp-2 leading-tight">${item.title}</span>
                 </div>`;
-            }).join('');
+            };
+
+            // Duplicate the items array multiple times to create the seamless infinite scroll effect
+            const repeatedItems = [...items, ...items, ...items, ...items, ...items, ...items];
+            track.innerHTML = repeatedItems.map(buildItemHTML).join('');
         }
     } catch (e) { console.error("Hero error", e); }
 }
 
+// LOAD PRODUCT ROWS HORIZONTALLY
 async function loadHome() {
     try {
-        // Render rows of products
         const res = await fetch('/api/decorations');
         const allItems = await res.json();
         
@@ -94,6 +97,6 @@ async function loadHome() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    renderHeroSection(); // Call the hero builder
-    loadHome(); // Call the content builder
+    renderHeroSection(); 
+    loadHome(); 
 });
