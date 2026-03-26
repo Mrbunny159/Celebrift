@@ -49,10 +49,17 @@ def manage_decorations():
     if request.method == 'GET':
         cur = conn.cursor(cursor_factory=RealDictCursor)
         category = request.args.get('category')
+        
+        # 🚀 MASSIVE PERFORMANCE OPTIMIZATION: 
+        # Only fetch lightweight columns for the homepage/admin lists. 
+        # Do NOT fetch the massive 'images' array, 'description', or 'faqs' here!
+        query = 'SELECT slug, title, category, image_url, price_range, average_rating FROM decorations'
+        
         if category and category != 'all':
-            cur.execute('SELECT * FROM decorations WHERE category = %s ORDER BY views DESC;', (category,))
+            cur.execute(query + ' WHERE category = %s ORDER BY views DESC;', (category,))
         else:
-            cur.execute('SELECT * FROM decorations ORDER BY views DESC;')
+            cur.execute(query + ' ORDER BY views DESC;')
+            
         decorations = cur.fetchall()
         cur.close()
         conn.close()
@@ -95,6 +102,7 @@ def single_decoration(slug):
     conn = get_db_connection()
     if request.method == 'GET':
         cur = conn.cursor(cursor_factory=RealDictCursor)
+        # We DO fetch everything (SELECT *) here because the Details page needs the full gallery
         cur.execute('SELECT * FROM decorations WHERE slug = %s;', (slug,))
         decoration = cur.fetchone()
         if decoration:
@@ -128,7 +136,6 @@ def add_review(slug):
     conn.close()
     return jsonify({'success': True})
 
-# --- ADMIN PRODUCT REVIEWS MANAGEMENT ---
 @app.route('/api/admin/reviews', methods=['GET'])
 def get_all_reviews():
     if request.headers.get('Authorization') != f'Bearer {SECRET_TOKEN}':
@@ -141,7 +148,6 @@ def get_all_reviews():
     conn.close()
     return jsonify(reviews)
 
-# NEW: COMBINED UPDATE AND DELETE ROUTE FOR PRODUCT REVIEWS
 @app.route('/api/admin/reviews/<int:review_id>', methods=['DELETE', 'PUT'])
 def modify_review(review_id):
     if request.headers.get('Authorization') != f'Bearer {SECRET_TOKEN}':
@@ -149,7 +155,6 @@ def modify_review(review_id):
     conn = get_db_connection()
     cur = conn.cursor()
     try:
-        # Get slug to update the average rating afterwards
         cur.execute('SELECT decoration_slug FROM reviews WHERE id = %s', (review_id,))
         res = cur.fetchone()
         if not res:
@@ -166,7 +171,6 @@ def modify_review(review_id):
                 WHERE id = %s
             ''', (data['name'], data['rating'], data['review'], review_id))
 
-        # Recalculate average
         cur.execute('UPDATE decorations SET average_rating = (SELECT ROUND(AVG(rating), 2) FROM reviews WHERE decoration_slug = %s) WHERE slug = %s', (slug, slug))
         conn.commit()
         return jsonify({'success': True})
