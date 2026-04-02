@@ -50,10 +50,8 @@ def manage_decorations():
         cur = conn.cursor(cursor_factory=RealDictCursor)
         category = request.args.get('category')
         
-        # 🚀 MASSIVE PERFORMANCE OPTIMIZATION: 
-        # Only fetch lightweight columns for the homepage/admin lists. 
-        # Do NOT fetch the massive 'images' array, 'description', or 'faqs' here!
-        query = 'SELECT slug, title, category, image_url, price_range, average_rating FROM decorations'
+        # Optimized query includes offer_text
+        query = 'SELECT slug, title, category, image_url, price_range, average_rating, offer_text FROM decorations'
         
         if category and category != 'all':
             cur.execute(query + ' WHERE category = %s ORDER BY views DESC;', (category,))
@@ -74,20 +72,21 @@ def manage_decorations():
             images_json = json.dumps(data.get('images', []))
             package_json = json.dumps(data.get('package_includes', []))
             faqs_json = json.dumps(data.get('faqs', []))
+            offer_val = data.get('offer_text', '')
 
             cur.execute("SELECT slug FROM decorations WHERE slug = %s", (data['slug'],))
             if cur.fetchone():
                 cur.execute('''
                     UPDATE decorations SET title=%s, category=%s, image_url=%s, description=%s, 
-                    price_range=%s, package_includes=%s, faqs=%s, images=%s WHERE slug=%s
+                    price_range=%s, package_includes=%s, faqs=%s, images=%s, offer_text=%s WHERE slug=%s
                 ''', (data['title'], data['category'], data['image_url'], data['description'], 
-                      data['price_range'], package_json, faqs_json, images_json, data['slug']))
+                      data['price_range'], package_json, faqs_json, images_json, offer_val, data['slug']))
             else:
                 cur.execute('''
-                    INSERT INTO decorations (slug, title, category, image_url, description, price_range, package_includes, faqs, images)
-                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+                    INSERT INTO decorations (slug, title, category, image_url, description, price_range, package_includes, faqs, images, offer_text)
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                 ''', (data['slug'], data['title'], data['category'], data['image_url'], data['description'], 
-                      data['price_range'], package_json, faqs_json, images_json))
+                      data['price_range'], package_json, faqs_json, images_json, offer_val))
             conn.commit()
             return jsonify({'success': True})
         except Exception as e:
@@ -102,7 +101,6 @@ def single_decoration(slug):
     conn = get_db_connection()
     if request.method == 'GET':
         cur = conn.cursor(cursor_factory=RealDictCursor)
-        # We DO fetch everything (SELECT *) here because the Details page needs the full gallery
         cur.execute('SELECT * FROM decorations WHERE slug = %s;', (slug,))
         decoration = cur.fetchone()
         if decoration:
@@ -165,11 +163,7 @@ def modify_review(review_id):
             cur.execute('DELETE FROM reviews WHERE id = %s', (review_id,))
         elif request.method == 'PUT':
             data = request.json
-            cur.execute('''
-                UPDATE reviews 
-                SET reviewer_name = %s, rating = %s, review_text = %s 
-                WHERE id = %s
-            ''', (data['name'], data['rating'], data['review'], review_id))
+            cur.execute('UPDATE reviews SET reviewer_name = %s, rating = %s, review_text = %s WHERE id = %s', (data['name'], data['rating'], data['review'], review_id))
 
         cur.execute('UPDATE decorations SET average_rating = (SELECT ROUND(AVG(rating), 2) FROM reviews WHERE decoration_slug = %s) WHERE slug = %s', (slug, slug))
         conn.commit()

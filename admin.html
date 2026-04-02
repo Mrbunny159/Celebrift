@@ -28,16 +28,17 @@
         </div>
         
         <nav class="flex-grow p-2 md:p-4 flex md:flex-col overflow-x-auto md:overflow-y-auto space-x-2 md:space-x-0 md:space-y-2 hide-scroll-bar">
-            <button onclick="switchTab('listings')" id="btn-listings" class="nav-btn active flex-none md:w-full text-left px-4 py-3 rounded-xl text-sm md:text-base text-gray-600 transition whitespace-nowrap">📦 Listings</button>
-            <button onclick="switchTab('hero')" id="btn-hero" class="nav-btn flex-none md:w-full text-left px-4 py-3 rounded-xl text-sm md:text-base text-gray-600 transition whitespace-nowrap">🌟 Hero Section</button>
-            <button onclick="switchTab('home-reviews')" id="btn-home-reviews" class="nav-btn flex-none md:w-full text-left px-4 py-3 rounded-xl text-sm md:text-base text-gray-600 transition whitespace-nowrap">⭐ Home Reviews</button>
-            <button onclick="switchTab('product-reviews')" id="btn-product-reviews" class="nav-btn flex-none md:w-full text-left px-4 py-3 rounded-xl text-sm md:text-base text-gray-600 transition whitespace-nowrap">💬 Prod Reviews</button>
-            <button onclick="switchTab('theme')" id="btn-theme" class="nav-btn flex-none md:w-full text-left px-4 py-3 rounded-xl text-sm md:text-base text-gray-600 transition whitespace-nowrap">🎨 Site Theme</button>
-            <button onclick="switchTab('faqs')" id="btn-faqs" class="nav-btn flex-none md:w-full text-left px-4 py-3 rounded-xl text-sm md:text-base text-gray-600 transition whitespace-nowrap">❓ Global FAQs</button>
-            <button onclick="switchTab('tnc')" id="btn-tnc" class="nav-btn flex-none md:w-full text-left px-4 py-3 rounded-xl text-sm md:text-base text-gray-600 transition whitespace-nowrap">📄 Terms</button>
-            <button onclick="switchTab('refunds')" id="btn-refunds" class="nav-btn flex-none md:w-full text-left px-4 py-3 rounded-xl text-sm md:text-base text-gray-600 transition whitespace-nowrap">💸 Refunds</button>
-            <button onclick="switchTab('about')" id="btn-about" class="nav-btn flex-none md:w-full text-left px-4 py-3 rounded-xl text-sm md:text-base text-gray-600 transition whitespace-nowrap">🏢 About Us</button>
-            <button onclick="switchTab('disclaimer')" id="btn-disclaimer" class="nav-btn flex-none md:w-full text-left px-4 py-3 rounded-xl text-sm md:text-base text-gray-600 transition whitespace-nowrap">⚠️ Disclaimer</button>
+            <button onclick="switchTab('promotions')" id="btn-promotions" class="nav-btn flex-none text-left px-4 py-3 rounded-xl text-sm md:text-base text-gray-600 transition whitespace-nowrap">📢 Promotions</button>
+            <button onclick="switchTab('listings')" id="btn-listings" class="nav-btn active flex-none text-left px-4 py-3 rounded-xl text-sm md:text-base text-gray-600 transition whitespace-nowrap">📦 Listings</button>
+            <button onclick="switchTab('hero')" id="btn-hero" class="nav-btn flex-none text-left px-4 py-3 rounded-xl text-sm md:text-base text-gray-600 transition whitespace-nowrap">🌟 Hero Section</button>
+            <button onclick="switchTab('home-reviews')" id="btn-home-reviews" class="nav-btn flex-none text-left px-4 py-3 rounded-xl text-sm md:text-base text-gray-600 transition whitespace-nowrap">⭐ Home Reviews</button>
+            <button onclick="switchTab('product-reviews')" id="btn-product-reviews" class="nav-btn flex-none text-left px-4 py-3 rounded-xl text-sm md:text-base text-gray-600 transition whitespace-nowrap">💬 Prod Reviews</button>
+            <button onclick="switchTab('theme')" id="btn-theme" class="nav-btn flex-none text-left px-4 py-3 rounded-xl text-sm md:text-base text-gray-600 transition whitespace-nowrap">🎨 Site Theme</button>
+            <button onclick="switchTab('faqs')" id="btn-faqs" class="nav-btn flex-none text-left px-4 py-3 rounded-xl text-sm md:text-base text-gray-600 transition whitespace-nowrap">❓ Global FAQs</button>
+            <button onclick="switchTab('tnc')" id="btn-tnc" class="nav-btn flex-none text-left px-4 py-3 rounded-xl text-sm md:text-base text-gray-600 transition whitespace-nowrap">📄 Terms</button>
+            <button onclick="switchTab('refunds')" id="btn-refunds" class="nav-btn flex-none text-left px-4 py-3 rounded-xl text-sm md:text-base text-gray-600 transition whitespace-nowrap">💸 Refunds</button>
+            <button onclick="switchTab('about')" id="btn-about" class="nav-btn flex-none text-left px-4 py-3 rounded-xl text-sm md:text-base text-gray-600 transition whitespace-nowrap">🏢 About Us</button>
+            <button onclick="switchTab('disclaimer')" id="btn-disclaimer" class="nav-btn flex-none text-left px-4 py-3 rounded-xl text-sm md:text-base text-gray-600 transition whitespace-nowrap">⚠️ Disclaimer</button>
         </nav>
         
         <div class="p-4 border-t hidden md:block">
@@ -47,17 +48,48 @@
 
     <main class="flex-grow overflow-y-auto p-4 md:p-8 h-full bg-gray-50 w-full">
 
+        <div id="tab-promotions" class="tab-content max-w-6xl mx-auto">
+            <h2 class="text-2xl font-bold mb-6 text-gray-800">📢 Manage Promotions & Banners</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                
+                <div class="bg-white p-6 md:p-8 rounded-3xl shadow-sm border border-pink-100">
+                    <h3 class="text-lg font-bold mb-2 text-indigo-900">Universal Top Bar Offer</h3>
+                    <p class="text-sm text-gray-500 mb-6">This displays a thin banner at the very top of all pages. Great for site-wide sales.</p>
+                    <input type="text" id="global-offer-input" placeholder="e.g. 🎉 Any decor in ₹999! Book Now!" class="w-full p-4 border rounded-xl bg-gray-50 mb-4 outline-none focus:ring-2 focus:ring-pink-500">
+                    <button onclick="saveGlobalOffer(this)" class="w-full bg-pink-500 text-white py-3 rounded-xl font-bold hover:bg-pink-600 transition">Save Top Banner</button>
+                    <button onclick="clearGlobalOffer(this)" class="w-full bg-gray-100 text-gray-600 py-3 rounded-xl font-bold hover:bg-gray-200 transition mt-3">Remove Top Banner</button>
+                </div>
+
+                <div class="bg-white p-6 md:p-8 rounded-3xl shadow-sm border border-indigo-100">
+                    <h3 class="text-lg font-bold mb-2 text-indigo-900">Main Promotional Video/Banner</h3>
+                    <p class="text-sm text-gray-500 mb-6">Displays a large video or image banner on the homepage. (Max 4MB for videos to prevent lag).</p>
+                    
+                    <div id="current-promo-media-preview" class="w-full h-32 bg-gray-100 rounded-xl mb-4 overflow-hidden hidden flex items-center justify-center border border-gray-200">
+                        </div>
+
+                    <input type="file" id="promo-media-upload" accept="image/*,video/mp4,video/webm" class="w-full mb-4 text-sm file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:bg-indigo-50 file:text-indigo-700 font-bold">
+                    <button onclick="uploadPromoMedia(this)" class="w-full bg-indigo-600 text-white py-3 rounded-xl font-bold hover:bg-indigo-700 transition">Upload & Set Banner</button>
+                    <button onclick="clearPromoMedia(this)" class="w-full bg-red-50 text-red-600 py-3 rounded-xl font-bold hover:bg-red-100 transition mt-3">Remove Banner</button>
+                </div>
+
+            </div>
+        </div>
+
         <div id="tab-listings" class="tab-content active max-w-7xl mx-auto">
             <div class="flex justify-between items-center mb-6">
                 <h2 class="text-2xl font-bold text-gray-800">Manage Listings</h2>
-                <button onclick="logout()" class="md:hidden bg-gray-900 text-white px-4 py-2 rounded-lg font-bold text-sm">Logout</button>
             </div>
             <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
                 <div class="xl:col-span-1 bg-white p-6 rounded-3xl shadow-sm border border-gray-100 h-fit">
                     <h3 id="form-title" class="text-lg font-bold mb-6 text-gray-800">Add New Listing</h3>
                     <form id="add-form" class="space-y-4">
                         <input type="text" id="title" placeholder="Title" class="w-full p-3 border rounded-xl bg-gray-50 outline-none focus:ring-2 focus:ring-pink-500" required>
-                        <input type="text" id="price" placeholder="Price (e.g. 2499 or ₹2499)" class="w-full p-3 border rounded-xl bg-gray-50 outline-none focus:ring-2 focus:ring-pink-500" required>
+                        
+                        <div class="flex gap-2">
+                            <input type="text" id="price" placeholder="Price (e.g. ₹2499)" class="w-1/2 p-3 border rounded-xl bg-gray-50 outline-none focus:ring-2 focus:ring-pink-500" required>
+                            <input type="text" id="offer-text" placeholder="Badge (e.g. 20% OFF)" class="w-1/2 p-3 border rounded-xl bg-red-50 placeholder-red-300 text-red-600 outline-none focus:ring-2 focus:ring-red-400">
+                        </div>
+
                         <select id="category" class="w-full p-3 border rounded-xl bg-gray-50 outline-none focus:ring-2 focus:ring-pink-500">
                             <option value="birthday-decor">Birthday Decor</option>
                             <option value="baby-shower-decor">Baby Shower Decor</option>
@@ -173,7 +205,6 @@
                         <div class="border rounded-xl p-4 bg-gray-50">
                             <label class="block text-xs font-bold text-gray-500 mb-2">Upload Photo/Video (Max 4MB)</label>
                             <input type="file" id="home-rev-media" accept="image/*,video/mp4,video/webm" class="w-full text-sm file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-pink-50 file:text-pink-700 hover:file:bg-pink-100">
-                            <p class="text-xs text-gray-400 mt-2">Uploading media makes the review stand out!</p>
                         </div>
 
                         <button type="submit" id="home-rev-submit-btn" class="w-full bg-pink-500 text-white py-3 rounded-xl font-bold hover:bg-pink-600 transition">Add to Home Page</button>
@@ -192,7 +223,6 @@
 
         <div id="tab-product-reviews" class="tab-content max-w-6xl mx-auto">
             <h2 class="text-2xl font-bold mb-6 text-gray-800">Manage Customer Product Reviews</h2>
-            
             <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
                 <div id="prod-rev-edit-container" class="xl:col-span-1 bg-white p-6 rounded-3xl shadow-sm border border-pink-200 h-fit hidden">
                     <h3 class="text-lg font-bold mb-4 border-b pb-2 text-indigo-900">Edit Customer Review</h3>
@@ -298,17 +328,71 @@
             });
         }
 
-        // --- LISTINGS LOGIC ---
+        // --- NEW: PROMOTIONS SAVING ---
+        async function saveGlobalOffer(btn) {
+            const val = document.getElementById('global-offer-input').value;
+            const original = btn.textContent;
+            btn.textContent = "Saving..."; btn.disabled = true;
+            try {
+                await fetch(`/api/settings/global_offer`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }, body: JSON.stringify({ content: val }) });
+                btn.textContent = "Saved!"; setTimeout(() => { btn.textContent = original; btn.disabled = false; }, 2000);
+            } catch(e) { btn.disabled = false; }
+        }
+        async function clearGlobalOffer(btn) {
+            document.getElementById('global-offer-input').value = '';
+            await saveGlobalOffer(btn);
+        }
+
+        async function uploadPromoMedia(btn) {
+            const fileInput = document.getElementById('promo-media-upload');
+            if (fileInput.files.length === 0) return alert("Select a file first.");
+            const file = fileInput.files[0];
+            
+            const original = btn.textContent;
+            btn.textContent = "Processing..."; btn.disabled = true;
+
+            let mediaData = "";
+            if (file.type.startsWith('video/')) {
+                if (file.size > 4000000) { alert("Video too large! Max 4MB."); btn.textContent = original; btn.disabled = false; return; }
+                mediaData = await new Promise((res, rej) => { const r = new FileReader(); r.readAsDataURL(file); r.onload = () => res(r.result); r.onerror = rej; });
+            } else {
+                mediaData = await compressImage(file);
+            }
+
+            try {
+                await fetch(`/api/settings/promo_media`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }, body: JSON.stringify({ content: mediaData }) });
+                btn.textContent = "Saved!"; 
+                document.getElementById('current-promo-media-preview').classList.remove('hidden');
+                if (mediaData.startsWith('data:video')) document.getElementById('current-promo-media-preview').innerHTML = `<video src="${mediaData}" class="h-full object-cover"></video>`;
+                else document.getElementById('current-promo-media-preview').innerHTML = `<img src="${mediaData}" class="h-full object-cover">`;
+                
+                setTimeout(() => { btn.textContent = original; btn.disabled = false; }, 2000);
+            } catch(e) { btn.disabled = false; }
+        }
+
+        async function clearPromoMedia(btn) {
+            btn.textContent = "Removing..."; btn.disabled = true;
+            try {
+                await fetch(`/api/settings/promo_media`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }, body: JSON.stringify({ content: "" }) });
+                document.getElementById('current-promo-media-preview').classList.add('hidden');
+                document.getElementById('promo-media-upload').value = "";
+                btn.textContent = "Removed"; setTimeout(() => { btn.textContent = "Remove Banner"; btn.disabled = false; }, 2000);
+            } catch(e) { btn.disabled = false; }
+        }
+
+
+        // --- LISTINGS LOGIC (Updated to include Offer Text) ---
         async function loadAdminProducts() {
             const res = await fetch('/api/decorations'); const data = await res.json();
             document.getElementById('admin-product-list').innerHTML = data.map(item => {
                 const primaryImage = item.image_url || (item.images && JSON.parse(item.images)[0]) || '';
+                const offerBadge = item.offer_text ? `<span class="bg-red-100 text-red-600 px-2 py-0.5 rounded text-[10px] font-bold ml-2">${item.offer_text}</span>` : '';
                 return `
                 <div class="flex items-center justify-between p-4 border rounded-2xl bg-white shadow-sm hover:shadow-md transition">
                     <div class="flex items-center gap-4">
                         <img src="${primaryImage}" class="w-14 h-14 md:w-16 md:h-16 object-cover rounded-xl border bg-gray-50">
                         <div>
-                            <h3 class="font-bold text-gray-800 text-sm md:text-base line-clamp-1">${item.title}</h3>
+                            <h3 class="font-bold text-gray-800 text-sm md:text-base line-clamp-1">${item.title} ${offerBadge}</h3>
                             <p class="text-[10px] md:text-xs font-bold text-pink-500 uppercase tracking-wider mt-1">${item.category.replace(/-/g, ' ')}</p>
                             <p class="text-xs md:text-sm text-gray-500 mt-1">${item.price_range} | ★ ${item.average_rating || 5}</p>
                         </div>
@@ -340,17 +424,10 @@
                 finalImageArray = JSON.parse(existingImagesJSON); 
             }
 
-            if (finalImageArray.length === 0) { 
-                alert("Upload at least 1 image."); 
-                btn.textContent = "Save Listing"; 
-                btn.disabled = false; 
-                return; 
-            }
+            if (finalImageArray.length === 0) { alert("Upload at least 1 image."); btn.textContent = "Save Listing"; btn.disabled = false; return; }
 
             let priceInput = document.getElementById('price').value.trim();
-            if (!priceInput.includes('₹') && !priceInput.toLowerCase().includes('rs')) {
-                priceInput = '₹' + priceInput;
-            }
+            if (!priceInput.includes('₹') && !priceInput.toLowerCase().includes('rs')) priceInput = '₹' + priceInput;
 
             const pkgString = document.getElementById('package-includes').value; 
             const packageIncludesArray = pkgString ? pkgString.split(',').map(s => s.trim()).filter(s => s !== "") : [];
@@ -367,16 +444,13 @@
                 image_url: finalImageArray[0], 
                 images: finalImageArray, 
                 package_includes: packageIncludesArray, 
-                faqs: faqsArray 
+                faqs: faqsArray,
+                offer_text: document.getElementById('offer-text').value // NEW
             };
 
             try {
                 const res = await fetch('/api/decorations', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }, body: JSON.stringify(payload) });
-                if (res.ok) { 
-                    alert("Saved successfully!"); 
-                    resetForm(); 
-                    loadAdminProducts(); 
-                } else { alert("Failed to save."); }
+                if (res.ok) { alert("Saved successfully!"); resetForm(); loadAdminProducts(); } else { alert("Failed to save."); }
             } catch (err) { alert("Server error."); }
             btn.disabled = false; btn.textContent = "Save Listing";
         });
@@ -386,6 +460,7 @@
                 const res = await fetch(`/api/decorations/${slug}`); const item = await res.json();
                 document.getElementById('title').value = item.title; document.getElementById('price').value = item.price_range; 
                 document.getElementById('category').value = item.category; document.getElementById('description').value = item.description; 
+                document.getElementById('offer-text').value = item.offer_text || ''; // NEW
                 
                 let imgs = item.images ? JSON.parse(item.images) : (item.image_url ? [item.image_url] : []);
                 document.getElementById('existing-images-array').value = JSON.stringify(imgs);
@@ -410,7 +485,7 @@
             const btn = document.getElementById('submit-btn'); btn.textContent = "Save Listing"; btn.classList.replace('bg-blue-600', 'bg-pink-500'); document.getElementById('cancel-edit-btn').classList.add('hidden');
         }
 
-        // --- GLOBAL SETTINGS / TEXT EDITORS ---
+        // --- SETTINGS LOGIC ---
         async function saveSetting(btnElement, key, textareaId) {
             const content = document.getElementById(textareaId).value;
             const originalText = btnElement.textContent;
@@ -421,7 +496,7 @@
                     btnElement.textContent = "Saved!"; btnElement.classList.replace('bg-pink-500', 'bg-green-500');
                     setTimeout(() => { btnElement.textContent = originalText; btnElement.classList.replace('bg-green-500', 'bg-pink-500'); btnElement.disabled = false; }, 2000);
                 } else { alert("Failed to save."); btnElement.textContent = originalText; btnElement.disabled = false;}
-            } catch (e) { alert("Error connecting to server."); btnElement.textContent = originalText; btnElement.disabled = false; }
+            } catch (e) { btnElement.textContent = originalText; btnElement.disabled = false; }
         }
 
         async function loadSettings() {
@@ -439,10 +514,18 @@
                 if (settings['hero_items']) { heroItems = JSON.parse(settings['hero_items']); renderHeroAdminList(); }
                 if (settings['home_reviews']) { homeRevs = JSON.parse(settings['home_reviews']); renderHomeRevsList(); }
                 if (settings['site_theme']) selectTheme(settings['site_theme']);
+                
+                // Load Promo Data
+                if (settings['global_offer']) document.getElementById('global-offer-input').value = settings['global_offer'];
+                if (settings['promo_media']) {
+                    document.getElementById('current-promo-media-preview').classList.remove('hidden');
+                    if (settings['promo_media'].startsWith('data:video')) document.getElementById('current-promo-media-preview').innerHTML = `<video src="${settings['promo_media']}" class="h-full object-cover"></video>`;
+                    else document.getElementById('current-promo-media-preview').innerHTML = `<img src="${settings['promo_media']}" class="h-full object-cover">`;
+                }
+
             } catch (e) { }
         }
 
-        // --- THEME LOGIC ---
         function selectTheme(themeName) {
             document.querySelectorAll('.theme-card').forEach(el => el.classList.remove('active'));
             const selectedCard = document.getElementById(`theme-${themeName}`);
@@ -463,7 +546,6 @@
             } catch (e) { btnElement.disabled = false;}
         }
 
-        // --- HERO LOGIC ---
         let heroItems = [];
         async function saveHeroText(btnElement) {
             const title = document.getElementById('hero-title-input').value; const subtitle = document.getElementById('hero-subtitle-input').value;
@@ -497,17 +579,14 @@
                     heroItems[index].image = base64Image;
                 }
             } else {
-                heroItems.push({
-                    id: Date.now().toString(), title: document.getElementById('hero-item-title').value, target: document.getElementById('hero-item-target').value,
-                    shape: document.getElementById('hero-item-shape').value, image: base64Image
-                });
+                heroItems.push({ id: Date.now().toString(), title: document.getElementById('hero-item-title').value, target: document.getElementById('hero-item-target').value, shape: document.getElementById('hero-item-shape').value, image: base64Image });
             }
             renderHeroAdminList(); resetHeroForm(); btn.disabled = false;
         });
 
         function renderHeroAdminList() {
             const list = document.getElementById('hero-items-list'); document.getElementById('hero-count').textContent = `(${heroItems.length} items)`;
-            if (heroItems.length === 0) { list.innerHTML = "<p class='text-gray-500 italic p-4 bg-gray-50 rounded-xl'>No items added yet. Add items using the form.</p>"; return; }
+            if (heroItems.length === 0) { list.innerHTML = "<p class='text-gray-500 italic p-4 bg-gray-50 rounded-xl'>No items added yet.</p>"; return; }
             list.innerHTML = heroItems.map((item, index) => `
                 <div class="flex items-center justify-between p-4 border rounded-2xl bg-white shadow-sm hover:shadow-md transition">
                     <div class="flex items-center gap-4">
@@ -539,62 +618,32 @@
 
         function deleteHeroItem(index) { heroItems.splice(index, 1); renderHeroAdminList(); }
         async function saveHeroLayout(btnElement) {
-            btnElement.textContent = "Saving..."; btnElement.disabled = true;
+            btnElement.textContent = "Saving Layout..."; btnElement.disabled = true;
             try {
                 const res = await fetch(`/api/settings/hero_items`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }, body: JSON.stringify({ content: JSON.stringify(heroItems) }) });
-                if (res.ok) {
-                    btnElement.textContent = "Saved!"; btnElement.classList.replace('bg-green-500', 'bg-blue-600');
-                    setTimeout(() => { btnElement.textContent = "Save Live Layout"; btnElement.classList.replace('bg-blue-600', 'bg-green-500'); btnElement.disabled = false; }, 2000);
-                }
+                if (res.ok) { btnElement.textContent = "Layout Saved!"; btnElement.classList.replace('bg-green-500', 'bg-blue-600'); setTimeout(() => { btnElement.textContent = "Save Live Layout"; btnElement.classList.replace('bg-blue-600', 'bg-green-500'); btnElement.disabled = false; }, 2000); }
             } catch (e) { btnElement.disabled = false;}
         }
 
-        // --- HOME REVIEWS (WITH MEDIA UPLOAD) LOGIC ---
         let homeRevs = [];
         document.getElementById('add-home-rev-form').addEventListener('submit', async (e) => {
             e.preventDefault(); 
-            const btn = document.getElementById('home-rev-submit-btn');
-            btn.textContent = "Processing Media..."; btn.disabled = true;
+            const btn = document.getElementById('home-rev-submit-btn'); btn.textContent = "Processing..."; btn.disabled = true;
 
-            const editId = document.getElementById('home-rev-edit-id').value;
-            const fileInput = document.getElementById('home-rev-media');
+            const editId = document.getElementById('home-rev-edit-id').value; const fileInput = document.getElementById('home-rev-media');
             let mediaData = document.getElementById('home-rev-existing-media').value;
 
             if (fileInput.files.length > 0) {
                 const file = fileInput.files[0];
                 if (file.type.startsWith('video/')) {
-                    if (file.size > 4000000) { 
-                        alert("Video is too large! Please keep it under 4MB to prevent server issues.");
-                        btn.textContent = editId ? "Update" : "Add to Home Page"; btn.disabled = false;
-                        return;
-                    }
-                    mediaData = await new Promise((resolve, reject) => {
-                        const reader = new FileReader(); reader.readAsDataURL(file);
-                        reader.onload = () => resolve(reader.result); reader.onerror = reject;
-                    });
-                } else {
-                    mediaData = await compressImage(file);
-                }
+                    if (file.size > 4000000) { alert("Video too large! Max 4MB."); btn.textContent = editId ? "Update" : "Add to Home Page"; btn.disabled = false; return; }
+                    mediaData = await new Promise((res, rej) => { const r = new FileReader(); r.readAsDataURL(file); r.onload = () => res(r.result); r.onerror = rej; });
+                } else { mediaData = await compressImage(file); }
             }
 
-            const rev = { 
-                id: editId || Date.now().toString(), 
-                name: document.getElementById('home-rev-name').value, 
-                rating: parseInt(document.getElementById('home-rev-rating').value), 
-                text: document.getElementById('home-rev-text').value,
-                media: mediaData
-            };
-
-            if (editId) { 
-                const index = homeRevs.findIndex(r => r.id === editId); 
-                if (index !== -1) homeRevs[index] = rev; 
-            } else { 
-                homeRevs.push(rev); 
-            }
-            
-            renderHomeRevsList(); 
-            resetHomeRevForm();
-            btn.disabled = false;
+            const rev = { id: editId || Date.now().toString(), name: document.getElementById('home-rev-name').value, rating: parseInt(document.getElementById('home-rev-rating').value), text: document.getElementById('home-rev-text').value, media: mediaData };
+            if (editId) { const index = homeRevs.findIndex(r => r.id === editId); if (index !== -1) homeRevs[index] = rev; } else { homeRevs.push(rev); }
+            renderHomeRevsList(); resetHomeRevForm(); btn.disabled = false;
         });
 
         function renderHomeRevsList() {
@@ -605,143 +654,63 @@
                     if(r.media.startsWith('data:video')) mediaThumb = `<video src="${r.media}" class="w-12 h-12 rounded-lg object-cover ml-4 border border-gray-200"></video>`;
                     else mediaThumb = `<img src="${r.media}" class="w-12 h-12 rounded-lg object-cover ml-4 border border-gray-200">`;
                 }
-
                 return `
                 <div class="flex items-center justify-between p-4 border rounded-2xl bg-white shadow-sm">
-                    <div class="flex items-center">
-                        <div>
-                            <p class="text-yellow-400 text-lg">${'★'.repeat(r.rating)}</p>
-                            <p class="font-bold text-gray-800">${r.name}</p>
-                            <p class="text-sm text-gray-600 line-clamp-1">"${r.text}"</p>
-                        </div>
-                        ${mediaThumb}
-                    </div>
-                    <div class="flex gap-2">
-                        <button onclick="editHomeRev('${r.id}')" class="bg-blue-50 text-blue-600 px-4 py-2 rounded-lg font-bold text-sm">Edit</button>
-                        <button onclick="deleteHomeRev(${i})" class="bg-red-50 text-red-600 px-4 py-2 rounded-lg font-bold text-sm">Del</button>
-                    </div>
-                </div>
-            `}).join('');
+                    <div class="flex items-center"><div><p class="text-yellow-400 text-lg">${'★'.repeat(r.rating)}</p><p class="font-bold text-gray-800">${r.name}</p><p class="text-sm text-gray-600 line-clamp-1">"${r.text}"</p></div>${mediaThumb}</div>
+                    <div class="flex gap-2"><button onclick="editHomeRev('${r.id}')" class="bg-blue-50 text-blue-600 px-4 py-2 rounded-lg font-bold text-sm">Edit</button><button onclick="deleteHomeRev(${i})" class="bg-red-50 text-red-600 px-4 py-2 rounded-lg font-bold text-sm">Del</button></div>
+                </div>`}).join('');
         }
 
         function editHomeRev(id) {
             const r = homeRevs.find(x => x.id === id); if(!r) return;
-            document.getElementById('home-rev-edit-id').value = r.id; 
-            document.getElementById('home-rev-name').value = r.name; 
-            document.getElementById('home-rev-rating').value = r.rating; 
-            document.getElementById('home-rev-text').value = r.text;
-            document.getElementById('home-rev-existing-media').value = r.media || "";
-            
-            document.getElementById('home-rev-form-title').innerText = "Edit Review"; 
-            const btn = document.getElementById('home-rev-submit-btn');
-            btn.textContent = "Update Review"; 
-            btn.classList.replace('bg-pink-500', 'bg-indigo-600');
-            document.getElementById('home-rev-cancel-btn').classList.remove('hidden');
+            document.getElementById('home-rev-edit-id').value = r.id; document.getElementById('home-rev-name').value = r.name; document.getElementById('home-rev-rating').value = r.rating; document.getElementById('home-rev-text').value = r.text; document.getElementById('home-rev-existing-media').value = r.media || "";
+            document.getElementById('home-rev-form-title').innerText = "Edit Review"; const btn = document.getElementById('home-rev-submit-btn'); btn.textContent = "Update Review"; btn.classList.replace('bg-pink-500', 'bg-indigo-600'); document.getElementById('home-rev-cancel-btn').classList.remove('hidden');
         }
 
         function deleteHomeRev(index) { homeRevs.splice(index, 1); renderHomeRevsList(); }
-        
-        function resetHomeRevForm() { 
-            document.getElementById('add-home-rev-form').reset(); 
-            document.getElementById('home-rev-edit-id').value = ""; 
-            document.getElementById('home-rev-existing-media').value = "";
-            document.getElementById('home-rev-form-title').innerText = "Add Home Review"; 
-            const btn = document.getElementById('home-rev-submit-btn');
-            btn.textContent = "Add to Home Page"; 
-            btn.classList.replace('bg-indigo-600', 'bg-pink-500');
-            document.getElementById('home-rev-cancel-btn').classList.add('hidden'); 
-        }
+        function resetHomeRevForm() { document.getElementById('add-home-rev-form').reset(); document.getElementById('home-rev-edit-id').value = ""; document.getElementById('home-rev-existing-media').value = ""; document.getElementById('home-rev-form-title').innerText = "Add Home Review"; const btn = document.getElementById('home-rev-submit-btn'); btn.textContent = "Add to Home Page"; btn.classList.replace('bg-indigo-600', 'bg-pink-500'); document.getElementById('home-rev-cancel-btn').classList.add('hidden'); }
+        async function saveHomeReviewsLayout(btn) { btn.textContent = "Saving..."; btn.disabled = true; try { await fetch(`/api/settings/home_reviews`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }, body: JSON.stringify({ content: JSON.stringify(homeRevs) }) }); btn.textContent = "Saved!"; setTimeout(() => { btn.textContent = "Save Live Layout"; btn.disabled = false; }, 2000); } catch (e) { btn.disabled = false; } }
 
-        async function saveHomeReviewsLayout(btn) {
-            btn.textContent = "Saving..."; btn.disabled = true;
-            try { await fetch(`/api/settings/home_reviews`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }, body: JSON.stringify({ content: JSON.stringify(homeRevs) }) });
-                btn.textContent = "Saved!"; setTimeout(() => { btn.textContent = "Save Live Layout"; btn.disabled = false; }, 2000); } catch (e) { btn.disabled = false; }
-        }
-
-        // --- PRODUCT REVIEWS MODERATION ---
         let rawProductReviews = [];
         async function loadCustomerReviews() {
             try {
                 const res = await fetch('/api/admin/reviews', { headers: { 'Authorization': `Bearer ${token}` } });
                 rawProductReviews = await res.json();
                 const list = document.getElementById('admin-customer-reviews-list');
-                
                 document.getElementById('prod-rev-list-container').classList.replace('xl:col-span-3', 'xl:col-span-2');
                 
                 if (rawProductReviews.length === 0) { list.innerHTML = "<p class='text-gray-500'>No customer reviews found.</p>"; return; }
                 
                 list.innerHTML = rawProductReviews.map(r => `
                     <div class="p-4 border rounded-2xl bg-white shadow-sm flex justify-between items-center hover:shadow-md transition">
-                        <div>
-                            <p class="text-xs text-pink-500 font-bold uppercase mb-1">Product: ${r.decoration_slug}</p>
-                            <p class="text-yellow-400">${'★'.repeat(r.rating)} <span class="text-gray-800 font-bold ml-2">${r.reviewer_name}</span></p>
-                            <p class="text-gray-600 mt-1">"${r.review_text}"</p>
-                        </div>
-                        <div class="flex flex-col gap-2">
-                            <button onclick="editCustomerReview(${r.id})" class="bg-indigo-50 text-indigo-600 px-4 py-2 rounded-xl font-bold shadow-sm hover:bg-indigo-100 transition text-sm">Edit</button>
-                            <button onclick="deleteCustomerReview(${r.id})" class="bg-red-50 text-red-600 px-4 py-2 rounded-xl font-bold shadow-sm hover:bg-red-100 transition text-sm">Delete</button>
-                        </div>
-                    </div>
-                `).join('');
+                        <div><p class="text-xs text-pink-500 font-bold uppercase mb-1">Product: ${r.decoration_slug}</p><p class="text-yellow-400">${'★'.repeat(r.rating)} <span class="text-gray-800 font-bold ml-2">${r.reviewer_name}</span></p><p class="text-gray-600 mt-1">"${r.review_text}"</p></div>
+                        <div class="flex flex-col gap-2"><button onclick="editCustomerReview(${r.id})" class="bg-indigo-50 text-indigo-600 px-4 py-2 rounded-xl font-bold shadow-sm hover:bg-indigo-100 transition text-sm">Edit</button><button onclick="deleteCustomerReview(${r.id})" class="bg-red-50 text-red-600 px-4 py-2 rounded-xl font-bold shadow-sm hover:bg-red-100 transition text-sm">Delete</button></div>
+                    </div>`).join('');
             } catch (e) {}
         }
 
         function editCustomerReview(id) {
-            const review = rawProductReviews.find(r => r.id === id);
-            if (!review) return;
-
-            document.getElementById('prod-rev-id').value = review.id;
-            document.getElementById('prod-rev-name').value = review.reviewer_name;
-            document.getElementById('prod-rev-rating').value = review.rating;
-            document.getElementById('prod-rev-text').value = review.review_text;
-
-            document.getElementById('prod-rev-edit-container').classList.remove('hidden');
-            window.scrollTo({top: 0, behavior:'smooth'});
+            const review = rawProductReviews.find(r => r.id === id); if (!review) return;
+            document.getElementById('prod-rev-id').value = review.id; document.getElementById('prod-rev-name').value = review.reviewer_name; document.getElementById('prod-rev-rating').value = review.rating; document.getElementById('prod-rev-text').value = review.review_text;
+            document.getElementById('prod-rev-edit-container').classList.remove('hidden'); window.scrollTo({top: 0, behavior:'smooth'});
         }
 
-        function closeProdRevEdit() {
-            document.getElementById('edit-prod-rev-form').reset();
-            document.getElementById('prod-rev-edit-container').classList.add('hidden');
-        }
-
+        function closeProdRevEdit() { document.getElementById('edit-prod-rev-form').reset(); document.getElementById('prod-rev-edit-container').classList.add('hidden'); }
         document.getElementById('edit-prod-rev-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const btn = document.getElementById('prod-rev-submit-btn');
-            btn.textContent = "Updating..."; btn.disabled = true;
-
-            const id = document.getElementById('prod-rev-id').value;
-            const payload = {
-                name: document.getElementById('prod-rev-name').value,
-                rating: parseInt(document.getElementById('prod-rev-rating').value),
-                review: document.getElementById('prod-rev-text').value
-            };
-
+            e.preventDefault(); const btn = document.getElementById('prod-rev-submit-btn'); btn.textContent = "Updating..."; btn.disabled = true;
+            const id = document.getElementById('prod-rev-id').value; const payload = { name: document.getElementById('prod-rev-name').value, rating: parseInt(document.getElementById('prod-rev-rating').value), review: document.getElementById('prod-rev-text').value };
             try {
-                const res = await fetch(`/api/admin/reviews/${id}`, { 
-                    method: 'PUT', 
-                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-                    body: JSON.stringify(payload)
-                });
-                
-                if (res.ok) {
-                    closeProdRevEdit();
-                    loadCustomerReviews();
-                    loadAdminProducts(); 
-                } else { alert("Failed to update review."); }
+                const res = await fetch(`/api/admin/reviews/${id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }, body: JSON.stringify(payload) });
+                if (res.ok) { closeProdRevEdit(); loadCustomerReviews(); loadAdminProducts(); } else { alert("Failed to update review."); }
             } catch(e) { alert("Server error."); }
             btn.textContent = "Update Review"; btn.disabled = false;
         });
 
         async function deleteCustomerReview(id) {
             if(!confirm("Permanently delete this customer review?")) return;
-            try {
-                await fetch(`/api/admin/reviews/${id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` } });
-                loadCustomerReviews(); 
-                loadAdminProducts(); 
-            } catch (e) {}
+            try { await fetch(`/api/admin/reviews/${id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` } }); loadCustomerReviews(); loadAdminProducts(); } catch (e) {}
         }
 
-        // Initialization
         loadAdminProducts();
         loadSettings();
     </script>
