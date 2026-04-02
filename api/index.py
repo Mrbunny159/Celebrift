@@ -50,7 +50,6 @@ def manage_decorations():
         cur = conn.cursor(cursor_factory=RealDictCursor)
         category = request.args.get('category')
         
-        # FEATURE 4: Now fetching sub_category for the frontend filters
         query = 'SELECT slug, title, category, sub_category, image_url, price_range, average_rating, offer_text FROM decorations'
         
         if category and category != 'all':
@@ -73,7 +72,7 @@ def manage_decorations():
             package_json = json.dumps(data.get('package_includes', []))
             faqs_json = json.dumps(data.get('faqs', []))
             offer_val = data.get('offer_text', '')
-            sub_val = data.get('sub_category', '') # Extracting sub_category
+            sub_val = data.get('sub_category', '')
 
             cur.execute("SELECT slug FROM decorations WHERE slug = %s", (data['slug'],))
             if cur.fetchone():
@@ -175,6 +174,36 @@ def modify_review(review_id):
     finally:
         cur.close()
         conn.close()
+
+# --- NEW: ADMIN ANALYTICS ENDPOINT ---
+@app.route('/api/admin/analytics', methods=['GET'])
+def get_analytics():
+    if request.headers.get('Authorization') != f'Bearer {SECRET_TOKEN}':
+        return jsonify({'error': 'Unauthorized'}), 401
+    conn = get_db_connection()
+    cur = conn.cursor(cursor_factory=RealDictCursor)
+    
+    cur.execute('SELECT SUM(views) as total_views FROM decorations;')
+    total_views = cur.fetchone()['total_views'] or 0
+    
+    cur.execute('SELECT COUNT(*) as total_listings FROM decorations;')
+    total_listings = cur.fetchone()['total_listings'] or 0
+    
+    cur.execute('SELECT COUNT(*) as total_reviews FROM reviews;')
+    total_reviews = cur.fetchone()['total_reviews'] or 0
+    
+    cur.execute('SELECT title, views FROM decorations ORDER BY views DESC LIMIT 5;')
+    top_products = cur.fetchall()
+    
+    cur.close()
+    conn.close()
+    
+    return jsonify({
+        'total_views': total_views,
+        'total_listings': total_listings,
+        'total_reviews': total_reviews,
+        'top_products': top_products
+    })
 
 @app.route('/api/admin/login', methods=['POST'])
 def admin_login():

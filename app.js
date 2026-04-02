@@ -1,10 +1,14 @@
 const urlParams = new URLSearchParams(window.location.search);
 const filterCat = urlParams.get('category');
-const filterSubCat = urlParams.get('sub'); // FEATURE 2
+const filterSubCat = urlParams.get('sub');
 
 let globalSettings = null;
 let globalCategoryMap = {};
 let categoryOrder = [];
+
+let allDecorations = []; // Stores everything from DB
+let currentSearch = "";
+let currentSort = "default";
 
 async function initPage() {
     try {
@@ -29,7 +33,6 @@ async function initPage() {
             promoSection.classList.remove('hidden');
         }
 
-        // FEATURE 4 & 3: Read dynamic categories and the exact sorting order
         if (globalSettings['site_categories']) {
             const lines = globalSettings['site_categories'].split('\n');
             lines.forEach(line => {
@@ -39,47 +42,48 @@ async function initPage() {
                 const catSlug = catName.toLowerCase().replace(/ /g, '-');
                 const subCats = parts[1] ? parts[1].split(',').map(s => s.trim()).filter(s => s !== '') : [];
                 
-                categoryOrder.push(catSlug); // Memorize the exact order the admin typed!
+                categoryOrder.push(catSlug);
                 globalCategoryMap[catSlug] = subCats.map(sc => ({ name: sc, slug: sc.toLowerCase().replace(/ /g, '-') }));
             });
         }
         
         renderHeroSection();
         renderHomeReviews();
-    } catch (e) {
-        console.error("Settings fetch error:", e);
-    }
-    loadHome();
+    } catch (e) {}
+    
+    await fetchDecorations();
+    
+    // Attach Search & Sort Event Listeners
+    document.getElementById('search-bar').addEventListener('input', (e) => {
+        currentSearch = e.target.value.toLowerCase();
+        renderDecorationsGrid();
+    });
+    
+    document.getElementById('sort-bar').addEventListener('change', (e) => {
+        currentSort = e.target.value;
+        renderDecorationsGrid();
+    });
 }
 
 function renderHeroSection() {
-    if (!globalSettings) return;
-    
-    if (globalSettings['hero_title']) document.getElementById('hero-main-title').textContent = globalSettings['hero_title'];
-    if (globalSettings['hero_subtitle']) document.getElementById('hero-sub-title').textContent = globalSettings['hero_subtitle'];
-    
+    if (!globalSettings || !globalSettings['hero_items']) return;
     const track = document.getElementById('hero-categories-track');
-    if (globalSettings['hero_items']) {
-        const items = JSON.parse(globalSettings['hero_items']);
-        if (items.length === 0) return;
-
-        const buildItemHTML = (item) => {
-            let shapeClasses = "w-24 h-24 md:w-32 md:h-32 rounded-full"; 
-            if (item.shape === 'square') shapeClasses = "w-24 h-24 md:w-32 md:h-32 rounded-none";
-            if (item.shape === 'rounded-square') shapeClasses = "w-24 h-24 md:w-32 md:h-32 rounded-2xl";
-            if (item.shape === 'rectangle') shapeClasses = "w-32 h-24 md:w-40 md:h-32 rounded-none";
-            if (item.shape === 'rounded-rectangle') shapeClasses = "w-32 h-24 md:w-40 md:h-32 rounded-3xl";
-
-            return `
-            <a href="index.html?category=${item.target}" aria-label="View ${item.title} category" class="flex flex-col items-center gap-3 cursor-pointer group flex-none mx-4 md:mx-6">
-                <img src="${item.image}" alt="${item.title} Decoration Category" class="${shapeClasses} object-cover border-4 border-white shadow-lg group-hover:border-pink-400 transition-all bg-white">
-                <span class="text-sm font-bold text-indigo-900 text-center w-24 md:w-32 line-clamp-2 leading-tight">${item.title}</span>
-            </a>`;
-        };
-
-        const repeatedItems = [...items, ...items, ...items, ...items, ...items, ...items];
-        track.innerHTML = repeatedItems.map(buildItemHTML).join('');
-    }
+    const items = JSON.parse(globalSettings['hero_items']);
+    if (items.length === 0) return;
+    const buildItemHTML = (item) => {
+        let shapeClasses = "w-24 h-24 md:w-32 md:h-32 rounded-full"; 
+        if (item.shape === 'square') shapeClasses = "w-24 h-24 md:w-32 md:h-32 rounded-none";
+        if (item.shape === 'rounded-square') shapeClasses = "w-24 h-24 md:w-32 md:h-32 rounded-2xl";
+        if (item.shape === 'rectangle') shapeClasses = "w-32 h-24 md:w-40 md:h-32 rounded-none";
+        if (item.shape === 'rounded-rectangle') shapeClasses = "w-32 h-24 md:w-40 md:h-32 rounded-3xl";
+        return `
+        <a href="index.html?category=${item.target}" aria-label="View ${item.title} category" class="flex flex-col items-center gap-3 cursor-pointer group flex-none mx-4 md:mx-6">
+            <img src="${item.image}" alt="${item.title} Decoration Category" class="${shapeClasses} object-cover border-4 border-white shadow-lg group-hover:border-pink-400 transition-all bg-white">
+            <span class="text-sm font-bold text-indigo-900 text-center w-24 md:w-32 line-clamp-2 leading-tight">${item.title}</span>
+        </a>`;
+    };
+    const repeatedItems = [...items, ...items, ...items, ...items, ...items, ...items];
+    track.innerHTML = repeatedItems.map(buildItemHTML).join('');
 }
 
 function renderHomeReviews() {
@@ -105,9 +109,8 @@ function renderHomeReviews() {
     }
 }
 
-async function loadHome() {
+async function fetchDecorations() {
     const container = document.getElementById('rows-container');
-    
     container.innerHTML = `
         <section class="animate-pulse">
             <div class="h-8 bg-pink-100 rounded-lg w-48 mb-6"></div>
@@ -116,93 +119,120 @@ async function loadHome() {
                 <div class="w-64 md:w-80 h-64 bg-pink-50 rounded-3xl flex-none"></div>
             </div>
         </section>`;
-
     try {
         const res = await fetch('/api/decorations');
-        const allItems = await res.json();
-        
-        if (allItems.length === 0) {
-            container.innerHTML = "<p class='text-center text-gray-500 font-bold py-10'>No decorations added yet.</p>";
-            return;
+        allDecorations = await res.json();
+        renderDecorationsGrid();
+    } catch (e) { 
+        container.innerHTML = "<p class='text-center text-red-500 font-bold'>Error loading data.</p>"; 
+    }
+}
+
+function renderDecorationsGrid() {
+    const container = document.getElementById('rows-container');
+    if (allDecorations.length === 0) {
+        container.innerHTML = "<p class='text-center text-gray-500 font-bold py-10'>No decorations added yet.</p>";
+        return;
+    }
+
+    // 1. FILTERING
+    let activeItems = allDecorations.filter(item => {
+        const matchesSearch = item.title.toLowerCase().includes(currentSearch) || item.category.replace(/-/g, ' ').includes(currentSearch) || (item.sub_category || '').replace(/-/g, ' ').includes(currentSearch);
+        const matchesCat = filterCat ? item.category === filterCat : true;
+        const matchesSubCat = filterSubCat ? item.sub_category === filterSubCat : true;
+        return matchesSearch && matchesCat && matchesSubCat;
+    });
+
+    // 2. SORTING
+    if (currentSort === 'price_asc') {
+        activeItems.sort((a,b) => (parseInt(a.price_range.replace(/[^0-9]/g, '')) || 0) - (parseInt(b.price_range.replace(/[^0-9]/g, '')) || 0));
+    } else if (currentSort === 'price_desc') {
+        activeItems.sort((a,b) => (parseInt(b.price_range.replace(/[^0-9]/g, '')) || 0) - (parseInt(a.price_range.replace(/[^0-9]/g, '')) || 0));
+    } else if (currentSort === 'rating') {
+        activeItems.sort((a,b) => (b.average_rating || 0) - (a.average_rating || 0));
+    }
+
+    if (activeItems.length === 0) {
+        container.innerHTML = "<p class='text-center text-gray-500 font-bold py-10 text-xl'>Oops! No decorations found for that search. 🕵️</p>";
+        return;
+    }
+
+    const isGridMode = !!filterCat || currentSearch !== "" || currentSort !== "default";
+    
+    // If we are actively searching or sorting, we abandon the Category Rows and just show one big grid
+    if (currentSearch !== "" || currentSort !== "default") {
+        container.innerHTML = `
+            <h2 class="text-2xl font-black text-indigo-900 mb-6">Search Results</h2>
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6 pb-8">
+                ${activeItems.map(item => generateCardHTML(item, true)).join('')}
+            </div>
+        `;
+        return;
+    }
+
+    // Otherwise, render normal category rows
+    let categories = [...new Set(activeItems.map(i => i.category))];
+    categories.sort((a, b) => {
+        let indexA = categoryOrder.indexOf(a); let indexB = categoryOrder.indexOf(b);
+        if (indexA === -1) indexA = 999; if (indexB === -1) indexB = 999;
+        return indexA === indexB ? a.localeCompare(b) : indexA - indexB;
+    });
+
+    container.innerHTML = categories.map(cat => {
+        const catItems = activeItems.filter(i => i.category === cat);
+        const title = cat.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+        const wrapperClasses = isGridMode ? "grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6 pb-8" : "flex overflow-x-auto flex-nowrap gap-4 md:gap-6 pb-8 hide-scroll-bar px-2 snap-x";
+            
+        let subCategoryPillsHTML = '';
+        if (isGridMode && globalCategoryMap[cat] && globalCategoryMap[cat].length > 0) {
+            const subs = globalCategoryMap[cat];
+            subCategoryPillsHTML = `
+            <div class="flex overflow-x-auto gap-3 pb-6 hide-scroll-bar px-2 md:px-0">
+                <a href="index.html?category=${cat}" class="${!filterSubCat ? 'bg-pink-600 text-white border-pink-600 shadow-md' : 'bg-white text-gray-600 border-gray-200 hover:bg-pink-50'} border px-5 py-2 rounded-full text-sm font-bold whitespace-nowrap transition-all">${!filterSubCat ? '✓ All' : 'All'}</a>
+                ${subs.map(sub => `
+                    <a href="index.html?category=${cat}&sub=${sub.slug}" class="${filterSubCat === sub.slug ? 'bg-pink-600 text-white border-pink-600 shadow-md' : 'bg-white text-gray-600 border-gray-200 hover:bg-pink-50'} border px-5 py-2 rounded-full text-sm font-bold whitespace-nowrap transition-all">${filterSubCat === sub.slug ? '✓ ' + sub.name : sub.name}</a>
+                `).join('')}
+            </div>`;
         }
 
-        let categories = [...new Set(allItems.map(i => i.category))];
-        
-        // FEATURE 3: Automatically sort the homepage based on the Admin's configured order!
-        categories.sort((a, b) => {
-            let indexA = categoryOrder.indexOf(a); 
-            let indexB = categoryOrder.indexOf(b);
-            if (indexA === -1) indexA = 999; 
-            if (indexB === -1) indexB = 999;
-            return indexA === indexB ? a.localeCompare(b) : indexA - indexB;
-        });
+        return `
+            <section>
+                <div class="flex justify-between items-center mb-4 px-2 md:px-0">
+                    <h2 class="text-2xl md:text-3xl font-black text-indigo-900">${title}</h2>
+                    ${!isGridMode ? `<a href="index.html?category=${cat}" class="text-pink-700 font-bold text-sm border-b-2 border-pink-700 pb-0.5 hover:text-indigo-900 transition-colors">View All &rarr;</a>` : ''}
+                </div>
+                ${isGridMode ? subCategoryPillsHTML : ''}
+                <div class="${wrapperClasses}">
+                    ${catItems.map(item => generateCardHTML(item, isGridMode)).join('')}
+                </div>
+            </section>`;
+    }).join('');
+}
 
-        const isGridMode = !!filterCat; 
-        if(isGridMode) categories = [filterCat]; 
+function generateCardHTML(item, isGridMode) {
+    let primaryImg = item.image_url;
+    if (item.images) { try { primaryImg = JSON.parse(item.images)[0] || item.image_url; } catch(e) {} }
 
-        container.innerHTML = categories.map(cat => {
-            let items = allItems.filter(i => i.category === cat);
-            const title = cat.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
-            const wrapperClasses = isGridMode ? "grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6 pb-8" : "flex overflow-x-auto flex-nowrap gap-4 md:gap-6 pb-8 hide-scroll-bar px-2 snap-x";
-            
-            // FEATURE 2: Generate the Sub-Category Filter Pills
-            let subCategoryPillsHTML = '';
-            if (isGridMode && globalCategoryMap[cat] && globalCategoryMap[cat].length > 0) {
-                const subs = globalCategoryMap[cat];
-                subCategoryPillsHTML = `
-                <div class="flex overflow-x-auto gap-3 pb-6 hide-scroll-bar px-2 md:px-0">
-                    <a href="index.html?category=${cat}" class="${!filterSubCat ? 'bg-pink-600 text-white border-pink-600 shadow-md' : 'bg-white text-gray-600 border-gray-200 hover:bg-pink-50'} border px-5 py-2 rounded-full text-sm font-bold whitespace-nowrap transition-all">${!filterSubCat ? '✓ All' : 'All'}</a>
-                    ${subs.map(sub => `
-                        <a href="index.html?category=${cat}&sub=${sub.slug}" class="${filterSubCat === sub.slug ? 'bg-pink-600 text-white border-pink-600 shadow-md' : 'bg-white text-gray-600 border-gray-200 hover:bg-pink-50'} border px-5 py-2 rounded-full text-sm font-bold whitespace-nowrap transition-all">${filterSubCat === sub.slug ? '✓ ' + sub.name : sub.name}</a>
-                    `).join('')}
-                </div>`;
-            }
+    const cardClasses = isGridMode ? "w-full group" : "flex-none w-60 md:w-80 group snap-center";
+    const imgHeightClasses = isGridMode ? "h-40 md:h-48" : "h-48";
+    const offerBadge = item.offer_text ? `<div class="absolute top-3 left-3 bg-red-600 text-white font-black text-xs md:text-sm px-3 py-1 rounded-full shadow-lg z-10 uppercase tracking-widest animate-pulse border border-red-400">${item.offer_text}</div>` : '';
 
-            // If a pill was clicked, filter the items!
-            if (filterSubCat) {
-                items = items.filter(i => i.sub_category === filterSubCat);
-            }
-
-            if (items.length === 0) return ''; // Skip rendering if no items match the filter
-
-            return `
-                <section>
-                    <div class="flex justify-between items-center mb-4 px-2 md:px-0">
-                        <h2 class="text-2xl md:text-3xl font-black text-indigo-900">${title}</h2>
-                        ${!isGridMode ? `<a href="index.html?category=${cat}" class="text-pink-700 font-bold text-sm border-b-2 border-pink-700 pb-0.5 hover:text-indigo-900 transition-colors">View All &rarr;</a>` : ''}
-                    </div>
-                    ${isGridMode ? subCategoryPillsHTML : ''}
-                    <div class="${wrapperClasses}">
-                        ${items.map(item => {
-                            let primaryImg = item.image_url;
-                            if (item.images) { try { primaryImg = JSON.parse(item.images)[0] || item.image_url; } catch(e) {} }
-
-                            const cardClasses = isGridMode ? "w-full group" : "flex-none w-60 md:w-80 group snap-center";
-                            const imgHeightClasses = isGridMode ? "h-40 md:h-48" : "h-48";
-                            const offerBadge = item.offer_text ? `<div class="absolute top-3 left-3 bg-red-600 text-white font-black text-xs md:text-sm px-3 py-1 rounded-full shadow-lg z-10 uppercase tracking-widest animate-pulse border border-red-400">${item.offer_text}</div>` : '';
-
-                            return `
-                            <a href="details.html?id=${item.slug}" aria-label="View details for ${item.title}" class="${cardClasses}">
-                                <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden transition-all group-hover:shadow-xl h-full flex flex-col relative">
-                                    ${offerBadge}
-                                    <div class="${imgHeightClasses} overflow-hidden w-full bg-gray-50">
-                                        <img src="${primaryImg}" alt="${item.title} Setup" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
-                                    </div>
-                                    <div class="p-3 md:p-5 flex-grow flex flex-col justify-between">
-                                        <h3 class="font-bold text-gray-800 text-sm md:text-base line-clamp-2 leading-tight">${item.title}</h3>
-                                        <div class="flex justify-between items-center mt-3">
-                                            <span class="text-pink-600 font-black text-sm md:text-base">${item.price_range}</span>
-                                            <span class="text-xs text-yellow-500 font-bold">★ ${item.average_rating || '5.0'}</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>`
-                        }).join('')}
-                    </div>
-                </section>`;
-        }).join('');
-
-    } catch (e) { container.innerHTML = "<p class='text-center text-red-500 font-bold'>Error loading data.</p>"; }
+    return `
+    <a href="details.html?id=${item.slug}" aria-label="View details for ${item.title}" class="${cardClasses}">
+        <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden transition-all group-hover:shadow-xl h-full flex flex-col relative">
+            ${offerBadge}
+            <div class="${imgHeightClasses} overflow-hidden w-full bg-gray-50">
+                <img src="${primaryImg}" alt="${item.title} Setup" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+            </div>
+            <div class="p-3 md:p-5 flex-grow flex flex-col justify-between">
+                <h3 class="font-bold text-gray-800 text-sm md:text-base line-clamp-2 leading-tight">${item.title}</h3>
+                <div class="flex justify-between items-center mt-3">
+                    <span class="text-pink-600 font-black text-sm md:text-base">${item.price_range}</span>
+                    <span class="text-xs text-yellow-500 font-bold">★ ${item.average_rating || '5.0'}</span>
+                </div>
+            </div>
+        </div>
+    </a>`;
 }
 
 document.addEventListener('DOMContentLoaded', initPage);
