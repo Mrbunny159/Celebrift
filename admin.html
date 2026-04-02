@@ -28,17 +28,18 @@
         </div>
         
         <nav class="flex-grow p-2 md:p-4 flex md:flex-col overflow-x-auto md:overflow-y-auto space-x-2 md:space-x-0 md:space-y-2 hide-scroll-bar">
-            <button onclick="switchTab('promotions')" id="btn-promotions" class="nav-btn flex-none text-left px-4 py-3 rounded-xl text-sm md:text-base text-gray-600 transition whitespace-nowrap">📢 Promotions</button>
-            <button onclick="switchTab('listings')" id="btn-listings" class="nav-btn active flex-none text-left px-4 py-3 rounded-xl text-sm md:text-base text-gray-600 transition whitespace-nowrap">📦 Listings</button>
-            <button onclick="switchTab('hero')" id="btn-hero" class="nav-btn flex-none text-left px-4 py-3 rounded-xl text-sm md:text-base text-gray-600 transition whitespace-nowrap">🌟 Hero Section</button>
-            <button onclick="switchTab('home-reviews')" id="btn-home-reviews" class="nav-btn flex-none text-left px-4 py-3 rounded-xl text-sm md:text-base text-gray-600 transition whitespace-nowrap">⭐ Home Reviews</button>
-            <button onclick="switchTab('product-reviews')" id="btn-product-reviews" class="nav-btn flex-none text-left px-4 py-3 rounded-xl text-sm md:text-base text-gray-600 transition whitespace-nowrap">💬 Prod Reviews</button>
-            <button onclick="switchTab('theme')" id="btn-theme" class="nav-btn flex-none text-left px-4 py-3 rounded-xl text-sm md:text-base text-gray-600 transition whitespace-nowrap">🎨 Site Theme</button>
-            <button onclick="switchTab('faqs')" id="btn-faqs" class="nav-btn flex-none text-left px-4 py-3 rounded-xl text-sm md:text-base text-gray-600 transition whitespace-nowrap">❓ Global FAQs</button>
-            <button onclick="switchTab('tnc')" id="btn-tnc" class="nav-btn flex-none text-left px-4 py-3 rounded-xl text-sm md:text-base text-gray-600 transition whitespace-nowrap">📄 Terms</button>
-            <button onclick="switchTab('refunds')" id="btn-refunds" class="nav-btn flex-none text-left px-4 py-3 rounded-xl text-sm md:text-base text-gray-600 transition whitespace-nowrap">💸 Refunds</button>
-            <button onclick="switchTab('about')" id="btn-about" class="nav-btn flex-none text-left px-4 py-3 rounded-xl text-sm md:text-base text-gray-600 transition whitespace-nowrap">🏢 About Us</button>
-            <button onclick="switchTab('disclaimer')" id="btn-disclaimer" class="nav-btn flex-none text-left px-4 py-3 rounded-xl text-sm md:text-base text-gray-600 transition whitespace-nowrap">⚠️ Disclaimer</button>
+            <button onclick="switchTab('categories')" id="btn-categories" class="nav-btn flex-none md:w-full text-left px-4 py-3 rounded-xl text-sm md:text-base text-gray-600 transition whitespace-nowrap">📁 Categories</button>
+            <button onclick="switchTab('promotions')" id="btn-promotions" class="nav-btn flex-none md:w-full text-left px-4 py-3 rounded-xl text-sm md:text-base text-gray-600 transition whitespace-nowrap">📢 Promotions</button>
+            <button onclick="switchTab('listings')" id="btn-listings" class="nav-btn active flex-none md:w-full text-left px-4 py-3 rounded-xl text-sm md:text-base text-gray-600 transition whitespace-nowrap">📦 Listings</button>
+            <button onclick="switchTab('hero')" id="btn-hero" class="nav-btn flex-none md:w-full text-left px-4 py-3 rounded-xl text-sm md:text-base text-gray-600 transition whitespace-nowrap">🌟 Hero Section</button>
+            <button onclick="switchTab('home-reviews')" id="btn-home-reviews" class="nav-btn flex-none md:w-full text-left px-4 py-3 rounded-xl text-sm md:text-base text-gray-600 transition whitespace-nowrap">⭐ Home Reviews</button>
+            <button onclick="switchTab('product-reviews')" id="btn-product-reviews" class="nav-btn flex-none md:w-full text-left px-4 py-3 rounded-xl text-sm md:text-base text-gray-600 transition whitespace-nowrap">💬 Prod Reviews</button>
+            <button onclick="switchTab('theme')" id="btn-theme" class="nav-btn flex-none md:w-full text-left px-4 py-3 rounded-xl text-sm md:text-base text-gray-600 transition whitespace-nowrap">🎨 Site Theme</button>
+            <button onclick="switchTab('faqs')" id="btn-faqs" class="nav-btn flex-none md:w-full text-left px-4 py-3 rounded-xl text-sm md:text-base text-gray-600 transition whitespace-nowrap">❓ Global FAQs</button>
+            <button onclick="switchTab('tnc')" id="btn-tnc" class="nav-btn flex-none md:w-full text-left px-4 py-3 rounded-xl text-sm md:text-base text-gray-600 transition whitespace-nowrap">📄 Terms</button>
+            <button onclick="switchTab('refunds')" id="btn-refunds" class="nav-btn flex-none md:w-full text-left px-4 py-3 rounded-xl text-sm md:text-base text-gray-600 transition whitespace-nowrap">💸 Refunds</button>
+            <button onclick="switchTab('about')" id="btn-about" class="nav-btn flex-none md:w-full text-left px-4 py-3 rounded-xl text-sm md:text-base text-gray-600 transition whitespace-nowrap">🏢 About Us</button>
+            <button onclick="switchTab('disclaimer')" id="btn-disclaimer" class="nav-btn flex-none md:w-full text-left px-4 py-3 rounded-xl text-sm md:text-base text-gray-600 transition whitespace-nowrap">⚠️ Disclaimer</button>
         </nav>
         
         <div class="p-4 border-t hidden md:block">
@@ -47,6 +48,28 @@
     </aside>
 
     <main class="flex-grow overflow-y-auto p-4 md:p-8 h-full bg-gray-50 w-full">
+
+        <div id="tab-categories" class="tab-content max-w-6xl mx-auto">
+            <h2 class="text-2xl font-bold mb-6 text-gray-800">📁 Dynamic Category Engine</h2>
+            <div class="bg-white p-6 md:p-8 rounded-3xl shadow-sm border border-pink-100">
+                <p class="text-gray-500 mb-4 text-sm md:text-base">Define your categories and their sub-categories here. <b>The order you list them here is exactly how they will appear on the homepage.</b></p>
+                <div class="bg-blue-50 text-blue-800 p-4 md:p-6 rounded-2xl mb-6 text-sm font-medium border border-blue-100">
+                    <p class="mb-2 uppercase tracking-wider text-xs font-black">Format Rule:</p>
+                    <ul class="list-disc pl-5 space-y-1">
+                        <li>Type one Main Category per line.</li>
+                        <li>Separate the Main Category and its Sub-categories with a straight line ( <b>|</b> ).</li>
+                        <li>Separate multiple sub-categories with commas.</li>
+                    </ul>
+                    <div class="mt-4 p-4 bg-white rounded-xl font-mono text-xs border border-blue-100 shadow-sm">
+                        Birthday Decor | Ring Decoration, Wall Decoration, Premium, U Board<br>
+                        Baby Shower Decor | Premium, Standard<br>
+                        Anniversary Decor | Room, Hotel
+                    </div>
+                </div>
+                <textarea id="categories-content" spellcheck="false" class="w-full p-5 border border-gray-200 rounded-2xl bg-gray-50 h-[15rem] focus:ring-2 focus:ring-pink-500 outline-none leading-loose font-medium text-gray-700 shadow-inner" placeholder="Birthday Decor | Ring Decoration, Wall Decoration, Premium, U Board&#10;Baby Shower Decor | &#10;Anniversary Decor | "></textarea>
+                <button onclick="saveCategories(this)" class="mt-6 w-full md:w-auto bg-pink-500 text-white px-10 py-4 rounded-xl font-black hover:bg-pink-600 transition shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">Save & Build Categories</button>
+            </div>
+        </div>
 
         <div id="tab-promotions" class="tab-content max-w-6xl mx-auto">
             <h2 class="text-2xl font-bold mb-6 text-gray-800">📢 Manage Promotions & Banners</h2>
@@ -64,8 +87,7 @@
                     <h3 class="text-lg font-bold mb-2 text-indigo-900">Main Promotional Video/Banner</h3>
                     <p class="text-sm text-gray-500 mb-6">Displays a large video or image banner on the homepage. (Max 4MB for videos to prevent lag).</p>
                     
-                    <div id="current-promo-media-preview" class="w-full h-32 bg-gray-100 rounded-xl mb-4 overflow-hidden hidden flex items-center justify-center border border-gray-200">
-                        </div>
+                    <div id="current-promo-media-preview" class="w-full h-32 bg-gray-100 rounded-xl mb-4 overflow-hidden hidden flex items-center justify-center border border-gray-200"></div>
 
                     <input type="file" id="promo-media-upload" accept="image/*,video/mp4,video/webm" class="w-full mb-4 text-sm file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:bg-indigo-50 file:text-indigo-700 font-bold">
                     <button onclick="uploadPromoMedia(this)" class="w-full bg-indigo-600 text-white py-3 rounded-xl font-bold hover:bg-indigo-700 transition">Upload & Set Banner</button>
@@ -78,6 +100,7 @@
         <div id="tab-listings" class="tab-content active max-w-7xl mx-auto">
             <div class="flex justify-between items-center mb-6">
                 <h2 class="text-2xl font-bold text-gray-800">Manage Listings</h2>
+                <button onclick="logout()" class="md:hidden bg-gray-900 text-white px-4 py-2 rounded-lg font-bold text-sm">Logout</button>
             </div>
             <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
                 <div class="xl:col-span-1 bg-white p-6 rounded-3xl shadow-sm border border-gray-100 h-fit">
@@ -90,14 +113,13 @@
                             <input type="text" id="offer-text" placeholder="Badge (e.g. 20% OFF)" class="w-1/2 p-3 border rounded-xl bg-red-50 placeholder-red-300 text-red-600 outline-none focus:ring-2 focus:ring-red-400">
                         </div>
 
-                        <select id="category" class="w-full p-3 border rounded-xl bg-gray-50 outline-none focus:ring-2 focus:ring-pink-500">
-                            <option value="birthday-decor">Birthday Decor</option>
-                            <option value="baby-shower-decor">Baby Shower Decor</option>
-                            <option value="store-decor">Store Decor</option>
-                            <option value="naming-ceremony">Naming Ceremony</option>
-                            <option value="anniversary-decor">Anniversary Decor</option>
-                            <option value="romantic-decor">Romantic Decor</option>
-                        </select>
+                        <div class="flex gap-2">
+                            <select id="category" class="w-full p-3 border rounded-xl bg-gray-50 outline-none focus:ring-2 focus:ring-pink-500 font-bold text-indigo-900" onchange="updateSubCategories()" required>
+                                </select>
+                        </div>
+                        <select id="sub-category" class="w-full p-3 border rounded-xl bg-gray-50 outline-none focus:ring-2 focus:ring-pink-500 font-bold text-gray-600 hidden">
+                            </select>
+
                         <textarea id="description" placeholder="Description" rows="3" class="w-full p-3 border rounded-xl bg-gray-50 outline-none focus:ring-2 focus:ring-pink-500"></textarea>
                         
                         <div class="border-t pt-4">
@@ -146,14 +168,8 @@
 
                             <input type="text" id="hero-item-title" placeholder="Icon Label" class="w-full p-3 border rounded-xl bg-gray-50 outline-none focus:ring-2 focus:ring-pink-500" required>
                             
-                            <select id="hero-item-target" class="w-full p-3 border rounded-xl bg-gray-50 outline-none focus:ring-2 focus:ring-pink-500" required>
+                            <select id="hero-item-target" class="w-full p-3 border rounded-xl bg-gray-50 outline-none focus:ring-2 focus:ring-pink-500 font-bold" required>
                                 <option value="" disabled selected>Scrolls to which category?</option>
-                                <option value="birthday-decor">Birthday Decor</option>
-                                <option value="baby-shower-decor">Baby Shower Decor</option>
-                                <option value="store-decor">Store Decor</option>
-                                <option value="naming-ceremony">Naming Ceremony</option>
-                                <option value="anniversary-decor">Anniversary Decor</option>
-                                <option value="romantic-decor">Romantic Decor</option>
                             </select>
 
                             <select id="hero-item-shape" class="w-full p-3 border rounded-xl bg-gray-50 outline-none focus:ring-2 focus:ring-pink-500" required>
@@ -223,6 +239,7 @@
 
         <div id="tab-product-reviews" class="tab-content max-w-6xl mx-auto">
             <h2 class="text-2xl font-bold mb-6 text-gray-800">Manage Customer Product Reviews</h2>
+            
             <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
                 <div id="prod-rev-edit-container" class="xl:col-span-1 bg-white p-6 rounded-3xl shadow-sm border border-pink-200 h-fit hidden">
                     <h3 class="text-lg font-bold mb-4 border-b pb-2 text-indigo-900">Edit Customer Review</h3>
@@ -328,7 +345,60 @@
             });
         }
 
-        // --- NEW: PROMOTIONS SAVING ---
+        // --- FEATURE 4: DYNAMIC CATEGORY BUILDER LOGIC ---
+        let globalCategoryMap = {};
+
+        async function saveCategories(btn) {
+            const content = document.getElementById('categories-content').value;
+            const originalText = btn.textContent;
+            btn.textContent = "Saving..."; btn.disabled = true;
+            try {
+                const res = await fetch(`/api/settings/site_categories`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }, body: JSON.stringify({ content }) });
+                if (res.ok) {
+                    btn.textContent = "Categories Built!"; btn.classList.replace('bg-pink-500', 'bg-green-500');
+                    parseAndLoadCategories(content);
+                    setTimeout(() => { btn.textContent = originalText; btn.classList.replace('bg-green-500', 'bg-pink-500'); btn.disabled = false; }, 2000);
+                } else { alert("Failed to save."); btn.textContent = originalText; btn.disabled = false;}
+            } catch (e) { alert("Error connecting to server."); btn.textContent = originalText; btn.disabled = false; }
+        }
+
+        function parseAndLoadCategories(rawText) {
+            globalCategoryMap = {};
+            const lines = rawText.split('\n');
+            lines.forEach(line => {
+                if(!line.trim()) return;
+                const parts = line.split('|');
+                const catName = parts[0].trim();
+                const subCats = parts[1] ? parts[1].split(',').map(s => s.trim()).filter(s => s !== '') : [];
+                globalCategoryMap[catName] = subCats;
+            });
+
+            const catSelect = document.getElementById('category');
+            catSelect.innerHTML = Object.keys(globalCategoryMap).map(c => `<option value="${c.toLowerCase().replace(/ /g, '-')}">${c}</option>`).join('');
+            updateSubCategories();
+
+            const heroSelect = document.getElementById('hero-item-target');
+            if(heroSelect) heroSelect.innerHTML = `<option value="" disabled selected>Scrolls to which category?</option>` + Object.keys(globalCategoryMap).map(c => `<option value="${c.toLowerCase().replace(/ /g, '-')}">${c}</option>`).join('');
+        }
+
+        function updateSubCategories() {
+            const catSelect = document.getElementById('category');
+            const subSelect = document.getElementById('sub-category');
+            const selectedCatSlug = catSelect.value;
+            
+            const realName = Object.keys(globalCategoryMap).find(c => c.toLowerCase().replace(/ /g, '-') === selectedCatSlug);
+            
+            if (realName && globalCategoryMap[realName].length > 0) {
+                subSelect.innerHTML = `<option value="">-- No Sub-category --</option>` + globalCategoryMap[realName].map(sc => `<option value="${sc.toLowerCase().replace(/ /g, '-')}">${sc}</option>`).join('');
+                subSelect.classList.remove('hidden');
+            } else {
+                subSelect.innerHTML = `<option value="">-- No Sub-category --</option>`;
+                subSelect.classList.add('hidden');
+            }
+        }
+
+
+        // --- PROMOTIONS ---
         async function saveGlobalOffer(btn) {
             const val = document.getElementById('global-offer-input').value;
             const original = btn.textContent;
@@ -338,16 +408,12 @@
                 btn.textContent = "Saved!"; setTimeout(() => { btn.textContent = original; btn.disabled = false; }, 2000);
             } catch(e) { btn.disabled = false; }
         }
-        async function clearGlobalOffer(btn) {
-            document.getElementById('global-offer-input').value = '';
-            await saveGlobalOffer(btn);
-        }
+        async function clearGlobalOffer(btn) { document.getElementById('global-offer-input').value = ''; await saveGlobalOffer(btn); }
 
         async function uploadPromoMedia(btn) {
             const fileInput = document.getElementById('promo-media-upload');
             if (fileInput.files.length === 0) return alert("Select a file first.");
             const file = fileInput.files[0];
-            
             const original = btn.textContent;
             btn.textContent = "Processing..."; btn.disabled = true;
 
@@ -355,9 +421,7 @@
             if (file.type.startsWith('video/')) {
                 if (file.size > 4000000) { alert("Video too large! Max 4MB."); btn.textContent = original; btn.disabled = false; return; }
                 mediaData = await new Promise((res, rej) => { const r = new FileReader(); r.readAsDataURL(file); r.onload = () => res(r.result); r.onerror = rej; });
-            } else {
-                mediaData = await compressImage(file);
-            }
+            } else { mediaData = await compressImage(file); }
 
             try {
                 await fetch(`/api/settings/promo_media`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }, body: JSON.stringify({ content: mediaData }) });
@@ -365,7 +429,6 @@
                 document.getElementById('current-promo-media-preview').classList.remove('hidden');
                 if (mediaData.startsWith('data:video')) document.getElementById('current-promo-media-preview').innerHTML = `<video src="${mediaData}" class="h-full object-cover"></video>`;
                 else document.getElementById('current-promo-media-preview').innerHTML = `<img src="${mediaData}" class="h-full object-cover">`;
-                
                 setTimeout(() => { btn.textContent = original; btn.disabled = false; }, 2000);
             } catch(e) { btn.disabled = false; }
         }
@@ -374,26 +437,26 @@
             btn.textContent = "Removing..."; btn.disabled = true;
             try {
                 await fetch(`/api/settings/promo_media`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }, body: JSON.stringify({ content: "" }) });
-                document.getElementById('current-promo-media-preview').classList.add('hidden');
-                document.getElementById('promo-media-upload').value = "";
+                document.getElementById('current-promo-media-preview').classList.add('hidden'); document.getElementById('promo-media-upload').value = "";
                 btn.textContent = "Removed"; setTimeout(() => { btn.textContent = "Remove Banner"; btn.disabled = false; }, 2000);
             } catch(e) { btn.disabled = false; }
         }
 
 
-        // --- LISTINGS LOGIC (Updated to include Offer Text) ---
+        // --- LISTINGS LOGIC ---
         async function loadAdminProducts() {
             const res = await fetch('/api/decorations'); const data = await res.json();
             document.getElementById('admin-product-list').innerHTML = data.map(item => {
                 const primaryImage = item.image_url || (item.images && JSON.parse(item.images)[0]) || '';
                 const offerBadge = item.offer_text ? `<span class="bg-red-100 text-red-600 px-2 py-0.5 rounded text-[10px] font-bold ml-2">${item.offer_text}</span>` : '';
+                const subCatLabel = item.sub_category ? ` > ${item.sub_category.replace(/-/g, ' ')}` : '';
                 return `
                 <div class="flex items-center justify-between p-4 border rounded-2xl bg-white shadow-sm hover:shadow-md transition">
                     <div class="flex items-center gap-4">
                         <img src="${primaryImage}" class="w-14 h-14 md:w-16 md:h-16 object-cover rounded-xl border bg-gray-50">
                         <div>
                             <h3 class="font-bold text-gray-800 text-sm md:text-base line-clamp-1">${item.title} ${offerBadge}</h3>
-                            <p class="text-[10px] md:text-xs font-bold text-pink-500 uppercase tracking-wider mt-1">${item.category.replace(/-/g, ' ')}</p>
+                            <p class="text-[10px] md:text-xs font-bold text-pink-500 uppercase tracking-wider mt-1">${item.category.replace(/-/g, ' ')}${subCatLabel}</p>
                             <p class="text-xs md:text-sm text-gray-500 mt-1">${item.price_range} | ★ ${item.average_rating || 5}</p>
                         </div>
                     </div>
@@ -408,8 +471,7 @@
         document.getElementById('add-form').addEventListener('submit', async (e) => {
             e.preventDefault(); 
             const btn = document.getElementById('submit-btn'); 
-            btn.textContent = "Compressing & Uploading..."; 
-            btn.disabled = true;
+            btn.textContent = "Compressing & Uploading..."; btn.disabled = true;
             
             const fileInput = document.getElementById('image-upload');
             const existingImagesJSON = document.getElementById('existing-images-array').value;
@@ -420,9 +482,7 @@
                     const compressedBase64 = await compressImage(fileInput.files[i]);
                     finalImageArray.push(compressedBase64);
                 }
-            } else if (existingImagesJSON) {
-                finalImageArray = JSON.parse(existingImagesJSON); 
-            }
+            } else if (existingImagesJSON) { finalImageArray = JSON.parse(existingImagesJSON); }
 
             if (finalImageArray.length === 0) { alert("Upload at least 1 image."); btn.textContent = "Save Listing"; btn.disabled = false; return; }
 
@@ -440,12 +500,13 @@
                 title: document.getElementById('title').value, 
                 price_range: priceInput, 
                 category: document.getElementById('category').value, 
+                sub_category: document.getElementById('sub-category').value, // FEATURE 2 & 4
                 description: document.getElementById('description').value, 
                 image_url: finalImageArray[0], 
                 images: finalImageArray, 
                 package_includes: packageIncludesArray, 
                 faqs: faqsArray,
-                offer_text: document.getElementById('offer-text').value // NEW
+                offer_text: document.getElementById('offer-text').value
             };
 
             try {
@@ -460,7 +521,10 @@
                 const res = await fetch(`/api/decorations/${slug}`); const item = await res.json();
                 document.getElementById('title').value = item.title; document.getElementById('price').value = item.price_range; 
                 document.getElementById('category').value = item.category; document.getElementById('description').value = item.description; 
-                document.getElementById('offer-text').value = item.offer_text || ''; // NEW
+                document.getElementById('offer-text').value = item.offer_text || ''; 
+                
+                updateSubCategories();
+                setTimeout(() => { document.getElementById('sub-category').value = item.sub_category || ''; }, 50);
                 
                 let imgs = item.images ? JSON.parse(item.images) : (item.image_url ? [item.image_url] : []);
                 document.getElementById('existing-images-array').value = JSON.stringify(imgs);
@@ -485,17 +549,14 @@
             const btn = document.getElementById('submit-btn'); btn.textContent = "Save Listing"; btn.classList.replace('bg-blue-600', 'bg-pink-500'); document.getElementById('cancel-edit-btn').classList.add('hidden');
         }
 
-        // --- SETTINGS LOGIC ---
+        // --- GLOBAL SETTINGS / TEXT EDITORS ---
         async function saveSetting(btnElement, key, textareaId) {
             const content = document.getElementById(textareaId).value;
             const originalText = btnElement.textContent;
             btnElement.textContent = "Saving..."; btnElement.disabled = true;
             try {
                 const res = await fetch(`/api/settings/${key}`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }, body: JSON.stringify({ content }) });
-                if (res.ok) {
-                    btnElement.textContent = "Saved!"; btnElement.classList.replace('bg-pink-500', 'bg-green-500');
-                    setTimeout(() => { btnElement.textContent = originalText; btnElement.classList.replace('bg-green-500', 'bg-pink-500'); btnElement.disabled = false; }, 2000);
-                } else { alert("Failed to save."); btnElement.textContent = originalText; btnElement.disabled = false;}
+                if (res.ok) { btnElement.textContent = "Saved!"; btnElement.classList.replace('bg-pink-500', 'bg-green-500'); setTimeout(() => { btnElement.textContent = originalText; btnElement.classList.replace('bg-green-500', 'bg-pink-500'); btnElement.disabled = false; }, 2000); } 
             } catch (e) { btnElement.textContent = originalText; btnElement.disabled = false; }
         }
 
@@ -515,7 +576,6 @@
                 if (settings['home_reviews']) { homeRevs = JSON.parse(settings['home_reviews']); renderHomeRevsList(); }
                 if (settings['site_theme']) selectTheme(settings['site_theme']);
                 
-                // Load Promo Data
                 if (settings['global_offer']) document.getElementById('global-offer-input').value = settings['global_offer'];
                 if (settings['promo_media']) {
                     document.getElementById('current-promo-media-preview').classList.remove('hidden');
@@ -523,193 +583,46 @@
                     else document.getElementById('current-promo-media-preview').innerHTML = `<img src="${settings['promo_media']}" class="h-full object-cover">`;
                 }
 
+                // LOAD DYNAMIC CATEGORIES
+                if (settings['site_categories']) {
+                    document.getElementById('categories-content').value = settings['site_categories'];
+                    parseAndLoadCategories(settings['site_categories']);
+                } else {
+                    const defaultCats = "Birthday Decor | Ring Decoration, Wall Decoration, Premium, U Board\nBaby Shower Decor | \nStore Decor | \nNaming Ceremony | \nAnniversary Decor | \nRomantic Decor | ";
+                    document.getElementById('categories-content').value = defaultCats;
+                    parseAndLoadCategories(defaultCats);
+                }
             } catch (e) { }
         }
 
-        function selectTheme(themeName) {
-            document.querySelectorAll('.theme-card').forEach(el => el.classList.remove('active'));
-            const selectedCard = document.getElementById(`theme-${themeName}`);
-            if(selectedCard) selectedCard.classList.add('active');
-            document.getElementById('active-theme-input').value = themeName;
-        }
+        function selectTheme(themeName) { document.querySelectorAll('.theme-card').forEach(el => el.classList.remove('active')); const selectedCard = document.getElementById(`theme-${themeName}`); if(selectedCard) selectedCard.classList.add('active'); document.getElementById('active-theme-input').value = themeName; }
+        async function saveSiteTheme(btnElement) { const theme = document.getElementById('active-theme-input').value; const originalText = btnElement.textContent; btnElement.textContent = "Applying Magic..."; btnElement.disabled = true; try { const res = await fetch(`/api/settings/site_theme`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }, body: JSON.stringify({ content: theme }) }); if (res.ok) { btnElement.textContent = "Theme Applied Live!"; btnElement.classList.replace('bg-pink-500', 'bg-green-500'); setTimeout(() => { btnElement.textContent = originalText; btnElement.classList.replace('bg-green-500', 'bg-pink-500'); btnElement.disabled = false; }, 2000); } } catch (e) { btnElement.disabled = false;} }
 
-        async function saveSiteTheme(btnElement) {
-            const theme = document.getElementById('active-theme-input').value;
-            const originalText = btnElement.textContent;
-            btnElement.textContent = "Applying Magic..."; btnElement.disabled = true;
-            try {
-                const res = await fetch(`/api/settings/site_theme`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }, body: JSON.stringify({ content: theme }) });
-                if (res.ok) {
-                    btnElement.textContent = "Theme Applied Live!"; btnElement.classList.replace('bg-pink-500', 'bg-green-500');
-                    setTimeout(() => { btnElement.textContent = originalText; btnElement.classList.replace('bg-green-500', 'bg-pink-500'); btnElement.disabled = false; }, 2000);
-                }
-            } catch (e) { btnElement.disabled = false;}
-        }
-
+        // --- HERO LOGIC ---
         let heroItems = [];
-        async function saveHeroText(btnElement) {
-            const title = document.getElementById('hero-title-input').value; const subtitle = document.getElementById('hero-subtitle-input').value;
-            btnElement.textContent = "Saving...";
-            await fetch(`/api/settings/hero_title`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }, body: JSON.stringify({ content: title }) });
-            await fetch(`/api/settings/hero_subtitle`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }, body: JSON.stringify({ content: subtitle }) });
-            btnElement.textContent = "Save Text";
-        }
-
-        document.getElementById('add-hero-form').addEventListener('submit', async (e) => {
-            e.preventDefault(); const btn = document.getElementById('hero-submit-btn'); btn.textContent = "Processing..."; btn.disabled = true;
-            const editId = document.getElementById('hero-edit-id').value; const fileInput = document.getElementById('hero-item-image');
-            let base64Image = document.getElementById('hero-existing-image').value;
-
-            if (fileInput.files.length > 0) {
-                const file = fileInput.files[0];
-                base64Image = await new Promise((resolve, reject) => {
-                    const reader = new FileReader(); reader.readAsDataURL(file);
-                    reader.onload = () => resolve(reader.result); reader.onerror = error => reject(error);
-                });
-            } else if (!editId && fileInput.files.length === 0) {
-                alert("Please select an image for the new category."); btn.textContent = "Add to Hero Section"; btn.disabled = false; return;
-            }
-
-            if (editId) {
-                const index = heroItems.findIndex(i => i.id === editId);
-                if (index !== -1) {
-                    heroItems[index].title = document.getElementById('hero-item-title').value;
-                    heroItems[index].target = document.getElementById('hero-item-target').value;
-                    heroItems[index].shape = document.getElementById('hero-item-shape').value;
-                    heroItems[index].image = base64Image;
-                }
-            } else {
-                heroItems.push({ id: Date.now().toString(), title: document.getElementById('hero-item-title').value, target: document.getElementById('hero-item-target').value, shape: document.getElementById('hero-item-shape').value, image: base64Image });
-            }
-            renderHeroAdminList(); resetHeroForm(); btn.disabled = false;
-        });
-
-        function renderHeroAdminList() {
-            const list = document.getElementById('hero-items-list'); document.getElementById('hero-count').textContent = `(${heroItems.length} items)`;
-            if (heroItems.length === 0) { list.innerHTML = "<p class='text-gray-500 italic p-4 bg-gray-50 rounded-xl'>No items added yet.</p>"; return; }
-            list.innerHTML = heroItems.map((item, index) => `
-                <div class="flex items-center justify-between p-4 border rounded-2xl bg-white shadow-sm hover:shadow-md transition">
-                    <div class="flex items-center gap-4">
-                        <img src="${item.image}" class="w-12 h-12 md:w-16 md:h-16 object-cover border bg-white ${item.shape === 'circle' ? 'rounded-full' : 'rounded-md'}">
-                        <div><h4 class="font-bold text-gray-800 text-sm md:text-base">${item.title}</h4><p class="text-[10px] md:text-xs text-gray-500 uppercase mt-1">Target: ${item.target}</p></div>
-                    </div>
-                    <div class="flex flex-col md:flex-row gap-2">
-                        <button onclick="editHeroItem('${item.id}')" class="bg-blue-50 text-blue-600 px-4 py-2 rounded-lg text-xs md:text-sm font-bold transition">Edit</button>
-                        <button onclick="deleteHeroItem(${index})" class="bg-red-50 text-red-600 px-4 py-2 rounded-lg text-xs md:text-sm font-bold transition">Remove</button>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function editHeroItem(id) {
-            const item = heroItems.find(i => i.id === id); if(!item) return;
-            document.getElementById('hero-edit-id').value = item.id; document.getElementById('hero-existing-image').value = item.image;
-            document.getElementById('hero-item-title').value = item.title; document.getElementById('hero-item-target').value = item.target; document.getElementById('hero-item-shape').value = item.shape;
-            document.getElementById('hero-form-title').innerText = "Edit Category Item";
-            const btn = document.getElementById('hero-submit-btn'); btn.textContent = "Update Hero Item"; btn.classList.replace('bg-pink-500', 'bg-blue-600');
-            document.getElementById('hero-cancel-btn').classList.remove('hidden'); window.scrollTo({top: 0, behavior:'smooth'});
-        }
-
-        function resetHeroForm() {
-            document.getElementById('add-hero-form').reset(); document.getElementById('hero-edit-id').value = ""; document.getElementById('hero-existing-image').value = "";
-            document.getElementById('hero-form-title').innerText = "2. Add Category Item";
-            const btn = document.getElementById('hero-submit-btn'); btn.textContent = "Add to Hero Section"; btn.classList.replace('bg-blue-600', 'bg-pink-500'); document.getElementById('hero-cancel-btn').classList.add('hidden');
-        }
-
+        async function saveHeroText(btnElement) { const title = document.getElementById('hero-title-input').value; const subtitle = document.getElementById('hero-subtitle-input').value; btnElement.textContent = "Saving..."; await fetch(`/api/settings/hero_title`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }, body: JSON.stringify({ content: title }) }); await fetch(`/api/settings/hero_subtitle`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }, body: JSON.stringify({ content: subtitle }) }); btnElement.textContent = "Save Text"; }
+        document.getElementById('add-hero-form').addEventListener('submit', async (e) => { e.preventDefault(); const btn = document.getElementById('hero-submit-btn'); btn.textContent = "Processing..."; btn.disabled = true; const editId = document.getElementById('hero-edit-id').value; const fileInput = document.getElementById('hero-item-image'); let base64Image = document.getElementById('hero-existing-image').value; if (fileInput.files.length > 0) { const file = fileInput.files[0]; base64Image = await new Promise((resolve, reject) => { const reader = new FileReader(); reader.readAsDataURL(file); reader.onload = () => resolve(reader.result); reader.onerror = error => reject(error); }); } else if (!editId && fileInput.files.length === 0) { alert("Please select an image for the new category."); btn.textContent = "Add to Hero Section"; btn.disabled = false; return; } if (editId) { const index = heroItems.findIndex(i => i.id === editId); if (index !== -1) { heroItems[index].title = document.getElementById('hero-item-title').value; heroItems[index].target = document.getElementById('hero-item-target').value; heroItems[index].shape = document.getElementById('hero-item-shape').value; heroItems[index].image = base64Image; } } else { heroItems.push({ id: Date.now().toString(), title: document.getElementById('hero-item-title').value, target: document.getElementById('hero-item-target').value, shape: document.getElementById('hero-item-shape').value, image: base64Image }); } renderHeroAdminList(); resetHeroForm(); btn.disabled = false; });
+        function renderHeroAdminList() { const list = document.getElementById('hero-items-list'); document.getElementById('hero-count').textContent = `(${heroItems.length} items)`; if (heroItems.length === 0) { list.innerHTML = "<p class='text-gray-500 italic p-4 bg-gray-50 rounded-xl'>No items added yet. Add items using the form.</p>"; return; } list.innerHTML = heroItems.map((item, index) => ` <div class="flex items-center justify-between p-4 border rounded-2xl bg-white shadow-sm hover:shadow-md transition"> <div class="flex items-center gap-4"> <img src="${item.image}" class="w-12 h-12 md:w-16 md:h-16 object-cover border bg-white ${item.shape === 'circle' ? 'rounded-full' : 'rounded-md'}"> <div><h4 class="font-bold text-gray-800 text-sm md:text-base">${item.title}</h4><p class="text-[10px] md:text-xs text-gray-500 uppercase mt-1">Target: ${item.target}</p></div> </div> <div class="flex flex-col md:flex-row gap-2"> <button onclick="editHeroItem('${item.id}')" class="bg-blue-50 text-blue-600 px-4 py-2 rounded-lg text-xs md:text-sm font-bold transition">Edit</button> <button onclick="deleteHeroItem(${index})" class="bg-red-50 text-red-600 px-4 py-2 rounded-lg text-xs md:text-sm font-bold transition">Remove</button> </div> </div> `).join(''); }
+        function editHeroItem(id) { const item = heroItems.find(i => i.id === id); if(!item) return; document.getElementById('hero-edit-id').value = item.id; document.getElementById('hero-existing-image').value = item.image; document.getElementById('hero-item-title').value = item.title; document.getElementById('hero-item-target').value = item.target; document.getElementById('hero-item-shape').value = item.shape; document.getElementById('hero-form-title').innerText = "Edit Category Item"; const btn = document.getElementById('hero-submit-btn'); btn.textContent = "Update Hero Item"; btn.classList.replace('bg-pink-500', 'bg-blue-600'); document.getElementById('hero-cancel-btn').classList.remove('hidden'); window.scrollTo({top: 0, behavior:'smooth'}); }
+        function resetHeroForm() { document.getElementById('add-hero-form').reset(); document.getElementById('hero-edit-id').value = ""; document.getElementById('hero-existing-image').value = ""; document.getElementById('hero-form-title').innerText = "2. Add Category Item"; const btn = document.getElementById('hero-submit-btn'); btn.textContent = "Add to Hero Section"; btn.classList.replace('bg-blue-600', 'bg-pink-500'); document.getElementById('hero-cancel-btn').classList.add('hidden'); }
         function deleteHeroItem(index) { heroItems.splice(index, 1); renderHeroAdminList(); }
-        async function saveHeroLayout(btnElement) {
-            btnElement.textContent = "Saving Layout..."; btnElement.disabled = true;
-            try {
-                const res = await fetch(`/api/settings/hero_items`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }, body: JSON.stringify({ content: JSON.stringify(heroItems) }) });
-                if (res.ok) { btnElement.textContent = "Layout Saved!"; btnElement.classList.replace('bg-green-500', 'bg-blue-600'); setTimeout(() => { btnElement.textContent = "Save Live Layout"; btnElement.classList.replace('bg-blue-600', 'bg-green-500'); btnElement.disabled = false; }, 2000); }
-            } catch (e) { btnElement.disabled = false;}
-        }
+        async function saveHeroLayout(btnElement) { btnElement.textContent = "Saving Layout..."; btnElement.disabled = true; try { const res = await fetch(`/api/settings/hero_items`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }, body: JSON.stringify({ content: JSON.stringify(heroItems) }) }); if (res.ok) { btnElement.textContent = "Layout Saved!"; btnElement.classList.replace('bg-green-500', 'bg-blue-600'); setTimeout(() => { btnElement.textContent = "Save Live Layout"; btnElement.classList.replace('bg-blue-600', 'bg-green-500'); btnElement.disabled = false; }, 2000); } } catch (e) { btnElement.disabled = false;} }
 
+        // --- HOME REVIEWS ---
         let homeRevs = [];
-        document.getElementById('add-home-rev-form').addEventListener('submit', async (e) => {
-            e.preventDefault(); 
-            const btn = document.getElementById('home-rev-submit-btn'); btn.textContent = "Processing..."; btn.disabled = true;
-
-            const editId = document.getElementById('home-rev-edit-id').value; const fileInput = document.getElementById('home-rev-media');
-            let mediaData = document.getElementById('home-rev-existing-media').value;
-
-            if (fileInput.files.length > 0) {
-                const file = fileInput.files[0];
-                if (file.type.startsWith('video/')) {
-                    if (file.size > 4000000) { alert("Video too large! Max 4MB."); btn.textContent = editId ? "Update" : "Add to Home Page"; btn.disabled = false; return; }
-                    mediaData = await new Promise((res, rej) => { const r = new FileReader(); r.readAsDataURL(file); r.onload = () => res(r.result); r.onerror = rej; });
-                } else { mediaData = await compressImage(file); }
-            }
-
-            const rev = { id: editId || Date.now().toString(), name: document.getElementById('home-rev-name').value, rating: parseInt(document.getElementById('home-rev-rating').value), text: document.getElementById('home-rev-text').value, media: mediaData };
-            if (editId) { const index = homeRevs.findIndex(r => r.id === editId); if (index !== -1) homeRevs[index] = rev; } else { homeRevs.push(rev); }
-            renderHomeRevsList(); resetHomeRevForm(); btn.disabled = false;
-        });
-
-        function renderHomeRevsList() {
-            const list = document.getElementById('home-revs-list'); document.getElementById('home-rev-count').textContent = `(${homeRevs.length} visible)`;
-            list.innerHTML = homeRevs.map((r, i) => {
-                let mediaThumb = '';
-                if(r.media) {
-                    if(r.media.startsWith('data:video')) mediaThumb = `<video src="${r.media}" class="w-12 h-12 rounded-lg object-cover ml-4 border border-gray-200"></video>`;
-                    else mediaThumb = `<img src="${r.media}" class="w-12 h-12 rounded-lg object-cover ml-4 border border-gray-200">`;
-                }
-                return `
-                <div class="flex items-center justify-between p-4 border rounded-2xl bg-white shadow-sm">
-                    <div class="flex items-center"><div><p class="text-yellow-400 text-lg">${'★'.repeat(r.rating)}</p><p class="font-bold text-gray-800">${r.name}</p><p class="text-sm text-gray-600 line-clamp-1">"${r.text}"</p></div>${mediaThumb}</div>
-                    <div class="flex gap-2"><button onclick="editHomeRev('${r.id}')" class="bg-blue-50 text-blue-600 px-4 py-2 rounded-lg font-bold text-sm">Edit</button><button onclick="deleteHomeRev(${i})" class="bg-red-50 text-red-600 px-4 py-2 rounded-lg font-bold text-sm">Del</button></div>
-                </div>`}).join('');
-        }
-
-        function editHomeRev(id) {
-            const r = homeRevs.find(x => x.id === id); if(!r) return;
-            document.getElementById('home-rev-edit-id').value = r.id; document.getElementById('home-rev-name').value = r.name; document.getElementById('home-rev-rating').value = r.rating; document.getElementById('home-rev-text').value = r.text; document.getElementById('home-rev-existing-media').value = r.media || "";
-            document.getElementById('home-rev-form-title').innerText = "Edit Review"; const btn = document.getElementById('home-rev-submit-btn'); btn.textContent = "Update Review"; btn.classList.replace('bg-pink-500', 'bg-indigo-600'); document.getElementById('home-rev-cancel-btn').classList.remove('hidden');
-        }
-
+        document.getElementById('add-home-rev-form').addEventListener('submit', async (e) => { e.preventDefault(); const btn = document.getElementById('home-rev-submit-btn'); btn.textContent = "Processing Media..."; btn.disabled = true; const editId = document.getElementById('home-rev-edit-id').value; const fileInput = document.getElementById('home-rev-media'); let mediaData = document.getElementById('home-rev-existing-media').value; if (fileInput.files.length > 0) { const file = fileInput.files[0]; if (file.type.startsWith('video/')) { if (file.size > 4000000) { alert("Video is too large! Please keep it under 4MB to prevent server issues."); btn.textContent = editId ? "Update" : "Add to Home Page"; btn.disabled = false; return; } mediaData = await new Promise((resolve, reject) => { const reader = new FileReader(); reader.readAsDataURL(file); reader.onload = () => resolve(reader.result); reader.onerror = reject; }); } else { mediaData = await compressImage(file); } } const rev = { id: editId || Date.now().toString(), name: document.getElementById('home-rev-name').value, rating: parseInt(document.getElementById('home-rev-rating').value), text: document.getElementById('home-rev-text').value, media: mediaData }; if (editId) { const index = homeRevs.findIndex(r => r.id === editId); if (index !== -1) homeRevs[index] = rev; } else { homeRevs.push(rev); } renderHomeRevsList(); resetHomeRevForm(); btn.disabled = false; });
+        function renderHomeRevsList() { const list = document.getElementById('home-revs-list'); document.getElementById('home-rev-count').textContent = `(${homeRevs.length} visible)`; list.innerHTML = homeRevs.map((r, i) => { let mediaThumb = ''; if(r.media) { if(r.media.startsWith('data:video')) mediaThumb = `<video src="${r.media}" class="w-12 h-12 rounded-lg object-cover ml-4 border border-gray-200"></video>`; else mediaThumb = `<img src="${r.media}" class="w-12 h-12 rounded-lg object-cover ml-4 border border-gray-200">`; } return ` <div class="flex items-center justify-between p-4 border rounded-2xl bg-white shadow-sm"> <div class="flex items-center"> <div> <p class="text-yellow-400 text-lg">${'★'.repeat(r.rating)}</p> <p class="font-bold text-gray-800">${r.name}</p> <p class="text-sm text-gray-600 line-clamp-1">"${r.text}"</p> </div> ${mediaThumb} </div> <div class="flex gap-2"> <button onclick="editHomeRev('${r.id}')" class="bg-blue-50 text-blue-600 px-4 py-2 rounded-lg font-bold text-sm">Edit</button> <button onclick="deleteHomeRev(${i})" class="bg-red-50 text-red-600 px-4 py-2 rounded-lg font-bold text-sm">Del</button> </div> </div> `}).join(''); }
+        function editHomeRev(id) { const r = homeRevs.find(x => x.id === id); if(!r) return; document.getElementById('home-rev-edit-id').value = r.id; document.getElementById('home-rev-name').value = r.name; document.getElementById('home-rev-rating').value = r.rating; document.getElementById('home-rev-text').value = r.text; document.getElementById('home-rev-existing-media').value = r.media || ""; document.getElementById('home-rev-form-title').innerText = "Edit Review"; const btn = document.getElementById('home-rev-submit-btn'); btn.textContent = "Update Review"; btn.classList.replace('bg-pink-500', 'bg-indigo-600'); document.getElementById('home-rev-cancel-btn').classList.remove('hidden'); }
         function deleteHomeRev(index) { homeRevs.splice(index, 1); renderHomeRevsList(); }
         function resetHomeRevForm() { document.getElementById('add-home-rev-form').reset(); document.getElementById('home-rev-edit-id').value = ""; document.getElementById('home-rev-existing-media').value = ""; document.getElementById('home-rev-form-title').innerText = "Add Home Review"; const btn = document.getElementById('home-rev-submit-btn'); btn.textContent = "Add to Home Page"; btn.classList.replace('bg-indigo-600', 'bg-pink-500'); document.getElementById('home-rev-cancel-btn').classList.add('hidden'); }
         async function saveHomeReviewsLayout(btn) { btn.textContent = "Saving..."; btn.disabled = true; try { await fetch(`/api/settings/home_reviews`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }, body: JSON.stringify({ content: JSON.stringify(homeRevs) }) }); btn.textContent = "Saved!"; setTimeout(() => { btn.textContent = "Save Live Layout"; btn.disabled = false; }, 2000); } catch (e) { btn.disabled = false; } }
 
         let rawProductReviews = [];
-        async function loadCustomerReviews() {
-            try {
-                const res = await fetch('/api/admin/reviews', { headers: { 'Authorization': `Bearer ${token}` } });
-                rawProductReviews = await res.json();
-                const list = document.getElementById('admin-customer-reviews-list');
-                document.getElementById('prod-rev-list-container').classList.replace('xl:col-span-3', 'xl:col-span-2');
-                
-                if (rawProductReviews.length === 0) { list.innerHTML = "<p class='text-gray-500'>No customer reviews found.</p>"; return; }
-                
-                list.innerHTML = rawProductReviews.map(r => `
-                    <div class="p-4 border rounded-2xl bg-white shadow-sm flex justify-between items-center hover:shadow-md transition">
-                        <div><p class="text-xs text-pink-500 font-bold uppercase mb-1">Product: ${r.decoration_slug}</p><p class="text-yellow-400">${'★'.repeat(r.rating)} <span class="text-gray-800 font-bold ml-2">${r.reviewer_name}</span></p><p class="text-gray-600 mt-1">"${r.review_text}"</p></div>
-                        <div class="flex flex-col gap-2"><button onclick="editCustomerReview(${r.id})" class="bg-indigo-50 text-indigo-600 px-4 py-2 rounded-xl font-bold shadow-sm hover:bg-indigo-100 transition text-sm">Edit</button><button onclick="deleteCustomerReview(${r.id})" class="bg-red-50 text-red-600 px-4 py-2 rounded-xl font-bold shadow-sm hover:bg-red-100 transition text-sm">Delete</button></div>
-                    </div>`).join('');
-            } catch (e) {}
-        }
-
-        function editCustomerReview(id) {
-            const review = rawProductReviews.find(r => r.id === id); if (!review) return;
-            document.getElementById('prod-rev-id').value = review.id; document.getElementById('prod-rev-name').value = review.reviewer_name; document.getElementById('prod-rev-rating').value = review.rating; document.getElementById('prod-rev-text').value = review.review_text;
-            document.getElementById('prod-rev-edit-container').classList.remove('hidden'); window.scrollTo({top: 0, behavior:'smooth'});
-        }
-
+        async function loadCustomerReviews() { try { const res = await fetch('/api/admin/reviews', { headers: { 'Authorization': `Bearer ${token}` } }); rawProductReviews = await res.json(); const list = document.getElementById('admin-customer-reviews-list'); document.getElementById('prod-rev-list-container').classList.replace('xl:col-span-3', 'xl:col-span-2'); if (rawProductReviews.length === 0) { list.innerHTML = "<p class='text-gray-500'>No customer reviews found.</p>"; return; } list.innerHTML = rawProductReviews.map(r => ` <div class="p-4 border rounded-2xl bg-white shadow-sm flex justify-between items-center hover:shadow-md transition"> <div> <p class="text-xs text-pink-500 font-bold uppercase mb-1">Product: ${r.decoration_slug}</p> <p class="text-yellow-400">${'★'.repeat(r.rating)} <span class="text-gray-800 font-bold ml-2">${r.reviewer_name}</span></p> <p class="text-gray-600 mt-1">"${r.review_text}"</p> </div> <div class="flex flex-col gap-2"> <button onclick="editCustomerReview(${r.id})" class="bg-indigo-50 text-indigo-600 px-4 py-2 rounded-xl font-bold shadow-sm hover:bg-indigo-100 transition text-sm">Edit</button> <button onclick="deleteCustomerReview(${r.id})" class="bg-red-50 text-red-600 px-4 py-2 rounded-xl font-bold shadow-sm hover:bg-red-100 transition text-sm">Delete</button> </div> </div> `).join(''); } catch (e) {} }
+        function editCustomerReview(id) { const review = rawProductReviews.find(r => r.id === id); if (!review) return; document.getElementById('prod-rev-id').value = review.id; document.getElementById('prod-rev-name').value = review.reviewer_name; document.getElementById('prod-rev-rating').value = review.rating; document.getElementById('prod-rev-text').value = review.review_text; document.getElementById('prod-rev-edit-container').classList.remove('hidden'); window.scrollTo({top: 0, behavior:'smooth'}); }
         function closeProdRevEdit() { document.getElementById('edit-prod-rev-form').reset(); document.getElementById('prod-rev-edit-container').classList.add('hidden'); }
-        document.getElementById('edit-prod-rev-form').addEventListener('submit', async (e) => {
-            e.preventDefault(); const btn = document.getElementById('prod-rev-submit-btn'); btn.textContent = "Updating..."; btn.disabled = true;
-            const id = document.getElementById('prod-rev-id').value; const payload = { name: document.getElementById('prod-rev-name').value, rating: parseInt(document.getElementById('prod-rev-rating').value), review: document.getElementById('prod-rev-text').value };
-            try {
-                const res = await fetch(`/api/admin/reviews/${id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }, body: JSON.stringify(payload) });
-                if (res.ok) { closeProdRevEdit(); loadCustomerReviews(); loadAdminProducts(); } else { alert("Failed to update review."); }
-            } catch(e) { alert("Server error."); }
-            btn.textContent = "Update Review"; btn.disabled = false;
-        });
-
-        async function deleteCustomerReview(id) {
-            if(!confirm("Permanently delete this customer review?")) return;
-            try { await fetch(`/api/admin/reviews/${id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` } }); loadCustomerReviews(); loadAdminProducts(); } catch (e) {}
-        }
+        document.getElementById('edit-prod-rev-form').addEventListener('submit', async (e) => { e.preventDefault(); const btn = document.getElementById('prod-rev-submit-btn'); btn.textContent = "Updating..."; btn.disabled = true; const id = document.getElementById('prod-rev-id').value; const payload = { name: document.getElementById('prod-rev-name').value, rating: parseInt(document.getElementById('prod-rev-rating').value), review: document.getElementById('prod-rev-text').value }; try { const res = await fetch(`/api/admin/reviews/${id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }, body: JSON.stringify(payload) }); if (res.ok) { closeProdRevEdit(); loadCustomerReviews(); loadAdminProducts(); } else { alert("Failed to update review."); } } catch(e) { alert("Server error."); } btn.textContent = "Update Review"; btn.disabled = false; });
+        async function deleteCustomerReview(id) { if(!confirm("Permanently delete this customer review?")) return; try { await fetch(`/api/admin/reviews/${id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` } }); loadCustomerReviews(); loadAdminProducts(); } catch (e) {} }
 
         loadAdminProducts();
         loadSettings();

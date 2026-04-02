@@ -50,8 +50,8 @@ def manage_decorations():
         cur = conn.cursor(cursor_factory=RealDictCursor)
         category = request.args.get('category')
         
-        # Optimized query includes offer_text
-        query = 'SELECT slug, title, category, image_url, price_range, average_rating, offer_text FROM decorations'
+        # FEATURE 4: Now fetching sub_category for the frontend filters
+        query = 'SELECT slug, title, category, sub_category, image_url, price_range, average_rating, offer_text FROM decorations'
         
         if category and category != 'all':
             cur.execute(query + ' WHERE category = %s ORDER BY views DESC;', (category,))
@@ -73,19 +73,20 @@ def manage_decorations():
             package_json = json.dumps(data.get('package_includes', []))
             faqs_json = json.dumps(data.get('faqs', []))
             offer_val = data.get('offer_text', '')
+            sub_val = data.get('sub_category', '') # Extracting sub_category
 
             cur.execute("SELECT slug FROM decorations WHERE slug = %s", (data['slug'],))
             if cur.fetchone():
                 cur.execute('''
-                    UPDATE decorations SET title=%s, category=%s, image_url=%s, description=%s, 
+                    UPDATE decorations SET title=%s, category=%s, sub_category=%s, image_url=%s, description=%s, 
                     price_range=%s, package_includes=%s, faqs=%s, images=%s, offer_text=%s WHERE slug=%s
-                ''', (data['title'], data['category'], data['image_url'], data['description'], 
+                ''', (data['title'], data['category'], sub_val, data['image_url'], data['description'], 
                       data['price_range'], package_json, faqs_json, images_json, offer_val, data['slug']))
             else:
                 cur.execute('''
-                    INSERT INTO decorations (slug, title, category, image_url, description, price_range, package_includes, faqs, images, offer_text)
-                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-                ''', (data['slug'], data['title'], data['category'], data['image_url'], data['description'], 
+                    INSERT INTO decorations (slug, title, category, sub_category, image_url, description, price_range, package_includes, faqs, images, offer_text)
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                ''', (data['slug'], data['title'], data['category'], sub_val, data['image_url'], data['description'], 
                       data['price_range'], package_json, faqs_json, images_json, offer_val))
             conn.commit()
             return jsonify({'success': True})

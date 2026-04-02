@@ -1,14 +1,16 @@
 const urlParams = new URLSearchParams(window.location.search);
 const filterCat = urlParams.get('category');
+const filterSubCat = urlParams.get('sub'); // FEATURE 2
 
 let globalSettings = null;
+let globalCategoryMap = {};
+let categoryOrder = [];
 
 async function initPage() {
     try {
         const res = await fetch('/api/settings');
         globalSettings = await res.json();
         
-        // --- PROMOTIONS ACTIVATION ---
         if (globalSettings['global_offer']) {
             const banner = document.getElementById('global-announcement');
             banner.textContent = globalSettings['global_offer'];
@@ -19,13 +21,27 @@ async function initPage() {
             const promoSection = document.getElementById('promo-banner-section');
             const promoContainer = document.getElementById('promo-banner-container');
             const mediaUrl = globalSettings['promo_media'];
-            
             if (mediaUrl.startsWith('data:video')) {
                 promoContainer.innerHTML = `<video src="${mediaUrl}" autoplay loop muted playsinline class="w-full h-full object-cover"></video>`;
             } else {
                 promoContainer.innerHTML = `<img src="${mediaUrl}" class="w-full h-full object-cover">`;
             }
             promoSection.classList.remove('hidden');
+        }
+
+        // FEATURE 4 & 3: Read dynamic categories and the exact sorting order
+        if (globalSettings['site_categories']) {
+            const lines = globalSettings['site_categories'].split('\n');
+            lines.forEach(line => {
+                if(!line.trim()) return;
+                const parts = line.split('|');
+                const catName = parts[0].trim();
+                const catSlug = catName.toLowerCase().replace(/ /g, '-');
+                const subCats = parts[1] ? parts[1].split(',').map(s => s.trim()).filter(s => s !== '') : [];
+                
+                categoryOrder.push(catSlug); // Memorize the exact order the admin typed!
+                globalCategoryMap[catSlug] = subCats.map(sc => ({ name: sc, slug: sc.toLowerCase().replace(/ /g, '-') }));
+            });
         }
         
         renderHeroSection();
@@ -68,32 +84,23 @@ function renderHeroSection() {
 
 function renderHomeReviews() {
     if (!globalSettings || !globalSettings['home_reviews']) return;
-    
     const revs = JSON.parse(globalSettings['home_reviews']);
     if (revs.length > 0) {
         document.getElementById('home-reviews-section').classList.remove('hidden');
         document.getElementById('home-reviews-container').innerHTML = revs.map(r => {
-            
             let mediaHTML = '';
             if (r.media) {
-                if (r.media.startsWith('data:video')) {
-                    mediaHTML = `<video src="${r.media}" autoplay loop muted playsinline class="w-full h-48 object-cover rounded-2xl mb-4 shadow-sm border border-gray-100"></video>`;
-                } else {
-                    mediaHTML = `<img src="${r.media}" alt="Review from ${r.name}" class="w-full h-48 object-cover rounded-2xl mb-4 shadow-sm border border-gray-100">`;
-                }
+                if (r.media.startsWith('data:video')) mediaHTML = `<video src="${r.media}" autoplay loop muted playsinline class="w-full h-48 object-cover rounded-2xl mb-4 shadow-sm border border-gray-100"></video>`;
+                else mediaHTML = `<img src="${r.media}" alt="Review from ${r.name}" class="w-full h-48 object-cover rounded-2xl mb-4 shadow-sm border border-gray-100">`;
             }
-
             return `
             <div class="flex-none w-80 md:w-96 bg-white p-6 md:p-8 rounded-3xl shadow-sm border border-pink-100 snap-center relative flex flex-col">
                 <span class="absolute top-4 right-6 text-4xl text-pink-100">"</span>
                 <div class="flex text-yellow-400 mb-4 text-xl">${'★'.repeat(r.rating)}</div>
-                
                 ${mediaHTML}
-                
                 <p class="text-gray-600 italic mb-6 relative z-10 flex-grow text-lg">"${r.text}"</p>
                 <p class="font-black text-indigo-900 border-t pt-4">- ${r.name}</p>
-            </div>
-            `;
+            </div>`;
         }).join('');
     }
 }
@@ -107,11 +114,8 @@ async function loadHome() {
             <div class="flex overflow-x-hidden gap-6 pb-8">
                 <div class="w-64 md:w-80 h-64 bg-pink-50 rounded-3xl flex-none"></div>
                 <div class="w-64 md:w-80 h-64 bg-pink-50 rounded-3xl flex-none"></div>
-                <div class="w-64 md:w-80 h-64 bg-pink-50 rounded-3xl flex-none hidden md:block"></div>
-                <div class="w-64 md:w-80 h-64 bg-pink-50 rounded-3xl flex-none hidden lg:block"></div>
             </div>
-        </section>
-    `;
+        </section>`;
 
     try {
         const res = await fetch('/api/decorations');
@@ -123,10 +127,13 @@ async function loadHome() {
         }
 
         let categories = [...new Set(allItems.map(i => i.category))];
-        const preferredOrder = ['birthday-decor','baby-shower-decor','anniversary-decor','naming-ceremony','store-decor','romantic-decor'];
+        
+        // FEATURE 3: Automatically sort the homepage based on the Admin's configured order!
         categories.sort((a, b) => {
-            let indexA = preferredOrder.indexOf(a); let indexB = preferredOrder.indexOf(b);
-            if (indexA === -1) indexA = 999; if (indexB === -1) indexB = 999;
+            let indexA = categoryOrder.indexOf(a); 
+            let indexB = categoryOrder.indexOf(b);
+            if (indexA === -1) indexA = 999; 
+            if (indexB === -1) indexB = 999;
             return indexA === indexB ? a.localeCompare(b) : indexA - indexB;
         });
 
@@ -134,16 +141,37 @@ async function loadHome() {
         if(isGridMode) categories = [filterCat]; 
 
         container.innerHTML = categories.map(cat => {
-            const items = allItems.filter(i => i.category === cat);
+            let items = allItems.filter(i => i.category === cat);
             const title = cat.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
             const wrapperClasses = isGridMode ? "grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6 pb-8" : "flex overflow-x-auto flex-nowrap gap-4 md:gap-6 pb-8 hide-scroll-bar px-2 snap-x";
-                
+            
+            // FEATURE 2: Generate the Sub-Category Filter Pills
+            let subCategoryPillsHTML = '';
+            if (isGridMode && globalCategoryMap[cat] && globalCategoryMap[cat].length > 0) {
+                const subs = globalCategoryMap[cat];
+                subCategoryPillsHTML = `
+                <div class="flex overflow-x-auto gap-3 pb-6 hide-scroll-bar px-2 md:px-0">
+                    <a href="index.html?category=${cat}" class="${!filterSubCat ? 'bg-pink-600 text-white border-pink-600 shadow-md' : 'bg-white text-gray-600 border-gray-200 hover:bg-pink-50'} border px-5 py-2 rounded-full text-sm font-bold whitespace-nowrap transition-all">${!filterSubCat ? '✓ All' : 'All'}</a>
+                    ${subs.map(sub => `
+                        <a href="index.html?category=${cat}&sub=${sub.slug}" class="${filterSubCat === sub.slug ? 'bg-pink-600 text-white border-pink-600 shadow-md' : 'bg-white text-gray-600 border-gray-200 hover:bg-pink-50'} border px-5 py-2 rounded-full text-sm font-bold whitespace-nowrap transition-all">${filterSubCat === sub.slug ? '✓ ' + sub.name : sub.name}</a>
+                    `).join('')}
+                </div>`;
+            }
+
+            // If a pill was clicked, filter the items!
+            if (filterSubCat) {
+                items = items.filter(i => i.sub_category === filterSubCat);
+            }
+
+            if (items.length === 0) return ''; // Skip rendering if no items match the filter
+
             return `
                 <section>
-                    <div class="flex justify-between items-center mb-6 px-2 md:px-0">
+                    <div class="flex justify-between items-center mb-4 px-2 md:px-0">
                         <h2 class="text-2xl md:text-3xl font-black text-indigo-900">${title}</h2>
                         ${!isGridMode ? `<a href="index.html?category=${cat}" class="text-pink-700 font-bold text-sm border-b-2 border-pink-700 pb-0.5 hover:text-indigo-900 transition-colors">View All &rarr;</a>` : ''}
                     </div>
+                    ${isGridMode ? subCategoryPillsHTML : ''}
                     <div class="${wrapperClasses}">
                         ${items.map(item => {
                             let primaryImg = item.image_url;
@@ -151,8 +179,6 @@ async function loadHome() {
 
                             const cardClasses = isGridMode ? "w-full group" : "flex-none w-60 md:w-80 group snap-center";
                             const imgHeightClasses = isGridMode ? "h-40 md:h-48" : "h-48";
-                            
-                            // NEW: INDIVIDUAL OFFER BADGE
                             const offerBadge = item.offer_text ? `<div class="absolute top-3 left-3 bg-red-600 text-white font-black text-xs md:text-sm px-3 py-1 rounded-full shadow-lg z-10 uppercase tracking-widest animate-pulse border border-red-400">${item.offer_text}</div>` : '';
 
                             return `
