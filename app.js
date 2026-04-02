@@ -3,85 +3,37 @@ const filterCat = urlParams.get('category');
 
 let globalSettings = null;
 
-async function loadHome() {
-    const container = document.getElementById('rows-container');
-    
-    container.innerHTML = `
-        <section class="animate-pulse">
-            <div class="h-8 bg-pink-100 rounded-lg w-48 mb-6"></div>
-            <div class="flex overflow-x-hidden gap-6 pb-8">
-                <div class="w-64 md:w-80 h-64 bg-pink-50 rounded-3xl flex-none"></div>
-                <div class="w-64 md:w-80 h-64 bg-pink-50 rounded-3xl flex-none"></div>
-                <div class="w-64 md:w-80 h-64 bg-pink-50 rounded-3xl flex-none hidden md:block"></div>
-                <div class="w-64 md:w-80 h-64 bg-pink-50 rounded-3xl flex-none hidden lg:block"></div>
-            </div>
-        </section>
-    `;
-
+async function initPage() {
     try {
-        const res = await fetch('/api/decorations');
-        const allItems = await res.json();
+        const res = await fetch('/api/settings');
+        globalSettings = await res.json();
         
-        if (allItems.length === 0) {
-            container.innerHTML = "<p class='text-center text-gray-500 font-bold py-10'>No decorations added yet.</p>";
-            return;
+        // --- PROMOTIONS ACTIVATION ---
+        if (globalSettings['global_offer']) {
+            const banner = document.getElementById('global-announcement');
+            banner.textContent = globalSettings['global_offer'];
+            banner.classList.remove('hidden');
         }
 
-        let categories = [...new Set(allItems.map(i => i.category))];
-        const preferredOrder = ['birthday-decor','baby-shower-decor','anniversary-decor','naming-ceremony','store-decor','romantic-decor'];
-        categories.sort((a, b) => {
-            let indexA = preferredOrder.indexOf(a); let indexB = preferredOrder.indexOf(b);
-            if (indexA === -1) indexA = 999; if (indexB === -1) indexB = 999;
-            return indexA === indexB ? a.localeCompare(b) : indexA - indexB;
-        });
-
-        const isGridMode = !!filterCat; 
-        if(isGridMode) categories = [filterCat]; 
-
-        container.innerHTML = categories.map(cat => {
-            const items = allItems.filter(i => i.category === cat);
-            const title = cat.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
-            const wrapperClasses = isGridMode ? "grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6 pb-8" : "flex overflow-x-auto flex-nowrap gap-4 md:gap-6 pb-8 hide-scroll-bar px-2 snap-x";
-                
-            return `
-                <section>
-                    <div class="flex justify-between items-center mb-6 px-2 md:px-0">
-                        <h2 class="text-2xl md:text-3xl font-black text-indigo-900">${title}</h2>
-                        ${!isGridMode ? `<a href="index.html?category=${cat}" class="text-pink-700 font-bold text-sm border-b-2 border-pink-700 pb-0.5 hover:text-indigo-900 transition-colors">View All &rarr;</a>` : ''}
-                    </div>
-                    <div class="${wrapperClasses}">
-                        ${items.map(item => {
-                            let primaryImg = item.image_url;
-                            if (item.images) { try { primaryImg = JSON.parse(item.images)[0] || item.image_url; } catch(e) {} }
-
-                            const cardClasses = isGridMode ? "w-full group" : "flex-none w-60 md:w-80 group snap-center";
-                            const imgHeightClasses = isGridMode ? "h-40 md:h-48" : "h-48";
-                            
-                            // NEW: INDIVIDUAL OFFER BADGE
-                            const offerBadge = item.offer_text ? `<div class="absolute top-3 left-3 bg-red-600 text-white font-black text-xs md:text-sm px-3 py-1 rounded-full shadow-lg z-10 uppercase tracking-widest animate-pulse border border-red-400">${item.offer_text}</div>` : '';
-
-                            return `
-                            <a href="details.html?id=${item.slug}" aria-label="View details for ${item.title}" class="${cardClasses}">
-                                <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden transition-all group-hover:shadow-xl h-full flex flex-col relative">
-                                    ${offerBadge}
-                                    <div class="${imgHeightClasses} overflow-hidden w-full bg-gray-50">
-                                        <img src="${primaryImg}" alt="${item.title} Setup" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
-                                    </div>
-                                    <div class="p-3 md:p-5 flex-grow flex flex-col justify-between">
-                                        <h3 class="font-bold text-gray-800 text-sm md:text-base line-clamp-2 leading-tight">${item.title}</h3>
-                                        <div class="flex justify-between items-center mt-3">
-                                            <span class="text-pink-600 font-black text-sm md:text-base">${item.price_range}</span>
-                                            <span class="text-xs text-yellow-500 font-bold">★ ${item.average_rating || '5.0'}</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>`
-                        }).join('')}
-                    </div>
-                </section>`;
-        }).join('');
-
-    } catch (e) { container.innerHTML = "<p class='text-center text-red-500 font-bold'>Error loading data.</p>"; }
+        if (globalSettings['promo_media']) {
+            const promoSection = document.getElementById('promo-banner-section');
+            const promoContainer = document.getElementById('promo-banner-container');
+            const mediaUrl = globalSettings['promo_media'];
+            
+            if (mediaUrl.startsWith('data:video')) {
+                promoContainer.innerHTML = `<video src="${mediaUrl}" autoplay loop muted playsinline class="w-full h-full object-cover"></video>`;
+            } else {
+                promoContainer.innerHTML = `<img src="${mediaUrl}" class="w-full h-full object-cover">`;
+            }
+            promoSection.classList.remove('hidden');
+        }
+        
+        renderHeroSection();
+        renderHomeReviews();
+    } catch (e) {
+        console.error("Settings fetch error:", e);
+    }
+    loadHome();
 }
 
 function renderHeroSection() {
