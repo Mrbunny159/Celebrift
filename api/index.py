@@ -175,7 +175,6 @@ def modify_review(review_id):
         cur.close()
         conn.close()
 
-# --- NEW: ADMIN ANALYTICS ENDPOINT ---
 @app.route('/api/admin/analytics', methods=['GET'])
 def get_analytics():
     if request.headers.get('Authorization') != f'Bearer {SECRET_TOKEN}':

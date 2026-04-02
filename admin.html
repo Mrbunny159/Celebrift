@@ -6,8 +6,10 @@
     <title>Admin Panel | Celebrift</title>
     <link rel="icon" type="image/jpeg" href="logo.jpg">
     <script src="https://cdn.tailwindcss.com"></script>
+    
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
     <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+
     <style>
         .tab-content { display: none; }
         .tab-content.active { display: block; }
@@ -131,9 +133,7 @@
                                 <option value="" disabled selected>Select Category</option>
                             </select>
                         </div>
-                        <select id="sub-category" class="w-full p-3 border rounded-xl bg-gray-50 outline-none font-bold text-gray-600 hidden">
-                            <option value="">-- No Sub-category --</option>
-                        </select>
+                        <select id="sub-category" class="w-full p-3 border rounded-xl bg-gray-50 outline-none font-bold text-gray-600 hidden"></select>
 
                         <div class="border-t pt-4">
                             <label class="block text-xs font-bold text-gray-500 mb-1">Product Description</label>
@@ -156,7 +156,7 @@
                             <input type="hidden" id="existing-images-array"> 
                         </div>
 
-                        <button type="submit" id="submit-btn" class="w-full bg-pink-500 text-white py-3 rounded-xl font-bold shadow-sm">Save Listing</button>
+                        <button type="submit" id="submit-btn" class="w-full bg-pink-500 text-white py-3 rounded-xl font-bold shadow-sm hover:bg-pink-600">Save Listing</button>
                         <button type="button" id="cancel-edit-btn" onclick="resetForm()" class="hidden w-full bg-gray-200 text-gray-700 py-3 rounded-xl font-bold mt-2">Cancel Edit</button>
                     </form>
                 </div>
@@ -167,55 +167,11 @@
             </div>
         </div>
 
-        <div id="tab-hero" class="tab-content max-w-6xl mx-auto">
-            <h2 class="text-2xl font-bold mb-6 text-gray-800">Manage Hero Section</h2>
-            <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
-                <div class="xl:col-span-1 space-y-6">
-                    <div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100">
-                        <h3 class="text-lg font-bold mb-4 border-b pb-2 text-gray-800">1. Section Text</h3>
-                        <input type="text" id="hero-title-input" placeholder="Main Title" class="w-full p-3 border rounded-xl bg-gray-50 mb-3 font-bold text-indigo-900 outline-none">
-                        <input type="text" id="hero-subtitle-input" placeholder="Subtitle" class="w-full p-3 border rounded-xl bg-gray-50 text-gray-500 outline-none">
-                        <button onclick="saveHeroText(this)" class="w-full bg-gray-900 hover:bg-gray-800 text-white py-3 rounded-xl font-bold mt-4 transition">Save Text</button>
-                    </div>
-
-                    <div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 h-fit">
-                        <h3 id="hero-form-title" class="text-lg font-bold mb-4 border-b pb-2 text-gray-800">2. Add Category Item</h3>
-                        <form id="add-hero-form" class="space-y-4">
-                            <input type="hidden" id="hero-edit-id">
-                            <input type="hidden" id="hero-existing-image">
-                            <input type="text" id="hero-item-title" placeholder="Icon Label" class="w-full p-3 border rounded-xl bg-gray-50 outline-none" required>
-                            
-                            <select id="hero-item-target" class="w-full p-3 border rounded-xl bg-gray-50 outline-none font-bold" required>
-                                <option value="" disabled selected>Scrolls to which category?</option>
-                            </select>
-                            <select id="hero-item-shape" class="w-full p-3 border rounded-xl bg-gray-50 outline-none" required>
-                                <option value="circle">Circle 🟢</option>
-                                <option value="square">Square 🟩</option>
-                                <option value="rounded-square">Rounded Square 🔲</option>
-                                <option value="rectangle">Rectangle ▭</option>
-                                <option value="rounded-rectangle">Rounded Rectangle 🏟️</option>
-                            </select>
-                            <div class="border rounded-xl p-4 bg-gray-50">
-                                <label class="block text-xs font-bold text-gray-500 mb-2">Upload Icon/Image</label>
-                                <input type="file" id="hero-item-image" accept="image/*" class="w-full text-sm">
-                            </div>
-                            <button type="submit" id="hero-submit-btn" class="w-full bg-pink-500 text-white py-3 rounded-xl font-bold mt-2 shadow-sm">Add to Hero Section</button>
-                            <button type="button" id="hero-cancel-btn" onclick="resetHeroForm()" class="hidden w-full bg-gray-200 text-gray-700 py-3 rounded-xl font-bold mt-2">Cancel Edit</button>
-                        </form>
-                    </div>
-                </div>
-                <div class="xl:col-span-2 bg-white p-6 rounded-3xl shadow-sm border border-gray-100">
-                    <div class="flex justify-between mb-6 border-b pb-4">
-                        <h3 class="text-lg font-bold text-gray-800">Current Layout</h3>
-                        <button onclick="saveHeroLayout(this)" class="bg-green-500 text-white px-6 py-2 rounded-xl font-bold">Save Live Layout</button>
-                    </div>
-                    <div id="hero-items-list" class="space-y-3"><p class="text-gray-500">Loading layout...</p></div>
-                </div>
-            </div>
-        </div>
-
+        <div id="tab-hero" class="tab-content max-w-6xl mx-auto"><h2 class="text-2xl font-bold mb-6 text-gray-800">Manage Hero Section</h2><div class="grid grid-cols-1 xl:grid-cols-3 gap-8"><div class="xl:col-span-1 space-y-6"><div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100"><h3 class="text-lg font-bold mb-4 border-b pb-2 text-gray-800">1. Section Text</h3><input type="text" id="hero-title-input" placeholder="Main Title" class="w-full p-3 border rounded-xl bg-gray-50 mb-3 font-bold text-indigo-900 outline-none"><input type="text" id="hero-subtitle-input" placeholder="Subtitle" class="w-full p-3 border rounded-xl bg-gray-50 text-gray-500 outline-none"><button onclick="saveHeroText(this)" class="w-full bg-gray-900 hover:bg-gray-800 text-white py-3 rounded-xl font-bold mt-4 transition">Save Text</button></div><div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 h-fit"><h3 id="hero-form-title" class="text-lg font-bold mb-4 border-b pb-2 text-gray-800">2. Add Category Item</h3><form id="add-hero-form" class="space-y-4"><input type="hidden" id="hero-edit-id"><input type="hidden" id="hero-existing-image"><input type="text" id="hero-item-title" placeholder="Icon Label" class="w-full p-3 border rounded-xl bg-gray-50 outline-none" required><select id="hero-item-target" class="w-full p-3 border rounded-xl bg-gray-50 outline-none font-bold" required><option value="" disabled selected>Scrolls to which category?</option></select><select id="hero-item-shape" class="w-full p-3 border rounded-xl bg-gray-50 outline-none" required><option value="circle">Circle 🟢</option><option value="square">Square 🟩</option><option value="rounded-square">Rounded Square 🔲</option><option value="rectangle">Rectangle ▭</option><option value="rounded-rectangle">Rounded Rectangle 🏟️</option></select><div class="border rounded-xl p-4 bg-gray-50"><label class="block text-xs font-bold text-gray-500 mb-2">Upload Icon/Image</label><input type="file" id="hero-item-image" accept="image/*" class="w-full text-sm"></div><button type="submit" id="hero-submit-btn" class="w-full bg-pink-500 text-white py-3 rounded-xl font-bold mt-2 shadow-sm">Add to Hero Section</button><button type="button" id="hero-cancel-btn" onclick="resetHeroForm()" class="hidden w-full bg-gray-200 text-gray-700 py-3 rounded-xl font-bold mt-2">Cancel Edit</button></form></div></div><div class="xl:col-span-2 bg-white p-6 rounded-3xl shadow-sm border border-gray-100"><div class="flex justify-between mb-6 border-b pb-4"><h3 class="text-lg font-bold text-gray-800">Current Layout</h3><button onclick="saveHeroLayout(this)" class="bg-green-500 text-white px-6 py-2 rounded-xl font-bold">Save Live Layout</button></div><div id="hero-items-list" class="space-y-3"><p class="text-gray-500">Loading layout...</p></div></div></div></div>
+        
         <div id="tab-home-reviews" class="tab-content max-w-6xl mx-auto"><h2 class="text-2xl font-bold mb-6 text-gray-800">Manage Home Page Reviews</h2><div class="grid grid-cols-1 xl:grid-cols-3 gap-8"><div class="xl:col-span-1 bg-white p-6 rounded-3xl shadow-sm border h-fit"><h3 id="home-rev-form-title" class="text-lg font-bold mb-4 border-b pb-2 text-gray-800">Add Home Review</h3><form id="add-home-rev-form" class="space-y-4"><input type="hidden" id="home-rev-edit-id"><input type="hidden" id="home-rev-existing-media"><input type="text" id="home-rev-name" placeholder="Customer Name" class="w-full p-3 border rounded-xl bg-gray-50" required><select id="home-rev-rating" class="w-full p-3 border rounded-xl bg-gray-50"><option value="5">5 Stars</option><option value="4">4 Stars</option></select><textarea id="home-rev-text" placeholder="Review content..." rows="4" class="w-full p-3 border rounded-xl bg-gray-50" required></textarea><div class="border rounded-xl p-4 bg-gray-50"><input type="file" id="home-rev-media" accept="image/*,video/mp4" class="w-full text-sm"></div><button type="submit" id="home-rev-submit-btn" class="w-full bg-pink-500 text-white py-3 rounded-xl font-bold">Add to Home Page</button><button type="button" id="home-rev-cancel-btn" onclick="resetHomeRevForm()" class="hidden w-full bg-gray-200 py-3 rounded-xl font-bold mt-2">Cancel</button></form></div><div class="xl:col-span-2 bg-white p-6 rounded-3xl shadow-sm border"><div class="flex justify-between mb-6 border-b pb-4"><h3 class="text-lg font-bold text-gray-800">Active Home Reviews</h3><button onclick="saveHomeReviewsLayout(this)" class="bg-green-500 text-white px-6 py-2 rounded-xl font-bold">Save Live Layout</button></div><div id="home-revs-list" class="space-y-3"></div></div></div></div>
-        <div id="tab-product-reviews" class="tab-content max-w-6xl mx-auto"><h2 class="text-2xl font-bold mb-6 text-gray-800">Manage Customer Product Reviews</h2><div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100"><div id="admin-customer-reviews-list" class="space-y-4"></div></div></div>
+        
+        <div id="tab-product-reviews" class="tab-content max-w-6xl mx-auto"><h2 class="text-2xl font-bold mb-6 text-gray-800">Manage Customer Product Reviews</h2><div class="grid grid-cols-1 xl:grid-cols-3 gap-8"><div id="prod-rev-edit-container" class="xl:col-span-1 bg-white p-6 rounded-3xl shadow-sm border border-pink-200 h-fit hidden"><h3 class="text-lg font-bold mb-4 border-b pb-2 text-indigo-900">Edit Customer Review</h3><form id="edit-prod-rev-form" class="space-y-4"><input type="hidden" id="prod-rev-id"><input type="text" id="prod-rev-name" placeholder="Customer Name" class="w-full p-3 border rounded-xl bg-gray-50 outline-none focus:ring-2 focus:ring-pink-500" required><select id="prod-rev-rating" class="w-full p-3 border rounded-xl bg-gray-50 outline-none focus:ring-2 focus:ring-pink-500"><option value="5">5 Stars</option><option value="4">4 Stars</option><option value="3">3 Stars</option><option value="2">2 Stars</option><option value="1">1 Star</option></select><textarea id="prod-rev-text" placeholder="Review content..." rows="4" class="w-full p-3 border rounded-xl bg-gray-50 outline-none focus:ring-2 focus:ring-pink-500" required></textarea><button type="submit" id="prod-rev-submit-btn" class="w-full bg-indigo-600 text-white py-3 rounded-xl font-bold hover:bg-indigo-700 transition">Update Review</button><button type="button" onclick="closeProdRevEdit()" class="w-full bg-gray-200 py-3 rounded-xl font-bold mt-2 hover:bg-gray-300">Cancel</button></form></div><div id="prod-rev-list-container" class="xl:col-span-3 bg-white p-6 rounded-3xl shadow-sm border border-gray-100 transition-all"><div id="admin-customer-reviews-list" class="space-y-4"></div></div></div></div>
         
         <div id="tab-theme" class="tab-content max-w-5xl mx-auto">
             <h2 class="text-2xl font-bold mb-6 text-gray-800">🎉 Festive Vibe Engine</h2>
@@ -247,22 +203,27 @@
         const token = localStorage.getItem('adminToken');
         if (!token) window.location.href = 'admin-login.html';
 
-        // INITALIZE QUILL RICH TEXT EDITORS
+        // INITALIZE QUILL RICH TEXT EDITORS (Safe initialization)
         const quillConfig = { theme: 'snow', modules: { toolbar: [['bold', 'italic', 'underline'], [{'list': 'ordered'}, {'list': 'bullet'}], [{ 'header': [1, 2, 3, false] }], ['link', 'clean']] } };
-        const descQuill = new Quill('#description-editor', quillConfig);
-        const faqsQuill = new Quill('#faqs-editor', quillConfig);
-        const tncQuill = new Quill('#tnc-editor', quillConfig);
-        const refundsQuill = new Quill('#refunds-editor', quillConfig);
-        const aboutQuill = new Quill('#about-editor', quillConfig);
-        const disclaimerQuill = new Quill('#disclaimer-editor', quillConfig);
+        let descQuill, faqsQuill, tncQuill, refundsQuill, aboutQuill, disclaimerQuill;
+
+        if(document.getElementById('description-editor')) descQuill = new Quill('#description-editor', quillConfig);
+        if(document.getElementById('faqs-editor')) faqsQuill = new Quill('#faqs-editor', quillConfig);
+        if(document.getElementById('tnc-editor')) tncQuill = new Quill('#tnc-editor', quillConfig);
+        if(document.getElementById('refunds-editor')) refundsQuill = new Quill('#refunds-editor', quillConfig);
+        if(document.getElementById('about-editor')) aboutQuill = new Quill('#about-editor', quillConfig);
+        if(document.getElementById('disclaimer-editor')) disclaimerQuill = new Quill('#disclaimer-editor', quillConfig);
 
         function logout() { localStorage.removeItem('adminToken'); window.location.href = 'admin-login.html'; }
 
         function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
-            document.getElementById('tab-' + tabId).classList.add('active');
-            document.getElementById('btn-' + tabId).classList.add('active');
+            const targetTab = document.getElementById('tab-' + tabId);
+            const targetBtn = document.getElementById('btn-' + tabId);
+            if(targetTab) targetTab.classList.add('active');
+            if(targetBtn) targetBtn.classList.add('active');
+            
             if(tabId === 'product-reviews') loadCustomerReviews();
         }
 
@@ -312,14 +273,17 @@
                 globalCategoryMap[catName] = subCats;
             });
             const catSelect = document.getElementById('category');
-            catSelect.innerHTML = `<option value="" disabled selected>Select Category</option>` + Object.keys(globalCategoryMap).map(c => `<option value="${c.toLowerCase().replace(/ /g, '-')}">${c}</option>`).join('');
-            updateSubCategories();
+            if(catSelect) {
+                catSelect.innerHTML = `<option value="" disabled selected>Select Category</option>` + Object.keys(globalCategoryMap).map(c => `<option value="${c.toLowerCase().replace(/ /g, '-')}">${c}</option>`).join('');
+                updateSubCategories();
+            }
             const heroSelect = document.getElementById('hero-item-target');
             if(heroSelect) heroSelect.innerHTML = `<option value="" disabled selected>Scrolls to which category?</option>` + Object.keys(globalCategoryMap).map(c => `<option value="${c.toLowerCase().replace(/ /g, '-')}">${c}</option>`).join('');
         }
 
         function updateSubCategories() {
             const catSelect = document.getElementById('category'); const subSelect = document.getElementById('sub-category');
+            if(!catSelect || !subSelect) return;
             const realName = Object.keys(globalCategoryMap).find(c => c.toLowerCase().replace(/ /g, '-') === catSelect.value);
             if (realName && globalCategoryMap[realName].length > 0) { subSelect.innerHTML = `<option value="">-- No Sub-category --</option>` + globalCategoryMap[realName].map(sc => `<option value="${sc.toLowerCase().replace(/ /g, '-')}">${sc}</option>`).join(''); subSelect.classList.remove('hidden'); } 
             else { subSelect.innerHTML = ""; subSelect.classList.add('hidden'); }
@@ -353,40 +317,43 @@
             }).join('');
         }
 
-        document.getElementById('add-form').addEventListener('submit', async (e) => {
-            e.preventDefault(); const btn = document.getElementById('submit-btn'); btn.textContent = "Compressing & Uploading..."; btn.disabled = true;
-            const fileInput = document.getElementById('image-upload'); const existingImagesJSON = document.getElementById('existing-images-array').value;
-            let finalImageArray = [];
-            if (fileInput.files.length > 0) { for (let i = 0; i < fileInput.files.length; i++) finalImageArray.push(await compressImage(fileInput.files[i])); } 
-            else if (existingImagesJSON) { finalImageArray = JSON.parse(existingImagesJSON); }
-            if (finalImageArray.length === 0) { alert("Upload at least 1 image."); btn.textContent = "Save Listing"; btn.disabled = false; return; }
+        const addForm = document.getElementById('add-form');
+        if(addForm) {
+            addForm.addEventListener('submit', async (e) => {
+                e.preventDefault(); const btn = document.getElementById('submit-btn'); btn.textContent = "Compressing & Uploading..."; btn.disabled = true;
+                const fileInput = document.getElementById('image-upload'); const existingImagesJSON = document.getElementById('existing-images-array').value;
+                let finalImageArray = [];
+                if (fileInput.files.length > 0) { for (let i = 0; i < fileInput.files.length; i++) finalImageArray.push(await compressImage(fileInput.files[i])); } 
+                else if (existingImagesJSON) { finalImageArray = JSON.parse(existingImagesJSON); }
+                if (finalImageArray.length === 0) { alert("Upload at least 1 image."); btn.textContent = "Save Listing"; btn.disabled = false; return; }
 
-            let priceInput = document.getElementById('price').value.trim();
-            if (!priceInput.includes('₹') && !priceInput.toLowerCase().includes('rs')) priceInput = '₹' + priceInput;
+                let priceInput = document.getElementById('price').value.trim();
+                if (!priceInput.includes('₹') && !priceInput.toLowerCase().includes('rs')) priceInput = '₹' + priceInput;
 
-            const descriptionHTML = descQuill.root.innerHTML;
-            const pkgString = document.getElementById('package-includes').value; const packageIncludesArray = pkgString ? pkgString.split(',').map(s => s.trim()).filter(s => s !== "") : [];
-            const faqString = document.getElementById('product-faqs').value; const faqsArray = faqString ? faqString.split('\n').map(line => { const p = line.split('|'); return p.length >= 2 ? { q: p[0].trim(), a: p.slice(1).join('|').trim() } : null; }).filter(f => f) : [];
-            const generatedSlug = document.getElementById('title').value.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+                const descriptionHTML = descQuill ? descQuill.root.innerHTML : '';
+                const pkgString = document.getElementById('package-includes').value; const packageIncludesArray = pkgString ? pkgString.split(',').map(s => s.trim()).filter(s => s !== "") : [];
+                const faqString = document.getElementById('product-faqs').value; const faqsArray = faqString ? faqString.split('\n').map(line => { const p = line.split('|'); return p.length >= 2 ? { q: p[0].trim(), a: p.slice(1).join('|').trim() } : null; }).filter(f => f) : [];
+                const generatedSlug = document.getElementById('title').value.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
 
-            const payload = { 
-                slug: generatedSlug, title: document.getElementById('title').value, price_range: priceInput, 
-                category: document.getElementById('category').value, sub_category: document.getElementById('sub-category').value, 
-                description: descriptionHTML, image_url: finalImageArray[0], images: finalImageArray, package_includes: packageIncludesArray, faqs: faqsArray, offer_text: document.getElementById('offer-text').value
-            };
+                const payload = { 
+                    slug: generatedSlug, title: document.getElementById('title').value, price_range: priceInput, 
+                    category: document.getElementById('category').value, sub_category: document.getElementById('sub-category').value, 
+                    description: descriptionHTML, image_url: finalImageArray[0], images: finalImageArray, package_includes: packageIncludesArray, faqs: faqsArray, offer_text: document.getElementById('offer-text').value
+                };
 
-            try { const res = await fetch('/api/decorations', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }, body: JSON.stringify(payload) });
-                if (res.ok) { alert("Saved successfully!"); resetForm(); loadAdminProducts(); loadDashboard(); } else { alert("Failed to save."); }
-            } catch (err) { alert("Server error."); }
-            btn.disabled = false; btn.textContent = "Save Listing";
-        });
+                try { const res = await fetch('/api/decorations', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }, body: JSON.stringify(payload) });
+                    if (res.ok) { alert("Saved successfully!"); resetForm(); loadAdminProducts(); loadDashboard(); } else { alert("Failed to save."); }
+                } catch (err) { alert("Server error."); }
+                btn.disabled = false; btn.textContent = "Save Listing";
+            });
+        }
 
         async function editProduct(slug) {
             try {
                 const res = await fetch(`/api/decorations/${slug}`); const item = await res.json();
                 document.getElementById('title').value = item.title; document.getElementById('price').value = item.price_range; 
                 document.getElementById('category').value = item.category; document.getElementById('offer-text').value = item.offer_text || ''; 
-                descQuill.root.innerHTML = item.description || '';
+                if(descQuill) descQuill.root.innerHTML = item.description || '';
                 updateSubCategories(); setTimeout(() => { document.getElementById('sub-category').value = item.sub_category || ''; }, 50);
                 
                 let imgs = item.images ? JSON.parse(item.images) : (item.image_url ? [item.image_url] : []); document.getElementById('existing-images-array').value = JSON.stringify(imgs);
@@ -401,18 +368,18 @@
         }
         
         async function deleteProduct(slug) { if(!confirm("Delete this listing permanently?")) return; try { await fetch(`/api/decorations/${slug}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` } }); loadAdminProducts(); loadDashboard(); } catch (e) { } }
-        function resetForm() { document.getElementById('add-form').reset(); document.getElementById('existing-images-array').value = ''; descQuill.root.innerHTML = ''; document.getElementById('form-title').innerText = "Add New Listing"; const btn = document.getElementById('submit-btn'); btn.textContent = "Save Listing"; btn.classList.replace('bg-blue-600', 'bg-pink-500'); document.getElementById('cancel-edit-btn').classList.add('hidden'); }
+        function resetForm() { document.getElementById('add-form').reset(); document.getElementById('existing-images-array').value = ''; if(descQuill) descQuill.root.innerHTML = ''; document.getElementById('form-title').innerText = "Add New Listing"; const btn = document.getElementById('submit-btn'); btn.textContent = "Save Listing"; btn.classList.replace('bg-blue-600', 'bg-pink-500'); document.getElementById('cancel-edit-btn').classList.add('hidden'); }
 
         async function saveQuillSetting(btnElement, key, quillInstance) { const content = quillInstance.root.innerHTML; const originalText = btnElement.textContent; btnElement.textContent = "Saving..."; btnElement.disabled = true; try { await fetch(`/api/settings/${key}`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }, body: JSON.stringify({ content }) }); btnElement.textContent = "Saved!"; btnElement.classList.replace('bg-pink-500', 'bg-green-500'); setTimeout(() => { btnElement.textContent = originalText; btnElement.classList.replace('bg-green-500', 'bg-pink-500'); btnElement.disabled = false; }, 2000); } catch (e) {} }
         
         async function loadSettings() {
             try {
                 const res = await fetch('/api/settings'); const settings = await res.json();
-                if (settings['faqs']) faqsQuill.root.innerHTML = settings['faqs'];
-                if (settings['tnc']) tncQuill.root.innerHTML = settings['tnc'];
-                if (settings['refunds']) refundsQuill.root.innerHTML = settings['refunds'];
-                if (settings['about']) aboutQuill.root.innerHTML = settings['about'];
-                if (settings['disclaimer']) disclaimerQuill.root.innerHTML = settings['disclaimer'];
+                if (settings['faqs'] && faqsQuill) faqsQuill.root.innerHTML = settings['faqs'];
+                if (settings['tnc'] && tncQuill) tncQuill.root.innerHTML = settings['tnc'];
+                if (settings['refunds'] && refundsQuill) refundsQuill.root.innerHTML = settings['refunds'];
+                if (settings['about'] && aboutQuill) aboutQuill.root.innerHTML = settings['about'];
+                if (settings['disclaimer'] && disclaimerQuill) disclaimerQuill.root.innerHTML = settings['disclaimer'];
                 
                 if (settings['hero_title']) document.getElementById('hero-title-input').value = settings['hero_title'];
                 if (settings['hero_subtitle']) document.getElementById('hero-subtitle-input').value = settings['hero_subtitle'];
@@ -421,8 +388,16 @@
                 if (settings['promo_media']) { document.getElementById('current-promo-media-preview').classList.remove('hidden'); if (settings['promo_media'].startsWith('data:video')) document.getElementById('current-promo-media-preview').innerHTML = `<video src="${settings['promo_media']}" class="h-full object-cover"></video>`; else document.getElementById('current-promo-media-preview').innerHTML = `<img src="${settings['promo_media']}" class="h-full object-cover">`; }
                 if (settings['site_theme']) selectTheme(settings['site_theme']);
                 
-                if (settings['site_categories']) { document.getElementById('categories-content').value = settings['site_categories']; parseAndLoadCategories(settings['site_categories']); } 
-                else { const defaultCats = "Birthday Decor | Ring Decoration, Wall Decoration, Premium, U Board\nBaby Shower Decor | \nAnniversary Decor | \nNaming Ceremony | \nStore Decor | \nRomantic Decor | "; document.getElementById('categories-content').value = defaultCats; parseAndLoadCategories(defaultCats); }
+                if (settings['site_categories']) { 
+                    const catEl = document.getElementById('categories-content');
+                    if(catEl) catEl.value = settings['site_categories']; 
+                    parseAndLoadCategories(settings['site_categories']); 
+                } else { 
+                    const defaultCats = "Birthday Decor | Ring Decoration, Wall Decoration, Premium, U Board\nBaby Shower Decor | \nAnniversary Decor | \nNaming Ceremony | \nStore Decor | \nRomantic Decor | "; 
+                    const catEl = document.getElementById('categories-content');
+                    if(catEl) catEl.value = defaultCats; 
+                    parseAndLoadCategories(defaultCats); 
+                }
             } catch (e) { }
         }
 
@@ -431,7 +406,12 @@
 
         let heroItems = [];
         async function saveHeroText(btnElement) { const title = document.getElementById('hero-title-input').value; const subtitle = document.getElementById('hero-subtitle-input').value; btnElement.textContent = "Saving..."; await fetch(`/api/settings/hero_title`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }, body: JSON.stringify({ content: title }) }); await fetch(`/api/settings/hero_subtitle`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }, body: JSON.stringify({ content: subtitle }) }); btnElement.textContent = "Save Text"; }
-        document.getElementById('add-hero-form').addEventListener('submit', async (e) => { e.preventDefault(); const btn = document.getElementById('hero-submit-btn'); btn.textContent = "Processing..."; btn.disabled = true; const editId = document.getElementById('hero-edit-id').value; const fileInput = document.getElementById('hero-item-image'); let base64Image = document.getElementById('hero-existing-image').value; if (fileInput.files.length > 0) { const file = fileInput.files[0]; base64Image = await new Promise((resolve, reject) => { const reader = new FileReader(); reader.readAsDataURL(file); reader.onload = () => resolve(reader.result); reader.onerror = error => reject(error); }); } else if (!editId && fileInput.files.length === 0) { alert("Please select an image for the new category."); btn.textContent = "Add to Hero Section"; btn.disabled = false; return; } if (editId) { const index = heroItems.findIndex(i => i.id === editId); if (index !== -1) { heroItems[index].title = document.getElementById('hero-item-title').value; heroItems[index].target = document.getElementById('hero-item-target').value; heroItems[index].shape = document.getElementById('hero-item-shape').value; heroItems[index].image = base64Image; } } else { heroItems.push({ id: Date.now().toString(), title: document.getElementById('hero-item-title').value, target: document.getElementById('hero-item-target').value, shape: document.getElementById('hero-item-shape').value, image: base64Image }); } renderHeroAdminList(); resetHeroForm(); btn.disabled = false; });
+        
+        const addHeroForm = document.getElementById('add-hero-form');
+        if(addHeroForm) {
+            addHeroForm.addEventListener('submit', async (e) => { e.preventDefault(); const btn = document.getElementById('hero-submit-btn'); btn.textContent = "Processing..."; btn.disabled = true; const editId = document.getElementById('hero-edit-id').value; const fileInput = document.getElementById('hero-item-image'); let base64Image = document.getElementById('hero-existing-image').value; if (fileInput.files.length > 0) { const file = fileInput.files[0]; base64Image = await new Promise((resolve, reject) => { const reader = new FileReader(); reader.readAsDataURL(file); reader.onload = () => resolve(reader.result); reader.onerror = error => reject(error); }); } else if (!editId && fileInput.files.length === 0) { alert("Please select an image for the new category."); btn.textContent = "Add to Hero Section"; btn.disabled = false; return; } if (editId) { const index = heroItems.findIndex(i => i.id === editId); if (index !== -1) { heroItems[index].title = document.getElementById('hero-item-title').value; heroItems[index].target = document.getElementById('hero-item-target').value; heroItems[index].shape = document.getElementById('hero-item-shape').value; heroItems[index].image = base64Image; } } else { heroItems.push({ id: Date.now().toString(), title: document.getElementById('hero-item-title').value, target: document.getElementById('hero-item-target').value, shape: document.getElementById('hero-item-shape').value, image: base64Image }); } renderHeroAdminList(); resetHeroForm(); btn.disabled = false; });
+        }
+        
         function renderHeroAdminList() { const list = document.getElementById('hero-items-list'); document.getElementById('hero-count').textContent = `(${heroItems.length} items)`; if (heroItems.length === 0) { list.innerHTML = "<p class='text-gray-500 italic p-4 bg-gray-50 rounded-xl'>No items added yet. Add items using the form.</p>"; return; } list.innerHTML = heroItems.map((item, index) => ` <div class="flex items-center justify-between p-4 border rounded-2xl bg-white shadow-sm hover:shadow-md transition"> <div class="flex items-center gap-4"> <img src="${item.image}" class="w-12 h-12 md:w-16 md:h-16 object-cover border bg-white ${item.shape === 'circle' ? 'rounded-full' : 'rounded-md'}"> <div><h4 class="font-bold text-gray-800 text-sm md:text-base">${item.title}</h4><p class="text-[10px] md:text-xs text-gray-500 uppercase mt-1">Target: ${item.target}</p></div> </div> <div class="flex flex-col md:flex-row gap-2"> <button onclick="editHeroItem('${item.id}')" class="bg-blue-50 text-blue-600 px-4 py-2 rounded-lg text-xs md:text-sm font-bold transition">Edit</button> <button onclick="deleteHeroItem(${index})" class="bg-red-50 text-red-600 px-4 py-2 rounded-lg text-xs md:text-sm font-bold transition">Remove</button> </div> </div> `).join(''); }
         function editHeroItem(id) { const item = heroItems.find(i => i.id === id); if(!item) return; document.getElementById('hero-edit-id').value = item.id; document.getElementById('hero-existing-image').value = item.image; document.getElementById('hero-item-title').value = item.title; document.getElementById('hero-item-target').value = item.target; document.getElementById('hero-item-shape').value = item.shape; document.getElementById('hero-form-title').innerText = "Edit Category Item"; const btn = document.getElementById('hero-submit-btn'); btn.textContent = "Update Hero Item"; btn.classList.replace('bg-pink-500', 'bg-blue-600'); document.getElementById('hero-cancel-btn').classList.remove('hidden'); window.scrollTo({top: 0, behavior:'smooth'}); }
         function resetHeroForm() { document.getElementById('add-hero-form').reset(); document.getElementById('hero-edit-id').value = ""; document.getElementById('hero-existing-image').value = ""; document.getElementById('hero-form-title').innerText = "2. Add Category Item"; const btn = document.getElementById('hero-submit-btn'); btn.textContent = "Add to Hero Section"; btn.classList.replace('bg-blue-600', 'bg-pink-500'); document.getElementById('hero-cancel-btn').classList.add('hidden'); }
@@ -439,19 +419,29 @@
         async function saveHeroLayout(btnElement) { btnElement.textContent = "Saving Layout..."; btnElement.disabled = true; try { const res = await fetch(`/api/settings/hero_items`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }, body: JSON.stringify({ content: JSON.stringify(heroItems) }) }); if (res.ok) { btnElement.textContent = "Layout Saved!"; btnElement.classList.replace('bg-green-500', 'bg-blue-600'); setTimeout(() => { btnElement.textContent = "Save Live Layout"; btnElement.classList.replace('bg-blue-600', 'bg-green-500'); btnElement.disabled = false; }, 2000); } } catch (e) { btnElement.disabled = false;} }
 
         let homeRevs = [];
-        document.getElementById('add-home-rev-form').addEventListener('submit', async (e) => { e.preventDefault(); const btn = document.getElementById('home-rev-submit-btn'); btn.textContent = "Processing..."; btn.disabled = true; const editId = document.getElementById('home-rev-edit-id').value; const fileInput = document.getElementById('home-rev-media'); let mediaData = document.getElementById('home-rev-existing-media').value; if (fileInput.files.length > 0) { const file = fileInput.files[0]; if (file.type.startsWith('video/')) { mediaData = await new Promise((res, rej) => { const r = new FileReader(); r.readAsDataURL(file); r.onload = () => res(r.result); r.onerror = rej; }); } else { mediaData = await compressImage(file); } } const rev = { id: editId || Date.now().toString(), name: document.getElementById('home-rev-name').value, rating: parseInt(document.getElementById('home-rev-rating').value), text: document.getElementById('home-rev-text').value, media: mediaData }; if (editId) { const index = homeRevs.findIndex(r => r.id === editId); if (index !== -1) homeRevs[index] = rev; } else { homeRevs.push(rev); } renderHomeRevsList(); resetHomeRevForm(); btn.disabled = false; });
+        const addHomeRevForm = document.getElementById('add-home-rev-form');
+        if(addHomeRevForm) {
+            addHomeRevForm.addEventListener('submit', async (e) => { e.preventDefault(); const btn = document.getElementById('home-rev-submit-btn'); btn.textContent = "Processing..."; btn.disabled = true; const editId = document.getElementById('home-rev-edit-id').value; const fileInput = document.getElementById('home-rev-media'); let mediaData = document.getElementById('home-rev-existing-media').value; if (fileInput.files.length > 0) { const file = fileInput.files[0]; if (file.type.startsWith('video/')) { mediaData = await new Promise((res, rej) => { const r = new FileReader(); r.readAsDataURL(file); r.onload = () => res(r.result); r.onerror = rej; }); } else { mediaData = await compressImage(file); } } const rev = { id: editId || Date.now().toString(), name: document.getElementById('home-rev-name').value, rating: parseInt(document.getElementById('home-rev-rating').value), text: document.getElementById('home-rev-text').value, media: mediaData }; if (editId) { const index = homeRevs.findIndex(r => r.id === editId); if (index !== -1) homeRevs[index] = rev; } else { homeRevs.push(rev); } renderHomeRevsList(); resetHomeRevForm(); btn.disabled = false; });
+        }
+        
         function renderHomeRevsList() { const list = document.getElementById('home-revs-list'); list.innerHTML = homeRevs.map((r, i) => { return ` <div class="flex items-center justify-between p-4 border rounded-2xl bg-white shadow-sm"> <div class="flex items-center"> <div> <p class="text-yellow-400 text-lg">${'★'.repeat(r.rating)}</p> <p class="font-bold text-gray-800">${r.name}</p> </div> </div> <div class="flex gap-2"> <button onclick="deleteHomeRev(${i})" class="bg-red-50 text-red-600 px-4 py-2 rounded-lg font-bold text-sm">Del</button> </div> </div> `}).join(''); }
         function deleteHomeRev(index) { homeRevs.splice(index, 1); renderHomeRevsList(); }
         function resetHomeRevForm() { document.getElementById('add-home-rev-form').reset(); document.getElementById('home-rev-edit-id').value = ""; document.getElementById('home-rev-existing-media').value = ""; document.getElementById('home-rev-form-title').innerText = "Add Home Review"; const btn = document.getElementById('home-rev-submit-btn'); btn.textContent = "Add to Home Page"; btn.classList.replace('bg-indigo-600', 'bg-pink-500'); document.getElementById('home-rev-cancel-btn').classList.add('hidden'); }
         async function saveHomeReviewsLayout(btn) { btn.textContent = "Saving..."; btn.disabled = true; try { await fetch(`/api/settings/home_reviews`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }, body: JSON.stringify({ content: JSON.stringify(homeRevs) }) }); btn.textContent = "Saved!"; setTimeout(() => { btn.textContent = "Save Live Layout"; btn.disabled = false; }, 2000); } catch (e) { btn.disabled = false; } }
 
         let rawProductReviews = [];
-        async function loadCustomerReviews() { try { const res = await fetch('/api/admin/reviews', { headers: { 'Authorization': `Bearer ${token}` } }); rawProductReviews = await res.json(); const list = document.getElementById('admin-customer-reviews-list'); if (rawProductReviews.length === 0) { list.innerHTML = "<p class='text-gray-500'>No customer reviews found.</p>"; return; } list.innerHTML = rawProductReviews.map(r => ` <div class="p-4 border rounded-2xl bg-white shadow-sm flex justify-between items-center hover:shadow-md transition"> <div> <p class="text-xs text-pink-500 font-bold uppercase mb-1">Product: ${r.decoration_slug}</p> <p class="text-yellow-400">${'★'.repeat(r.rating)} <span class="text-gray-800 font-bold ml-2">${r.reviewer_name}</span></p> <p class="text-gray-600 mt-1">"${r.review_text}"</p> </div> <div class="flex flex-col gap-2"> <button onclick="editCustomerReview(${r.id})" class="bg-indigo-50 text-indigo-600 px-4 py-2 rounded-xl font-bold shadow-sm hover:bg-indigo-100 transition text-sm">Edit</button> <button onclick="deleteCustomerReview(${r.id})" class="bg-red-50 text-red-600 px-4 py-2 rounded-xl font-bold shadow-sm hover:bg-red-100 transition text-sm">Delete</button> </div> </div> `).join(''); } catch (e) {} }
+        async function loadCustomerReviews() { try { const res = await fetch('/api/admin/reviews', { headers: { 'Authorization': `Bearer ${token}` } }); rawProductReviews = await res.json(); const list = document.getElementById('admin-customer-reviews-list'); if (rawProductReviews.length === 0) { list.innerHTML = "<p class='text-gray-500'>No customer reviews found.</p>"; return; } list.innerHTML = rawProductReviews.map(r => ` <div class="p-4 border rounded-2xl bg-white shadow-sm flex justify-between items-center hover:shadow-md transition"> <div> <p class="text-xs text-pink-500 font-bold uppercase mb-1">Product: ${r.decoration_slug}</p> <p class="text-yellow-400">${'★'.repeat(r.rating)} <span class="text-gray-800 font-bold ml-2">${r.reviewer_name}</span></p> <p class="text-gray-600 mt-1">"${r.review_text}"</p> </div> <div class="flex flex-col gap-2"> <button onclick="editCustomerReview(${r.id})" class="bg-indigo-50 text-indigo-600 px-4 py-2 rounded-lg font-bold shadow-sm hover:bg-indigo-100 transition text-sm">Edit</button> <button onclick="deleteCustomerReview(${r.id})" class="bg-red-50 text-red-600 px-4 py-2 rounded-lg font-bold shadow-sm hover:bg-red-100 transition text-sm">Delete</button> </div> </div> `).join(''); } catch (e) {} }
         function editCustomerReview(id) { const review = rawProductReviews.find(r => r.id === id); if (!review) return; document.getElementById('prod-rev-id').value = review.id; document.getElementById('prod-rev-name').value = review.reviewer_name; document.getElementById('prod-rev-rating').value = review.rating; document.getElementById('prod-rev-text').value = review.review_text; document.getElementById('prod-rev-edit-container').classList.remove('hidden'); window.scrollTo({top: 0, behavior:'smooth'}); }
         function closeProdRevEdit() { document.getElementById('edit-prod-rev-form').reset(); document.getElementById('prod-rev-edit-container').classList.add('hidden'); }
-        document.getElementById('edit-prod-rev-form').addEventListener('submit', async (e) => { e.preventDefault(); const btn = document.getElementById('prod-rev-submit-btn'); btn.textContent = "Updating..."; btn.disabled = true; const id = document.getElementById('prod-rev-id').value; const payload = { name: document.getElementById('prod-rev-name').value, rating: parseInt(document.getElementById('prod-rev-rating').value), review: document.getElementById('prod-rev-text').value }; try { const res = await fetch(`/api/admin/reviews/${id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }, body: JSON.stringify(payload) }); if (res.ok) { closeProdRevEdit(); loadCustomerReviews(); loadAdminProducts(); } else { alert("Failed to update review."); } } catch(e) { alert("Server error."); } btn.textContent = "Update Review"; btn.disabled = false; });
+        
+        const editProdRevForm = document.getElementById('edit-prod-rev-form');
+        if (editProdRevForm) {
+            editProdRevForm.addEventListener('submit', async (e) => { e.preventDefault(); const btn = document.getElementById('prod-rev-submit-btn'); btn.textContent = "Updating..."; btn.disabled = true; const id = document.getElementById('prod-rev-id').value; const payload = { name: document.getElementById('prod-rev-name').value, rating: parseInt(document.getElementById('prod-rev-rating').value), review: document.getElementById('prod-rev-text').value }; try { const res = await fetch(`/api/admin/reviews/${id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }, body: JSON.stringify(payload) }); if (res.ok) { closeProdRevEdit(); loadCustomerReviews(); loadAdminProducts(); } else { alert("Failed to update review."); } } catch(e) { alert("Server error."); } btn.textContent = "Update Review"; btn.disabled = false; });
+        }
+        
         async function deleteCustomerReview(id) { if(!confirm("Permanently delete this customer review?")) return; try { await fetch(`/api/admin/reviews/${id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` } }); loadCustomerReviews(); loadAdminProducts(); } catch (e) {} }
 
+        // Start initialization
         loadDashboard();
         loadAdminProducts();
         loadSettings();
