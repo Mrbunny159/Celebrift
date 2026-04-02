@@ -26,7 +26,6 @@ const urlParams = new URLSearchParams(window.location.search);
 const decorId = urlParams.get('id');
 let imagesArray = [];
 
-// Helper to switch main image visually
 window.updateActiveThumb = function(activeIndex) {
     imagesArray.forEach((_, idx) => {
         const el = document.getElementById(`thumb-${idx}`);
@@ -51,7 +50,6 @@ async function fetchProductDetails() {
         document.getElementById('detail-container').classList.remove('hidden');
         document.getElementById('detail-footer')?.classList.remove('hidden');
         
-        // 1. SAFELY HANDLE IMAGES ARRAY
         try {
             if (data.images && typeof data.images === 'string') {
                 imagesArray = JSON.parse(data.images);
@@ -67,7 +65,6 @@ async function fetchProductDetails() {
         const mainImg = document.getElementById('decor-image');
         if (mainImg && imagesArray.length > 0) mainImg.src = imagesArray[0];
 
-        // AMAZON STYLE SCROLLING THUMBNAILS
         const thumbContainer = document.getElementById('decor-thumbnails');
         if (thumbContainer && imagesArray.length > 1) {
             thumbContainer.innerHTML = imagesArray.map((img, index) => `
@@ -78,7 +75,6 @@ async function fetchProductDetails() {
             `).join('');
         }
 
-        // 2. SAFELY POPULATE TEXT FIELDS
         if(document.getElementById('decor-title')) document.getElementById('decor-title').textContent = data.title || 'Beautiful Decoration';
         if(document.getElementById('decor-price')) document.getElementById('decor-price').textContent = data.price_range || '';
         if(document.getElementById('decor-desc')) document.getElementById('decor-desc').textContent = data.description || '';
@@ -88,14 +84,14 @@ async function fetchProductDetails() {
             document.getElementById('decor-rating-stars').innerHTML = '★'.repeat(rating) + '☆'.repeat(5-rating) + `<span class="text-sm text-gray-500 ml-2 font-bold text-indigo-900">(${data.average_rating || 5})</span>`;
         }
 
-        // 3. WHATSAPP BUTTON LINKING
+        // FEATURE 7: WHATSAPP BUTTON LINKING (Added Page URL)
         const whatsappBtn = document.getElementById('whatsapp-btn');
         if(whatsappBtn && data.title) {
-            const msg = encodeURIComponent(`Hi Celebrift! I want to book the ${data.title} setup.`);
+            const pageUrl = window.location.href; // Grabs the exact link
+            const msg = encodeURIComponent(`Hi Celebrift! I want to book the ${data.title} setup.\n\nLink: ${pageUrl}`);
             whatsappBtn.href = `https://wa.me/919594328008?text=${msg}`;
         }
 
-        // 4. SAFELY PARSE JSON ARRAYS FOR ACCORDIONS
         const pkgList = document.getElementById('desktop-package-list');
         if (pkgList) {
             let includes = [];
@@ -118,7 +114,6 @@ async function fetchProductDetails() {
             }
         }
 
-        // Render Page Sections
         renderReviews(data.reviews || []);
         await loadRelated();
 
@@ -130,13 +125,11 @@ async function fetchProductDetails() {
     }
 }
 
-// --- RELATED PRODUCTS ROW ---
 async function loadRelated() {
     try {
         const res = await fetch('/api/decorations');
         const data = await res.json();
         
-        // Filter out the current item
         const related = data.filter(i => i.slug !== decorId).slice(0, 8); 
         const container = document.getElementById('related-products-container');
         
@@ -172,7 +165,6 @@ async function loadRelated() {
     }
 }
 
-// --- REVIEWS RENDERING AND SUBMISSION ---
 function renderReviews(reviews) {
     const container = document.getElementById('reviews-list');
     if(!container) return;
