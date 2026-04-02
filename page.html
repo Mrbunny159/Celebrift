@@ -11,8 +11,9 @@
 
     <nav class="bg-white/90 backdrop-blur-md shadow-sm sticky top-0 z-50 border-b border-pink-100">
         <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-            <a href="index.html" class="text-3xl font-black text-gray-800 tracking-tighter">
-                <span class="text-pink-500">Celebr</span>ift 👑
+            <a href="index.html" class="flex items-center gap-3 text-3xl font-extrabold text-gray-800 tracking-tight">
+                <img src="logo.jpg" alt="Celebrift Official Logo" class="w-10 h-10 rounded-full object-cover shadow-sm">
+                <span><span class="text-pink-600">Celebr</span>ift 👑</span>
             </a>
             
             <div class="hidden md:flex gap-8 text-sm font-bold text-gray-600 uppercase tracking-widest items-center">
@@ -45,7 +46,7 @@
     <footer class="bg-gradient-to-b from-white to-blue-50 pt-20 pb-10 px-6 border-t mt-auto">
         <div class="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-12 text-sm text-gray-600 mb-16">
             <div><h4 class="font-bold text-gray-900 mb-6 text-lg">Important Links</h4><a href="page.html?id=about" class="block mb-3 hover:text-pink-500 transition-colors">About Us</a><a href="page.html?id=faqs" class="block mb-3 hover:text-pink-500 transition-colors">FAQs</a><a href="page.html?id=tnc" class="block mb-3 hover:text-pink-500 transition-colors">Terms & Conditions</a></div>
-            <div><h4 class="font-bold text-gray-900 mb-6 text-lg">Categories</h4><a href="index.html?category=birthday-decor" class="block mb-3 hover:text-pink-500 transition-colors">Birthday Decor</a><a href="index.html?category=baby-shower-decor" class="block mb-3 hover:text-pink-500 transition-colors">Baby Shower Decor</a><a href="index.html?category=store-decor" class="block mb-3 hover:text-pink-500 transition-colors">Store Decor</a><a href="index.html?category=naming-ceremony" class="block mb-3 hover:text-pink-500 transition-colors">Naming Ceremony</a><a href="index.html?category=anniversary-decor" class="block mb-3 hover:text-pink-500 transition-colors">Anniversary Decor</a><a href="index.html?category=romantic-decor" class="block hover:text-pink-500 transition-colors">Romantic Decor</a></div>
+            <div><h4 class="font-bold text-gray-900 mb-6 text-lg">Categories</h4><a href="index.html?category=birthday-decor" class="block mb-3 hover:text-pink-500 transition-colors">Birthday Decor</a><a href="index.html?category=baby-shower-decor" class="block mb-3 hover:text-pink-500 transition-colors">Baby Shower Decor</a><a href="index.html?category=store-decor" class="block mb-3 hover:text-pink-500 transition-colors">Store Decor</a><a href="index.html?category=naming-ceremony" class="block mb-3 hover:text-pink-500 transition-colors">Naming Ceremony</a><a href="index.html?category=anniversary-decor" class="block mb-3 hover:text-pink-500 transition-colors">Anniversary Decor</a><a href="index.html?category=romantic-decor" class="block mb-3 hover:text-pink-500 transition-colors">Romantic Decor</a></div>
             <div><h4 class="font-bold text-gray-900 mb-6 text-lg">Cities</h4><p class="mb-3">Mira Bhayandar</p><p>Mumbai</p></div>
             <div><h4 class="font-bold text-gray-900 mb-6 text-lg">Legal Info</h4><a href="page.html?id=refunds" class="block mb-3 hover:text-pink-500 transition-colors">Refunds & Returns</a><a href="page.html?id=disclaimer" class="block mb-3 hover:text-pink-500 transition-colors">Disclaimer</a></div>
         </div>
@@ -98,6 +99,8 @@
                 if (theme === 'default') return;
 
                 const themeData = {
+                    'purple-gold': { bg: 'linear-gradient(to bottom, #faf5ff, #fef08a, #d8b4fe)', elements: ['✨', '👑', '💜', '💛', '🎊'] },
+                    'cyan-splash': { bg: 'linear-gradient(to bottom, #f0fdfa, #cffafe, #29c3d3)', elements: ['🌊', '💎', '✨', '🎈', '🎉'] },
                     'christmas': { bg: 'linear-gradient(to bottom, #fdf2f8, #dcfce7, #fee2e2)', elements: ['🎄', '❄️', '🎁', '⭐', '🔔'] },
                     'diwali': { bg: 'linear-gradient(to bottom, #fffbeb, #ffedd5, #fef3c7)', elements: ['🪔', '✨', '🎆', '🏵️', '🎇'] },
                     'holi': { bg: 'linear-gradient(to bottom, #fdf4ff, #e0e7ff, #ecfeff)', elements: ['🎨', '💦', '🌈', '🎈', '✨'] },

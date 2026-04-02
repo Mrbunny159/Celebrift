@@ -6,7 +6,7 @@ let globalSettings = null;
 let globalCategoryMap = {};
 let categoryOrder = [];
 
-let allDecorations = []; // Stores everything from DB
+let allDecorations = [];
 let currentSearch = "";
 let currentSort = "default";
 
@@ -41,7 +41,6 @@ async function initPage() {
                 const catName = parts[0].trim();
                 const catSlug = catName.toLowerCase().replace(/ /g, '-');
                 const subCats = parts[1] ? parts[1].split(',').map(s => s.trim()).filter(s => s !== '') : [];
-                
                 categoryOrder.push(catSlug);
                 globalCategoryMap[catSlug] = subCats.map(sc => ({ name: sc, slug: sc.toLowerCase().replace(/ /g, '-') }));
             });
@@ -53,16 +52,21 @@ async function initPage() {
     
     await fetchDecorations();
     
-    // Attach Search & Sort Event Listeners
-    document.getElementById('search-bar').addEventListener('input', (e) => {
-        currentSearch = e.target.value.toLowerCase();
-        renderDecorationsGrid();
-    });
+    const searchBar = document.getElementById('search-bar');
+    if (searchBar) {
+        searchBar.addEventListener('input', (e) => {
+            currentSearch = e.target.value.toLowerCase();
+            renderDecorationsGrid();
+        });
+    }
     
-    document.getElementById('sort-bar').addEventListener('change', (e) => {
-        currentSort = e.target.value;
-        renderDecorationsGrid();
-    });
+    const sortBar = document.getElementById('sort-bar');
+    if(sortBar) {
+        sortBar.addEventListener('change', (e) => {
+            currentSort = e.target.value;
+            renderDecorationsGrid();
+        });
+    }
 }
 
 function renderHeroSection() {
@@ -135,7 +139,6 @@ function renderDecorationsGrid() {
         return;
     }
 
-    // 1. FILTERING
     let activeItems = allDecorations.filter(item => {
         const matchesSearch = item.title.toLowerCase().includes(currentSearch) || item.category.replace(/-/g, ' ').includes(currentSearch) || (item.sub_category || '').replace(/-/g, ' ').includes(currentSearch);
         const matchesCat = filterCat ? item.category === filterCat : true;
@@ -143,7 +146,6 @@ function renderDecorationsGrid() {
         return matchesSearch && matchesCat && matchesSubCat;
     });
 
-    // 2. SORTING
     if (currentSort === 'price_asc') {
         activeItems.sort((a,b) => (parseInt(a.price_range.replace(/[^0-9]/g, '')) || 0) - (parseInt(b.price_range.replace(/[^0-9]/g, '')) || 0));
     } else if (currentSort === 'price_desc') {
@@ -159,7 +161,6 @@ function renderDecorationsGrid() {
 
     const isGridMode = !!filterCat || currentSearch !== "" || currentSort !== "default";
     
-    // If we are actively searching or sorting, we abandon the Category Rows and just show one big grid
     if (currentSearch !== "" || currentSort !== "default") {
         container.innerHTML = `
             <h2 class="text-2xl font-black text-indigo-900 mb-6">Search Results</h2>
@@ -170,10 +171,14 @@ function renderDecorationsGrid() {
         return;
     }
 
-    // Otherwise, render normal category rows
     let categories = [...new Set(activeItems.map(i => i.category))];
+    
+    // THIS FORCES THE EXACT ORDER YOU REQUESTED (If custom builder wasn't used)
+    const fallbackOrder = ['birthday-decor', 'baby-shower-decor', 'anniversary-decor', 'naming-ceremony', 'store-decor', 'romantic-decor'];
+    const activeOrder = categoryOrder.length > 0 ? categoryOrder : fallbackOrder;
+
     categories.sort((a, b) => {
-        let indexA = categoryOrder.indexOf(a); let indexB = categoryOrder.indexOf(b);
+        let indexA = activeOrder.indexOf(a); let indexB = activeOrder.indexOf(b);
         if (indexA === -1) indexA = 999; if (indexB === -1) indexB = 999;
         return indexA === indexB ? a.localeCompare(b) : indexA - indexB;
     });

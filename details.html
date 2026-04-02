@@ -45,7 +45,7 @@
                 <h1 id="decor-title" class="text-3xl md:text-4xl font-black text-indigo-900 mb-2 leading-tight"></h1>
                 <div id="decor-rating-stars" class="flex items-center gap-1 mb-4 text-yellow-400 text-xl"></div>
                 <p id="decor-price" class="text-4xl font-black text-pink-600 mb-6"></p>
-                <p id="decor-desc" class="text-gray-600 mb-8 leading-relaxed text-lg"></p>
+                <div id="decor-desc" class="text-gray-600 mb-8 leading-relaxed text-lg prose"></div>
 
                 <a id="whatsapp-btn" href="https://wa.me/919594328008" target="_blank" class="bg-[#25D366] text-white py-4 rounded-2xl font-black text-center text-xl shadow-lg hover:bg-[#1ebe57] transition-all transform hover:scale-[1.02] mb-8">
                     Book on WhatsApp
@@ -106,33 +106,12 @@
         </div>
     </div>
 
-    <footer class="bg-gradient-to-r from-pink-50 via-purple-50 to-indigo-50 pt-16 pb-8 px-4 mt-auto border-t border-pink-200 relative z-10">
+    <footer class="bg-gradient-to-r from-pink-50 via-purple-50 to-indigo-50 pt-16 pb-8 px-4 mt-auto border-t border-pink-200 relative z-10 w-full hidden" id="detail-footer">
         <div class="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 text-sm text-gray-700 mb-12">
-            <div class="space-y-3">
-                <h4 class="font-bold text-indigo-900 text-lg mb-4">Important Links</h4>
-                <a href="page.html?id=about" class="block hover:text-pink-600 font-medium transition-colors">About Us</a>
-                <a href="page.html?id=faqs" class="block hover:text-pink-600 font-medium transition-colors">FAQs</a>
-                <a href="page.html?id=tnc" class="block hover:text-pink-600 font-medium transition-colors">Terms & Conditions</a>
-            </div>
-            <div class="space-y-3">
-                <h4 class="font-bold text-indigo-900 text-lg mb-4">Top Categories</h4>
-                <a href="index.html?category=birthday-decor" class="block hover:text-pink-600 font-medium transition-colors">Birthday Decor</a>
-                <a href="index.html?category=baby-shower-decor" class="block hover:text-pink-600 font-medium transition-colors">Baby Shower Decor</a>
-                <a href="index.html?category=store-decor" class="block hover:text-pink-600 font-medium transition-colors">Store Decor</a>
-                <a href="index.html?category=naming-ceremony" class="block hover:text-pink-600 font-medium transition-colors">Naming Ceremony</a>
-                <a href="index.html?category=anniversary-decor" class="block hover:text-pink-600 font-medium transition-colors">Anniversary Decor</a>
-                <a href="index.html?category=romantic-decor" class="block hover:text-pink-600 font-medium transition-colors">Romantic Decor</a>
-            </div>
-            <div class="space-y-3">
-                <h4 class="font-bold text-indigo-900 text-lg mb-4">Top Cities</h4>
-                <p class="block font-medium">Mira Bhayandar</p>
-                <p class="block font-medium">Mumbai</p>
-            </div>
-            <div class="space-y-3">
-                <h4 class="font-bold text-indigo-900 text-lg mb-4">Legal Info</h4>
-                <a href="page.html?id=refunds" class="block hover:text-pink-600 font-medium transition-colors">Refunds & Returns</a>
-                <a href="page.html?id=disclaimer" class="block hover:text-pink-600 font-medium transition-colors">Disclaimer</a>
-            </div>
+            <div class="space-y-3"><h4 class="font-bold text-indigo-900 text-lg mb-4">Important Links</h4><a href="page.html?id=about" class="block hover:text-pink-600 font-medium">About Us</a><a href="page.html?id=faqs" class="block hover:text-pink-600 font-medium">FAQs</a><a href="page.html?id=tnc" class="block hover:text-pink-600 font-medium">Terms & Conditions</a></div>
+            <div class="space-y-3"><h4 class="font-bold text-indigo-900 text-lg mb-4">Top Categories</h4><a href="index.html?category=birthday-decor" class="block hover:text-pink-600 font-medium">Birthday</a><a href="index.html?category=anniversary-decor" class="block hover:text-pink-600 font-medium">Anniversary</a><a href="index.html?category=baby-shower-decor" class="block hover:text-pink-600 font-medium">Baby Shower</a></div>
+            <div class="space-y-3"><h4 class="font-bold text-indigo-900 text-lg mb-4">Top Cities</h4><p class="block font-medium">Mira Bhayandar</p><p class="block font-medium">Mumbai</p></div>
+            <div class="space-y-3"><h4 class="font-bold text-indigo-900 text-lg mb-4">Legal Info</h4><a href="page.html?id=refunds" class="block hover:text-pink-600 font-medium">Refunds & Returns</a><a href="page.html?id=disclaimer" class="block hover:text-pink-600 font-medium">Disclaimer</a></div>
         </div>
         <div class="max-w-7xl mx-auto flex flex-col items-center">
             <p class="text-xs text-gray-500 font-bold tracking-widest">© 2026 CELEBRIFT.COM</p>
@@ -155,6 +134,8 @@
                 if (theme === 'default') return;
 
                 const themeData = {
+                    'purple-gold': { bg: 'linear-gradient(to bottom, #faf5ff, #fef08a, #d8b4fe)', elements: ['✨', '👑', '💜', '💛', '🎊'] },
+                    'cyan-splash': { bg: 'linear-gradient(to bottom, #f0fdfa, #cffafe, #29c3d3)', elements: ['🌊', '💎', '✨', '🎈', '🎉'] },
                     'christmas': { bg: 'linear-gradient(to bottom, #fdf2f8, #dcfce7, #fee2e2)', elements: ['🎄', '❄️', '🎁', '⭐', '🔔'] },
                     'diwali': { bg: 'linear-gradient(to bottom, #fffbeb, #ffedd5, #fef3c7)', elements: ['🪔', '✨', '🎆', '🏵️', '🎇'] },
                     'holi': { bg: 'linear-gradient(to bottom, #fdf4ff, #e0e7ff, #ecfeff)', elements: ['🎨', '💦', '🌈', '🎈', '✨'] },
