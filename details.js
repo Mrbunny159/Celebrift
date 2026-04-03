@@ -9,6 +9,24 @@ let imagesArray = [];
 window.updateActiveThumb = function(activeIndex) { imagesArray.forEach((_, idx) => { const el = document.getElementById(`thumb-${idx}`); if (el) { el.classList.remove('border-pink-500'); el.classList.add('border-transparent'); if (idx === activeIndex) { el.classList.remove('border-transparent'); el.classList.add('border-pink-500'); } } }); }
 
 async function fetchProductDetails() {
+    // NEW: Fetch categories for Navbar Dropdown on details page
+    try {
+        const sRes = await fetch('/api/settings');
+        const settings = await sRes.json();
+        if (settings['site_categories']) {
+            const lines = settings['site_categories'].split('\n');
+            let navDropdownHTML = '';
+            lines.forEach(line => {
+                if(!line.trim()) return;
+                const catName = line.split('|')[0].trim();
+                const catSlug = catName.toLowerCase().replace(/ /g, '-');
+                navDropdownHTML += `<a href="index.html?category=${catSlug}" class="px-5 py-3 hover:bg-pink-50 hover:text-pink-600 border-b border-pink-50 text-gray-600 transition-colors">${catName}</a>`;
+            });
+            const navDropdown = document.getElementById('nav-categories-dropdown');
+            if (navDropdown) navDropdown.innerHTML = navDropdownHTML;
+        }
+    } catch(e){}
+
     try {
         const response = await fetch(`/api/decorations/${decorId}`);
         if (!response.ok) throw new Error('Not found');
@@ -26,10 +44,8 @@ async function fetchProductDetails() {
         if(document.getElementById('decor-title')) document.getElementById('decor-title').textContent = data.title || 'Beautiful Decoration';
         if(document.getElementById('decor-price')) document.getElementById('decor-price').textContent = data.price_range || '';
         
-        // FEATURE 4: Inject HTML so Quill.js formatting (bold, italic, bullets) works perfectly!
         if(document.getElementById('decor-desc')) {
             document.getElementById('decor-desc').innerHTML = data.description || '';
-            // Add some base styling so the bullet points and bold text show up correctly
             document.getElementById('decor-desc').className = "text-gray-600 mb-8 leading-relaxed text-lg prose"; 
         }
         

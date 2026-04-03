@@ -35,15 +35,25 @@ async function initPage() {
 
         if (globalSettings['site_categories']) {
             const lines = globalSettings['site_categories'].split('\n');
+            let navDropdownHTML = ''; // NEW: For the dropdown
+            
             lines.forEach(line => {
                 if(!line.trim()) return;
                 const parts = line.split('|');
                 const catName = parts[0].trim();
                 const catSlug = catName.toLowerCase().replace(/ /g, '-');
                 const subCats = parts[1] ? parts[1].split(',').map(s => s.trim()).filter(s => s !== '') : [];
+                
+                // NEW: Build the Dropdown Links
+                navDropdownHTML += `<a href="index.html?category=${catSlug}" class="px-5 py-3 hover:bg-pink-50 hover:text-pink-600 border-b border-pink-50 text-gray-600 transition-colors">${catName}</a>`;
+                
                 categoryOrder.push(catSlug);
                 globalCategoryMap[catSlug] = subCats.map(sc => ({ name: sc, slug: sc.toLowerCase().replace(/ /g, '-') }));
             });
+            
+            // NEW: Inject into Navbar
+            const navDropdown = document.getElementById('nav-categories-dropdown');
+            if (navDropdown) navDropdown.innerHTML = navDropdownHTML;
         }
         
         renderHeroSection();
@@ -173,7 +183,6 @@ function renderDecorationsGrid() {
 
     let categories = [...new Set(activeItems.map(i => i.category))];
     
-    // THIS FORCES THE EXACT ORDER YOU REQUESTED (If custom builder wasn't used)
     const fallbackOrder = ['birthday-decor', 'baby-shower-decor', 'anniversary-decor', 'naming-ceremony', 'store-decor', 'romantic-decor'];
     const activeOrder = categoryOrder.length > 0 ? categoryOrder : fallbackOrder;
 
