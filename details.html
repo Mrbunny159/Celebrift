@@ -15,51 +15,47 @@
 
     <nav class="bg-white/90 backdrop-blur-md shadow-sm sticky top-0 z-50 border-b border-pink-100">
         <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-            <a href="index.html" class="flex items-center gap-3 text-3xl font-extrabold text-gray-800 tracking-tight">
-                <img src="logo.jpg" alt="Celebrift Official Logo" class="w-10 h-10 rounded-full object-cover shadow-sm">
-                <span><span class="text-pink-600">Celebr</span>ift 👑</span>
+            <a href="index.html" class="flex items-center gap-3 text-2xl md:text-3xl font-extrabold text-gray-800 tracking-tight">
+                <img src="logo.jpg" alt="Celebrift Logo" class="w-8 h-8 md:w-10 md:h-10 rounded-full object-cover shadow-sm">
+                <span><span class="text-pink-500">Celebr</span>ift 👑</span>
             </a>
-            <div class="hidden md:flex gap-6 text-sm font-bold text-gray-700 items-center">
-                <a href="index.html" class="hover:text-pink-600 transition-colors">Home</a>
-                
+            <div class="hidden md:flex gap-8 text-[15px] font-extrabold text-gray-600 items-center">
+                <a href="index.html" class="hover:text-pink-500 transition-colors">Home</a>
                 <div class="relative group">
-                    <a href="index.html#rows-container" class="hover:text-pink-600 transition-colors flex items-center gap-1 py-2">
+                    <a href="index.html#rows-container" class="text-pink-500 cursor-pointer flex items-center gap-1 py-2">
                         All Decor <span class="text-[10px]">▼</span>
                     </a>
-                    <div id="nav-categories-dropdown" class="absolute left-0 mt-0 w-64 bg-white border border-pink-100 rounded-2xl shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all flex flex-col overflow-hidden z-50">
+                    <div id="nav-categories-dropdown" class="absolute left-0 mt-0 w-64 bg-white border border-gray-100 rounded-2xl shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all flex flex-col overflow-hidden z-50">
+                        <a href="index.html?category=birthday-decor" class="px-5 py-3 hover:bg-pink-50 hover:text-pink-500 border-b border-gray-50 font-bold text-sm text-gray-700 transition-colors">Birthday Decor</a>
+                        <a href="index.html?category=baby-shower-decor" class="px-5 py-3 hover:bg-pink-50 hover:text-pink-500 border-b border-gray-50 font-bold text-sm text-gray-700 transition-colors">Baby Shower Decor</a>
+                        <a href="index.html?category=store-decor" class="px-5 py-3 hover:bg-pink-50 hover:text-pink-500 border-b border-gray-50 font-bold text-sm text-gray-700 transition-colors">Store Decor</a>
+                        <a href="index.html?category=naming-ceremony" class="px-5 py-3 hover:bg-pink-50 hover:text-pink-500 border-b border-gray-50 font-bold text-sm text-gray-700 transition-colors">Naming Ceremony</a>
+                        <a href="index.html?category=anniversary-decor" class="px-5 py-3 hover:bg-pink-50 hover:text-pink-500 border-b border-gray-50 font-bold text-sm text-gray-700 transition-colors">Anniversary Decor</a>
+                        <a href="index.html?category=romantic-decor" class="px-5 py-3 hover:bg-pink-50 hover:text-pink-500 font-bold text-sm text-gray-700 transition-colors">Romantic Decor</a>
                     </div>
                 </div>
-
-                <a href="admin-login.html" class="hover:text-pink-600 transition-colors">Admin</a>
             </div>
-            
-            <a href="index.html" class="md:hidden text-pink-500 font-bold hover:underline hidden" id="mobile-back-btn">&larr; Back to Home</a>
+            <a href="index.html" class="md:hidden text-gray-600 hover:text-pink-500 font-bold transition-colors text-sm">&larr; Back</a>
         </div>
     </nav>
 
     <div id="loading-state" class="text-center py-20 text-xl font-bold text-pink-500 animate-pulse relative z-10">Loading Product Details...</div>
 
     <div id="detail-container" class="flex-grow max-w-7xl mx-auto mt-6 px-4 hidden w-full flex-col relative z-10">
-        
         <div class="max-w-6xl mx-auto w-full flex flex-col md:flex-row gap-10 bg-white/80 backdrop-blur-md p-4 md:p-8 rounded-3xl shadow-sm border border-pink-100">
-            
             <div class="w-full md:w-1/2 flex flex-col">
                 <div class="w-full aspect-square rounded-2xl bg-white border border-gray-100 shadow-sm overflow-hidden relative">
                     <img id="decor-image" src="" alt="Decoration Setup" class="w-full h-full object-cover transition-opacity duration-300">
                 </div>
-                <div id="decor-thumbnails" class="flex gap-3 mt-4 overflow-x-auto hide-scroll-bar py-2 px-1 snap-x">
-                </div>
+                <div id="decor-thumbnails" class="flex gap-3 mt-4 overflow-x-auto hide-scroll-bar py-2 px-1 snap-x"></div>
             </div>
-
             <div class="w-full md:w-1/2 flex flex-col">
                 <h1 id="decor-title" class="text-3xl md:text-4xl font-black text-indigo-900 mb-2 leading-tight"></h1>
                 <div id="decor-rating-stars" class="flex items-center gap-1 mb-4 text-yellow-400 text-xl"></div>
                 <p id="decor-price" class="text-4xl font-black text-pink-600 mb-6"></p>
                 <div id="decor-desc" class="text-gray-600 mb-8 leading-relaxed text-lg prose"></div>
 
-                <a id="whatsapp-btn" href="https://wa.me/919594328008" target="_blank" class="bg-[#25D366] text-white py-4 rounded-2xl font-black text-center text-xl shadow-lg hover:bg-[#1ebe57] transition-all transform hover:scale-[1.02] mb-8">
-                    Book on WhatsApp
-                </a>
+                <a id="whatsapp-btn" href="https://wa.me/919594328008" target="_blank" class="bg-[#25D366] text-white py-4 rounded-2xl font-black text-center text-xl shadow-lg hover:bg-[#1ebe57] transition-all transform hover:scale-[1.02] mb-8">Book on WhatsApp</a>
 
                 <div class="space-y-4 border-t pt-6">
                     <details class="group border border-gray-200 rounded-xl bg-gray-50 shadow-sm overflow-hidden" open>
@@ -91,19 +87,13 @@
                     <h4 class="text-xl font-black text-indigo-900 mb-6">Leave a Review</h4>
                     <form id="review-form" class="space-y-5">
                         <input type="text" id="rev-name" required placeholder="Your Name" class="w-full px-4 py-4 rounded-xl bg-gray-50 border border-gray-200 outline-none focus:ring-2 focus:ring-pink-500 font-medium">
-                        
                         <div class="flex flex-col gap-2">
                             <label class="text-sm font-bold text-gray-600">Rate your experience</label>
                             <div id="star-selector" class="flex gap-2 text-4xl cursor-pointer select-none">
-                                <span data-val="1" class="text-yellow-400 transition-colors">★</span>
-                                <span data-val="2" class="text-yellow-400 transition-colors">★</span>
-                                <span data-val="3" class="text-yellow-400 transition-colors">★</span>
-                                <span data-val="4" class="text-yellow-400 transition-colors">★</span>
-                                <span data-val="5" class="text-yellow-400 transition-colors">★</span>
+                                <span data-val="1" class="text-yellow-400 transition-colors">★</span><span data-val="2" class="text-yellow-400 transition-colors">★</span><span data-val="3" class="text-yellow-400 transition-colors">★</span><span data-val="4" class="text-yellow-400 transition-colors">★</span><span data-val="5" class="text-yellow-400 transition-colors">★</span>
                             </div>
                             <input type="hidden" id="rev-rating" value="5">
                         </div>
-
                         <textarea id="rev-text" required rows="4" placeholder="Tell us about your experience..." class="w-full px-4 py-4 rounded-xl bg-gray-50 border border-gray-200 outline-none focus:ring-2 focus:ring-pink-500 font-medium"></textarea>
                         <button type="submit" id="rev-submit" class="w-full bg-pink-500 hover:bg-pink-600 text-white font-black py-4 rounded-xl transition-colors shadow-md text-lg">Submit Review</button>
                     </form>
@@ -116,33 +106,12 @@
         </div>
     </div>
 
-    <footer class="bg-gradient-to-r from-pink-50 via-purple-50 to-indigo-50 pt-16 pb-8 px-4 mt-auto border-t border-pink-200 relative z-10">
+    <footer class="bg-gradient-to-r from-pink-50 via-purple-50 to-indigo-50 pt-16 pb-8 px-4 mt-auto border-t border-pink-200 relative z-10 w-full hidden" id="detail-footer">
         <div class="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 text-sm text-gray-700 mb-12">
-            <div class="space-y-3">
-                <h3 class="font-bold text-indigo-900 text-lg mb-4">Important Links</h3>
-                <a href="page.html?id=about" class="block hover:text-pink-700 font-medium transition-colors">About Us</a>
-                <a href="page.html?id=faqs" class="block hover:text-pink-700 font-medium transition-colors">FAQs</a>
-                <a href="page.html?id=tnc" class="block hover:text-pink-700 font-medium transition-colors">Terms & Conditions</a>
-            </div>
-            <div class="space-y-3">
-                <h3 class="font-bold text-indigo-900 text-lg mb-4">Top Categories</h3>
-                <a href="index.html?category=birthday-decor" class="block hover:text-pink-700 font-medium transition-colors">Birthday Decor</a>
-                <a href="index.html?category=baby-shower-decor" class="block hover:text-pink-700 font-medium transition-colors">Baby Shower Decor</a>
-                <a href="index.html?category=store-decor" class="block hover:text-pink-700 font-medium transition-colors">Store Decor</a>
-                <a href="index.html?category=naming-ceremony" class="block hover:text-pink-700 font-medium transition-colors">Naming Ceremony</a>
-                <a href="index.html?category=anniversary-decor" class="block hover:text-pink-700 font-medium transition-colors">Anniversary Decor</a>
-                <a href="index.html?category=romantic-decor" class="block hover:text-pink-700 font-medium transition-colors">Romantic Decor</a>
-            </div>
-            <div class="space-y-3">
-                <h3 class="font-bold text-indigo-900 text-lg mb-4">Top Cities</h3>
-                <p class="block font-medium">Mira Bhayandar</p>
-                <p class="block font-medium">Mumbai</p>
-            </div>
-            <div class="space-y-3">
-                <h3 class="font-bold text-indigo-900 text-lg mb-4">Legal Info</h3>
-                <a href="page.html?id=refunds" class="block hover:text-pink-700 font-medium transition-colors">Refunds & Returns</a>
-                <a href="page.html?id=disclaimer" class="block hover:text-pink-700 font-medium transition-colors">Disclaimer</a>
-            </div>
+            <div class="space-y-3"><h4 class="font-bold text-indigo-900 text-lg mb-4">Important Links</h4><a href="page.html?id=about" class="block hover:text-pink-600 font-medium">About Us</a><a href="page.html?id=faqs" class="block hover:text-pink-600 font-medium">FAQs</a><a href="page.html?id=tnc" class="block hover:text-pink-600 font-medium">Terms & Conditions</a></div>
+            <div class="space-y-3"><h4 class="font-bold text-indigo-900 text-lg mb-4">Top Categories</h4><a href="index.html?category=birthday-decor" class="block hover:text-pink-600 font-medium">Birthday</a><a href="index.html?category=anniversary-decor" class="block hover:text-pink-600 font-medium">Anniversary</a><a href="index.html?category=baby-shower-decor" class="block hover:text-pink-600 font-medium">Baby Shower</a></div>
+            <div class="space-y-3"><h4 class="font-bold text-indigo-900 text-lg mb-4">Top Cities</h4><p class="block font-medium">Mira Bhayandar</p><p class="block font-medium">Mumbai</p></div>
+            <div class="space-y-3"><h4 class="font-bold text-indigo-900 text-lg mb-4">Legal Info</h4><a href="page.html?id=refunds" class="block hover:text-pink-600 font-medium">Refunds & Returns</a><a href="page.html?id=disclaimer" class="block hover:text-pink-600 font-medium">Disclaimer</a></div>
         </div>
         <div class="max-w-7xl mx-auto flex flex-col items-center">
             <p class="text-xs text-gray-500 font-bold tracking-widest">© 2026 CELEBRIFT.COM</p>
@@ -159,49 +128,13 @@
     <script>
         async function applyFestiveTheme() {
             try {
-                const res = await fetch('/api/settings');
-                const settings = await res.json();
-                const theme = settings['site_theme'] || 'default';
+                const res = await fetch('/api/settings'); const settings = await res.json(); const theme = settings['site_theme'] || 'default';
                 if (theme === 'default') return;
-
-                const themeData = {
-                    'purple-gold': { bg: 'linear-gradient(to bottom, #faf5ff, #fef08a, #d8b4fe)', elements: ['✨', '👑', '💜', '💛', '🎊'] },
-                    'cyan-splash': { bg: 'linear-gradient(to bottom, #f0fdfa, #cffafe, #29c3d3)', elements: ['🌊', '💎', '✨', '🎈', '🎉'] },
-                    'christmas': { bg: 'linear-gradient(to bottom, #fdf2f8, #dcfce7, #fee2e2)', elements: ['🎄', '❄️', '🎁', '⭐', '🔔'] },
-                    'diwali': { bg: 'linear-gradient(to bottom, #fffbeb, #ffedd5, #fef3c7)', elements: ['🪔', '✨', '🎆', '🏵️', '🎇'] },
-                    'holi': { bg: 'linear-gradient(to bottom, #fdf4ff, #e0e7ff, #ecfeff)', elements: ['🎨', '💦', '🌈', '🎈', '✨'] },
-                    'new-year': { bg: 'linear-gradient(to bottom, #f1f5f9, #e2e8f0, #cbd5e1)', elements: ['🎇', '🥂', '🎊', '✨', '🕛'] },
-                    'eid': { bg: 'linear-gradient(to bottom, #f0fdf4, #dcfce7, #bbf7d0)', elements: ['🌙', '⭐', '🕌', '✨', '🤲'] },
-                    'national': { bg: 'linear-gradient(to bottom, #ffedd5, #f8fafc, #dcfce7)', elements: ['🇮🇳', '🕊️', '🌸', '✨', '🤍'] }
-                };
-
-                const current = themeData[theme];
-                if (!current) return;
-
-                document.body.style.background = current.bg;
-                const container = document.createElement('div');
-                container.className = 'fixed inset-0 pointer-events-none z-[1] overflow-hidden';
-                
-                for(let i=0; i<25; i++) {
-                    const el = document.createElement('div');
-                    el.innerText = current.elements[Math.floor(Math.random() * current.elements.length)];
-                    el.className = 'absolute opacity-50 text-3xl md:text-5xl animate-float drop-shadow-xl';
-                    el.style.left = Math.random() * 100 + 'vw';
-                    el.style.top = '100vh';
-                    el.style.animationDuration = (Math.random() * 10 + 10) + 's';
-                    el.style.animationDelay = (Math.random() * 5) + 's';
-                    container.appendChild(el);
-                }
-                document.body.prepend(container);
-                
-                const style = document.createElement('style');
-                style.innerHTML = `
-                    @keyframes float { 0% { transform: translateY(0) rotate(0deg) scale(0.8); opacity: 0; } 10% { opacity: 0.7; } 50% { transform: translateY(-50vh) rotate(180deg) scale(1.2); } 90% { opacity: 0.7; } 100% { transform: translateY(-110vh) rotate(360deg) scale(0.8); opacity: 0; } }
-                    .animate-float { animation: float linear infinite; }
-                    main, section, footer, nav { position: relative; z-index: 10; }
-                    #detail-container { background: rgba(255,255,255,0.6); backdrop-filter: blur(10px); border-radius: 2rem; padding-top: 2rem; }
-                `;
-                document.head.appendChild(style);
+                const themeData = { 'purple-gold': { bg: 'linear-gradient(to bottom, #faf5ff, #fef08a, #d8b4fe)', elements: ['✨', '👑', '💜', '💛', '🎊'] }, 'cyan-splash': { bg: 'linear-gradient(to bottom, #f0fdfa, #cffafe, #29c3d3)', elements: ['🌊', '💎', '✨', '🎈', '🎉'] }, 'christmas': { bg: 'linear-gradient(to bottom, #fdf2f8, #dcfce7, #fee2e2)', elements: ['🎄', '❄️', '🎁', '⭐', '🔔'] }, 'diwali': { bg: 'linear-gradient(to bottom, #fffbeb, #ffedd5, #fef3c7)', elements: ['🪔', '✨', '🎆', '🏵️', '🎇'] }, 'holi': { bg: 'linear-gradient(to bottom, #fdf4ff, #e0e7ff, #ecfeff)', elements: ['🎨', '💦', '🌈', '🎈', '✨'] }, 'new-year': { bg: 'linear-gradient(to bottom, #f1f5f9, #e2e8f0, #cbd5e1)', elements: ['🎇', '🥂', '🎊', '✨', '🕛'] }, 'eid': { bg: 'linear-gradient(to bottom, #f0fdf4, #dcfce7, #bbf7d0)', elements: ['🌙', '⭐', '🕌', '✨', '🤲'] }, 'national': { bg: 'linear-gradient(to bottom, #ffedd5, #f8fafc, #dcfce7)', elements: ['🇮🇳', '🕊️', '🌸', '✨', '🤍'] } };
+                const current = themeData[theme]; if (!current) return;
+                document.body.style.background = current.bg; const container = document.createElement('div'); container.className = 'fixed inset-0 pointer-events-none z-[1] overflow-hidden';
+                for(let i=0; i<25; i++) { const el = document.createElement('div'); el.innerText = current.elements[Math.floor(Math.random() * current.elements.length)]; el.className = 'absolute opacity-50 text-3xl md:text-5xl animate-float drop-shadow-xl'; el.style.left = Math.random() * 100 + 'vw'; el.style.top = '100vh'; el.style.animationDuration = (Math.random() * 10 + 10) + 's'; el.style.animationDelay = (Math.random() * 5) + 's'; container.appendChild(el); }
+                document.body.prepend(container); const style = document.createElement('style'); style.innerHTML = `@keyframes float { 0% { transform: translateY(0) rotate(0deg) scale(0.8); opacity: 0; } 10% { opacity: 0.7; } 50% { transform: translateY(-50vh) rotate(180deg) scale(1.2); } 90% { opacity: 0.7; } 100% { transform: translateY(-110vh) rotate(360deg) scale(0.8); opacity: 0; } } .animate-float { animation: float linear infinite; } main, section, footer, nav { position: relative; z-index: 10; } #detail-container { background: rgba(255,255,255,0.6); backdrop-filter: blur(10px); border-radius: 2rem; padding-top: 2rem; }`; document.head.appendChild(style);
             } catch(e) {}
         }
         applyFestiveTheme();

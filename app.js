@@ -35,7 +35,7 @@ async function initPage() {
 
         if (globalSettings['site_categories']) {
             const lines = globalSettings['site_categories'].split('\n');
-            let navDropdownHTML = ''; // NEW: For the dropdown
+            let navDropdownHTML = ''; 
             
             lines.forEach(line => {
                 if(!line.trim()) return;
@@ -44,16 +44,15 @@ async function initPage() {
                 const catSlug = catName.toLowerCase().replace(/ /g, '-');
                 const subCats = parts[1] ? parts[1].split(',').map(s => s.trim()).filter(s => s !== '') : [];
                 
-                // NEW: Build the Dropdown Links
-                navDropdownHTML += `<a href="index.html?category=${catSlug}" class="px-5 py-3 hover:bg-pink-50 hover:text-pink-600 border-b border-pink-50 text-gray-600 transition-colors">${catName}</a>`;
+                // FIXED: Styled the dynamic links exactly like the fallback links
+                navDropdownHTML += `<a href="index.html?category=${catSlug}" class="px-5 py-3 hover:bg-pink-50 hover:text-pink-500 border-b border-gray-50 font-bold text-sm text-gray-700 transition-colors">${catName}</a>`;
                 
                 categoryOrder.push(catSlug);
                 globalCategoryMap[catSlug] = subCats.map(sc => ({ name: sc, slug: sc.toLowerCase().replace(/ /g, '-') }));
             });
             
-            // NEW: Inject into Navbar
             const navDropdown = document.getElementById('nav-categories-dropdown');
-            if (navDropdown) navDropdown.innerHTML = navDropdownHTML;
+            if (navDropdown && navDropdownHTML !== '') navDropdown.innerHTML = navDropdownHTML;
         }
         
         renderHeroSection();
