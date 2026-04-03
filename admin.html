@@ -90,7 +90,7 @@
                         <li>Separate multiple sub-categories with commas.</li>
                     </ul>
                 </div>
-                <textarea id="categories-content" spellcheck="false" class="w-full p-5 border border-gray-200 rounded-2xl bg-gray-50 h-[15rem] focus:ring-2 focus:ring-pink-500 outline-none leading-loose font-medium text-gray-700 shadow-inner"></textarea>
+                <textarea id="categories-content" spellcheck="false" placeholder="Birthday Decor | Ring Decoration, Wall Decoration, Premium, U Board&#10;Baby Shower Decor | Premium, Standard&#10;Anniversary Decor | Room, Hotel" class="w-full p-5 border border-gray-200 rounded-2xl bg-gray-50 h-[15rem] focus:ring-2 focus:ring-pink-500 outline-none leading-loose font-medium text-gray-700 shadow-inner"></textarea>
                 <button onclick="saveCategories(this)" class="mt-6 w-full md:w-auto bg-pink-500 text-white px-10 py-4 rounded-xl font-black hover:bg-pink-600 transition">Save & Build Categories</button>
             </div>
         </div>
@@ -167,7 +167,7 @@
             </div>
         </div>
 
-        <div id="tab-hero" class="tab-content max-w-6xl mx-auto"><h2 class="text-2xl font-bold mb-6 text-gray-800">Manage Hero Section</h2><div class="grid grid-cols-1 xl:grid-cols-3 gap-8"><div class="xl:col-span-1 space-y-6"><div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100"><h3 class="text-lg font-bold mb-4 border-b pb-2 text-gray-800">1. Section Text</h3><input type="text" id="hero-title-input" placeholder="Main Title" class="w-full p-3 border rounded-xl bg-gray-50 mb-3 font-bold text-indigo-900 outline-none"><input type="text" id="hero-subtitle-input" placeholder="Subtitle" class="w-full p-3 border rounded-xl bg-gray-50 text-gray-500 outline-none"><button onclick="saveHeroText(this)" class="w-full bg-gray-900 hover:bg-gray-800 text-white py-3 rounded-xl font-bold mt-4 transition">Save Text</button></div><div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 h-fit"><h3 id="hero-form-title" class="text-lg font-bold mb-4 border-b pb-2 text-gray-800">2. Add Category Item</h3><form id="add-hero-form" class="space-y-4"><input type="hidden" id="hero-edit-id"><input type="hidden" id="hero-existing-image"><input type="text" id="hero-item-title" placeholder="Icon Label" class="w-full p-3 border rounded-xl bg-gray-50 outline-none" required><select id="hero-item-target" class="w-full p-3 border rounded-xl bg-gray-50 outline-none font-bold" required><option value="" disabled selected>Scrolls to which category?</option></select><select id="hero-item-shape" class="w-full p-3 border rounded-xl bg-gray-50 outline-none" required><option value="circle">Circle 🟢</option><option value="square">Square 🟩</option><option value="rounded-square">Rounded Square 🔲</option><option value="rectangle">Rectangle ▭</option><option value="rounded-rectangle">Rounded Rectangle 🏟️</option></select><div class="border rounded-xl p-4 bg-gray-50"><label class="block text-xs font-bold text-gray-500 mb-2">Upload Icon/Image</label><input type="file" id="hero-item-image" accept="image/*" class="w-full text-sm"></div><button type="submit" id="hero-submit-btn" class="w-full bg-pink-500 text-white py-3 rounded-xl font-bold mt-2 shadow-sm">Add to Hero Section</button><button type="button" id="hero-cancel-btn" onclick="resetHeroForm()" class="hidden w-full bg-gray-200 text-gray-700 py-3 rounded-xl font-bold mt-2">Cancel Edit</button></form></div></div><div class="xl:col-span-2 bg-white p-6 rounded-3xl shadow-sm border border-gray-100"><div class="flex justify-between mb-6 border-b pb-4"><h3 class="text-lg font-bold text-gray-800">Current Layout</h3><button onclick="saveHeroLayout(this)" class="bg-green-500 text-white px-6 py-2 rounded-xl font-bold">Save Live Layout</button></div><div id="hero-items-list" class="space-y-3"><p class="text-gray-500">Loading layout...</p></div></div></div></div>
+        <div id="tab-hero" class="tab-content max-w-6xl mx-auto"><h2 class="text-2xl font-bold mb-6 text-gray-800">Manage Hero Section</h2><div class="grid grid-cols-1 xl:grid-cols-3 gap-8"><div class="xl:col-span-1 space-y-6"><div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100"><h3 class="text-lg font-bold mb-4 border-b pb-2 text-gray-800">1. Section Text</h3><input type="text" id="hero-title-input" placeholder="Main Title" class="w-full p-3 border rounded-xl bg-gray-50 mb-3 font-bold text-indigo-900 outline-none"><input type="text" id="hero-subtitle-input" placeholder="Subtitle" class="w-full p-3 border rounded-xl bg-gray-50 text-gray-500 outline-none"><button onclick="saveHeroText(this)" class="w-full bg-gray-900 hover:bg-gray-800 text-white py-3 rounded-xl font-bold mt-4 transition">Save Text</button></div><div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 h-fit"><h3 id="hero-form-title" class="text-lg font-bold mb-4 border-b pb-2 text-gray-800">2. Add Category Item</h3><form id="add-hero-form" class="space-y-4"><input type="hidden" id="hero-edit-id"><input type="hidden" id="hero-existing-image"><input type="text" id="hero-item-title" placeholder="Icon Label" class="w-full p-3 border rounded-xl bg-gray-50 outline-none" required><select id="hero-item-target" class="w-full p-3 border rounded-xl bg-gray-50 outline-none font-bold" required><option value="" disabled selected>Scrolls to which category?</option></select><select id="hero-item-shape" class="w-full p-3 border rounded-xl bg-gray-50 outline-none" required><option value="circle">Circle 🟢</option><option value="square">Square 🟩</option><option value="rounded-square">Rounded Square 🔲</option><option value="rectangle">Rectangle ▭</option><option value="rounded-rectangle">Rounded Rectangle 🏟️</option></select><div class="border rounded-xl p-4 bg-gray-50"><label class="block text-xs font-bold text-gray-500 mb-2">Upload Icon/Image</label><input type="file" id="hero-item-image" accept="image/*" class="w-full text-sm"></div><button type="submit" id="hero-submit-btn" class="w-full bg-pink-500 text-white py-3 rounded-xl font-bold mt-2 shadow-sm">Add to Hero Section</button><button type="button" id="hero-cancel-btn" onclick="resetHeroForm()" class="hidden w-full bg-gray-200 text-gray-700 py-3 rounded-xl font-bold mt-2">Cancel Edit</button></form></div></div><div class="xl:col-span-2 bg-white p-6 rounded-3xl shadow-sm border border-gray-100"><div class="flex justify-between mb-6 border-b pb-4"><h3 class="text-lg font-bold text-gray-800">Current Layout <span id="hero-count" class="text-pink-500 text-sm ml-2"></span></h3><button onclick="saveHeroLayout(this)" class="bg-green-500 text-white px-6 py-2 rounded-xl font-bold">Save Live Layout</button></div><div id="hero-items-list" class="space-y-3"><p class="text-gray-500">Loading layout...</p></div></div></div></div>
         
         <div id="tab-home-reviews" class="tab-content max-w-6xl mx-auto">
             <h2 class="text-2xl font-bold mb-6 text-gray-800">Manage Home Page Reviews</h2>
@@ -224,11 +224,11 @@
             </div>
         </div>
 
-        <div id="tab-faqs" class="tab-content max-w-4xl"><h2 class="text-2xl font-bold mb-6 text-gray-800">Global Site FAQs</h2><div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100"><div id="faqs-editor" style="height: 300px;"></div><button onclick="saveQuillSetting(this, 'faqs', faqsQuill)" class="mt-4 w-full md:w-auto bg-pink-500 text-white px-8 py-3 rounded-xl font-bold hover:bg-pink-600 transition">Save FAQs</button></div></div>
-        <div id="tab-tnc" class="tab-content max-w-4xl"><h2 class="text-2xl font-bold mb-6 text-gray-800">Terms & Conditions</h2><div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100"><div id="tnc-editor" style="height: 300px;"></div><button onclick="saveQuillSetting(this, 'tnc', tncQuill)" class="mt-4 w-full md:w-auto bg-pink-500 text-white px-8 py-3 rounded-xl font-bold hover:bg-pink-600 transition">Save Terms</button></div></div>
-        <div id="tab-refunds" class="tab-content max-w-4xl"><h2 class="text-2xl font-bold mb-6 text-gray-800">Refunds & Returns</h2><div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100"><div id="refunds-editor" style="height: 300px;"></div><button onclick="saveQuillSetting(this, 'refunds', refundsQuill)" class="mt-4 w-full md:w-auto bg-pink-500 text-white px-8 py-3 rounded-xl font-bold hover:bg-pink-600 transition">Save Policy</button></div></div>
-        <div id="tab-about" class="tab-content max-w-4xl"><h2 class="text-2xl font-bold mb-6 text-gray-800">About Us</h2><div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100"><div id="about-editor" style="height: 300px;"></div><button onclick="saveQuillSetting(this, 'about', aboutQuill)" class="mt-4 w-full md:w-auto bg-pink-500 text-white px-8 py-3 rounded-xl font-bold hover:bg-pink-600 transition">Save About Us</button></div></div>
-        <div id="tab-disclaimer" class="tab-content max-w-4xl"><h2 class="text-2xl font-bold mb-6 text-gray-800">Disclaimer</h2><div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100"><div id="disclaimer-editor" style="height: 300px;"></div><button onclick="saveQuillSetting(this, 'disclaimer', disclaimerQuill)" class="mt-4 w-full md:w-auto bg-pink-500 text-white px-8 py-3 rounded-xl font-bold hover:bg-pink-600 transition">Save Disclaimer</button></div></div>
+        <div id="tab-faqs" class="tab-content max-w-4xl"><h2 class="text-2xl font-bold mb-6 text-gray-800">Global Site FAQs</h2><div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100"><textarea id="faqs-content" class="w-full p-4 border rounded-xl bg-gray-50 h-[30rem] focus:ring-2 focus:ring-pink-500 outline-none font-mono text-sm leading-relaxed" placeholder="Type raw HTML here..."></textarea><button onclick="saveSetting(this, 'faqs', 'faqs-content')" class="mt-4 w-full md:w-auto bg-pink-500 text-white px-8 py-3 rounded-xl font-bold hover:bg-pink-600 transition">Save FAQs</button></div></div>
+        <div id="tab-tnc" class="tab-content max-w-4xl"><h2 class="text-2xl font-bold mb-6 text-gray-800">Terms & Conditions</h2><div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100"><textarea id="tnc-content" class="w-full p-4 border rounded-xl bg-gray-50 h-[30rem] focus:ring-2 focus:ring-pink-500 outline-none font-mono text-sm leading-relaxed" placeholder="Type raw HTML here..."></textarea><button onclick="saveSetting(this, 'tnc', 'tnc-content')" class="mt-4 w-full md:w-auto bg-pink-500 text-white px-8 py-3 rounded-xl font-bold hover:bg-pink-600 transition">Save Terms</button></div></div>
+        <div id="tab-refunds" class="tab-content max-w-4xl"><h2 class="text-2xl font-bold mb-6 text-gray-800">Refunds & Returns</h2><div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100"><textarea id="refunds-content" class="w-full p-4 border rounded-xl bg-gray-50 h-[30rem] focus:ring-2 focus:ring-pink-500 outline-none font-mono text-sm leading-relaxed" placeholder="Type raw HTML here..."></textarea><button onclick="saveSetting(this, 'refunds', 'refunds-content')" class="mt-4 w-full md:w-auto bg-pink-500 text-white px-8 py-3 rounded-xl font-bold hover:bg-pink-600 transition">Save Policy</button></div></div>
+        <div id="tab-about" class="tab-content max-w-4xl"><h2 class="text-2xl font-bold mb-6 text-gray-800">About Us</h2><div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100"><textarea id="about-content" class="w-full p-4 border rounded-xl bg-gray-50 h-[30rem] focus:ring-2 focus:ring-pink-500 outline-none font-mono text-sm leading-relaxed" placeholder="Type raw HTML here..."></textarea><button onclick="saveSetting(this, 'about', 'about-content')" class="mt-4 w-full md:w-auto bg-pink-500 text-white px-8 py-3 rounded-xl font-bold hover:bg-pink-600 transition">Save About Us</button></div></div>
+        <div id="tab-disclaimer" class="tab-content max-w-4xl"><h2 class="text-2xl font-bold mb-6 text-gray-800">Disclaimer</h2><div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100"><textarea id="disclaimer-content" class="w-full p-4 border rounded-xl bg-gray-50 h-[30rem] focus:ring-2 focus:ring-pink-500 outline-none font-mono text-sm leading-relaxed" placeholder="Type raw HTML here..."></textarea><button onclick="saveSetting(this, 'disclaimer', 'disclaimer-content')" class="mt-4 w-full md:w-auto bg-pink-500 text-white px-8 py-3 rounded-xl font-bold hover:bg-pink-600 transition">Save Disclaimer</button></div></div>
 
     </main>
 
@@ -236,16 +236,11 @@
         const token = localStorage.getItem('adminToken');
         if (!token) window.location.href = 'admin-login.html';
 
-        // INITALIZE QUILL RICH TEXT EDITORS (Safe initialization)
+        // INITALIZE QUILL RICH TEXT EDITOR (Used only for Product Descriptions)
         const quillConfig = { theme: 'snow', modules: { toolbar: [['bold', 'italic', 'underline'], [{'list': 'ordered'}, {'list': 'bullet'}], [{ 'header': [1, 2, 3, false] }], ['link', 'clean']] } };
-        let descQuill, faqsQuill, tncQuill, refundsQuill, aboutQuill, disclaimerQuill;
+        let descQuill;
 
         if(document.getElementById('description-editor')) descQuill = new Quill('#description-editor', quillConfig);
-        if(document.getElementById('faqs-editor')) faqsQuill = new Quill('#faqs-editor', quillConfig);
-        if(document.getElementById('tnc-editor')) tncQuill = new Quill('#tnc-editor', quillConfig);
-        if(document.getElementById('refunds-editor')) refundsQuill = new Quill('#refunds-editor', quillConfig);
-        if(document.getElementById('about-editor')) aboutQuill = new Quill('#about-editor', quillConfig);
-        if(document.getElementById('disclaimer-editor')) disclaimerQuill = new Quill('#disclaimer-editor', quillConfig);
 
         function logout() { localStorage.removeItem('adminToken'); window.location.href = 'admin-login.html'; }
 
@@ -278,13 +273,18 @@
         async function loadDashboard() {
             try {
                 const res = await fetch('/api/admin/analytics', { headers: { 'Authorization': `Bearer ${token}` } });
+                if (!res.ok) throw new Error("Fetch failed");
                 const data = await res.json();
-                document.getElementById('stat-views').textContent = data.total_views; document.getElementById('stat-listings').textContent = data.total_listings; document.getElementById('stat-reviews').textContent = data.total_reviews;
+                document.getElementById('stat-views').textContent = data.total_views || 0; document.getElementById('stat-listings').textContent = data.total_listings || 0; document.getElementById('stat-reviews').textContent = data.total_reviews || 0;
                 document.getElementById('stat-views').classList.remove('animate-pulse'); document.getElementById('stat-listings').classList.remove('animate-pulse'); document.getElementById('stat-reviews').classList.remove('animate-pulse');
                 const topList = document.getElementById('stat-top-products');
-                if(data.top_products.length === 0) { topList.innerHTML = "<p class='text-gray-500'>No data yet.</p>"; }
+                if(!data.top_products || data.top_products.length === 0) { topList.innerHTML = "<p class='text-gray-500'>No data yet.</p>"; }
                 else { topList.innerHTML = data.top_products.map((p, i) => `<div class="flex justify-between items-center bg-gray-50 p-4 rounded-xl border border-gray-100"><span class="font-bold text-gray-800">#${i+1} ${p.title}</span><span class="text-sm font-black text-pink-500 bg-pink-100 px-3 py-1 rounded-lg">${p.views} Views</span></div>`).join(''); }
-            } catch(e) {}
+            } catch(e) {
+                console.error(e);
+                document.getElementById('stat-views').textContent = "0"; document.getElementById('stat-listings').textContent = "0"; document.getElementById('stat-reviews').textContent = "0";
+                document.getElementById('stat-views').classList.remove('animate-pulse'); document.getElementById('stat-listings').classList.remove('animate-pulse'); document.getElementById('stat-reviews').classList.remove('animate-pulse');
+            }
         }
 
         let globalCategoryMap = {};
@@ -327,11 +327,9 @@
         async function uploadPromoMedia(btn) { const fileInput = document.getElementById('promo-media-upload'); if (fileInput.files.length === 0) return alert("Select a file."); const file = fileInput.files[0]; const original = btn.textContent; btn.textContent = "Processing..."; btn.disabled = true; let mediaData = ""; if (file.type.startsWith('video/')) { if (file.size > 4000000) { alert("Video too large! Max 4MB."); btn.disabled = false; return; } mediaData = await new Promise((res, rej) => { const r = new FileReader(); r.readAsDataURL(file); r.onload = () => res(r.result); r.onerror = rej; }); } else { mediaData = await compressImage(file); } try { await fetch(`/api/settings/promo_media`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }, body: JSON.stringify({ content: mediaData }) }); document.getElementById('current-promo-media-preview').classList.remove('hidden'); if (mediaData.startsWith('data:video')) document.getElementById('current-promo-media-preview').innerHTML = `<video src="${mediaData}" class="h-full object-cover"></video>`; else document.getElementById('current-promo-media-preview').innerHTML = `<img src="${mediaData}" class="h-full object-cover">`; btn.textContent = "Saved!"; setTimeout(() => { btn.textContent = original; btn.disabled = false; }, 2000); } catch(e) { btn.disabled = false; } }
         async function clearPromoMedia(btn) { btn.textContent = "Removing..."; btn.disabled = true; try { await fetch(`/api/settings/promo_media`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }, body: JSON.stringify({ content: "" }) }); document.getElementById('current-promo-media-preview').classList.add('hidden'); document.getElementById('promo-media-upload').value = ""; btn.textContent = "Removed"; setTimeout(() => { btn.textContent = "Remove Banner"; btn.disabled = false; }, 2000); } catch(e) { btn.disabled = false; } }
 
-        // --- LOAD INVENTORY (FIXED IMAGE VISIBILITY) ---
         async function loadAdminProducts() {
             const res = await fetch('/api/decorations'); const data = await res.json();
             document.getElementById('admin-product-list').innerHTML = data.map(item => {
-                // FIXED: Robust image parsing fallback logic
                 let primaryImage = '';
                 if (item.image_url) {
                     primaryImage = item.image_url;
@@ -344,9 +342,8 @@
 
                 const offerBadge = item.offer_text ? `<span class="bg-red-100 text-red-600 px-2 py-0.5 rounded text-[10px] font-bold ml-2">${item.offer_text}</span>` : '';
                 
-                // NEW: Use a visible placeholder if image is truly missing
                 let imageHtml = '';
-                if (primaryImage && primaryImage.length > 50) { // simple check for actual base64 data
+                if (primaryImage && primaryImage.length > 50) { 
                     imageHtml = `<img src="${primaryImage}" class="w-14 h-14 md:w-16 md:h-16 object-cover rounded-xl border bg-white">`;
                 } else {
                     imageHtml = `<div class="w-14 h-14 md:w-16 md:h-16 rounded-xl border-2 border-dashed border-gray-200 bg-gray-100 flex items-center justify-center text-gray-400 font-medium text-[10px] text-center">No Image</div>`;
@@ -423,18 +420,28 @@
         async function deleteProduct(slug) { if(!confirm("Delete this listing permanently?")) return; try { await fetch(`/api/decorations/${slug}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` } }); loadAdminProducts(); loadDashboard(); } catch (e) { } }
         function resetForm() { document.getElementById('add-form').reset(); document.getElementById('existing-images-array').value = ''; if(descQuill) descQuill.root.innerHTML = ''; document.getElementById('form-title').innerText = "Add New Listing"; const btn = document.getElementById('submit-btn'); btn.textContent = "Save Listing"; btn.classList.replace('bg-blue-600', 'bg-pink-500'); document.getElementById('cancel-edit-btn').classList.add('hidden'); }
 
-        async function saveQuillSetting(btnElement, key, quillInstance) { const content = quillInstance.root.innerHTML; const originalText = btnElement.textContent; btnElement.textContent = "Saving..."; btnElement.disabled = true; try { await fetch(`/api/settings/${key}`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }, body: JSON.stringify({ content }) }); btnElement.textContent = "Saved!"; btnElement.classList.replace('bg-pink-500', 'bg-green-500'); setTimeout(() => { btnElement.textContent = originalText; btnElement.classList.replace('bg-green-500', 'bg-pink-500'); btnElement.disabled = false; }, 2000); } catch (e) {} }
+        async function saveSetting(btnElement, key, textareaId) {
+            const content = document.getElementById(textareaId).value;
+            const originalText = btnElement.textContent;
+            btnElement.textContent = "Saving..."; btnElement.disabled = true;
+            try {
+                const res = await fetch(`/api/settings/${key}`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }, body: JSON.stringify({ content }) });
+                if (res.ok) {
+                    btnElement.textContent = "Saved!"; btnElement.classList.replace('bg-pink-500', 'bg-green-500');
+                    setTimeout(() => { btnElement.textContent = originalText; btnElement.classList.replace('bg-green-500', 'bg-pink-500'); btnElement.disabled = false; }, 2000);
+                } else { alert("Failed to save."); btnElement.textContent = originalText; btnElement.disabled = false;}
+            } catch (e) { btnElement.textContent = originalText; btnElement.disabled = false; }
+        }
         
         async function loadSettings() {
             try {
                 const res = await fetch('/api/settings'); const settings = await res.json();
                 
-                // --- BULLETPROOF SETTINGS LOADER ---
-                try { if (settings['faqs'] && faqsQuill) faqsQuill.root.innerHTML = settings['faqs']; } catch(e){}
-                try { if (settings['tnc'] && tncQuill) tncQuill.root.innerHTML = settings['tnc']; } catch(e){}
-                try { if (settings['refunds'] && refundsQuill) refundsQuill.root.innerHTML = settings['refunds']; } catch(e){}
-                try { if (settings['about'] && aboutQuill) aboutQuill.root.innerHTML = settings['about']; } catch(e){}
-                try { if (settings['disclaimer'] && disclaimerQuill) disclaimerQuill.root.innerHTML = settings['disclaimer']; } catch(e){}
+                try { if (settings['faqs']) document.getElementById('faqs-content').value = settings['faqs']; } catch(e){}
+                try { if (settings['tnc']) document.getElementById('tnc-content').value = settings['tnc']; } catch(e){}
+                try { if (settings['refunds']) document.getElementById('refunds-content').value = settings['refunds']; } catch(e){}
+                try { if (settings['about']) document.getElementById('about-content').value = settings['about']; } catch(e){}
+                try { if (settings['disclaimer']) document.getElementById('disclaimer-content').value = settings['disclaimer']; } catch(e){}
                 
                 try { if (settings['hero_title']) document.getElementById('hero-title-input').value = settings['hero_title']; } catch(e){}
                 try { if (settings['hero_subtitle']) document.getElementById('hero-subtitle-input').value = settings['hero_subtitle']; } catch(e){}
@@ -463,21 +470,18 @@
                     }
                 } catch(e){}
 
-                // SAFE PARSING FOR HERO ITEMS
-                try {
+                try { 
                     if (settings['hero_items']) { heroItems = JSON.parse(settings['hero_items']); }
                 } catch (e) { heroItems = []; }
                 renderHeroAdminList();
 
-                // SAFE PARSING FOR HOME REVIEWS
                 try {
                     if (settings['home_reviews']) { homeRevs = JSON.parse(settings['home_reviews']); }
                 } catch (e) { homeRevs = []; }
                 renderHomeRevsList();
 
             } catch (e) { 
-                console.error("Critical error loading settings.", e);
-                // Fallbacks to prevent crash
+                console.error("Critical Settings Load Error:", e);
                 renderHeroAdminList();
                 renderHomeRevsList();
             }
@@ -496,8 +500,12 @@
         
         function renderHeroAdminList() { 
             const list = document.getElementById('hero-items-list'); 
-            if(!list) return;
-            if (heroItems.length === 0) { list.innerHTML = "<p class='text-gray-500 italic p-4 bg-gray-50 rounded-xl'>No items added yet. Add items using the form.</p>"; return; } 
+            const count = document.getElementById('hero-count');
+            if(count) count.textContent = `(${heroItems.length} items)`; 
+            if (heroItems.length === 0) { 
+                list.innerHTML = "<p class='text-gray-500 italic p-4 bg-gray-50 rounded-xl'>No items added yet. Add items using the form.</p>"; 
+                return; 
+            } 
             list.innerHTML = heroItems.map((item, index) => ` <div class="flex items-center justify-between p-4 border rounded-2xl bg-white shadow-sm hover:shadow-md transition"> <div class="flex items-center gap-4"> <img src="${item.image}" class="w-12 h-12 md:w-16 md:h-16 object-cover border bg-white ${item.shape === 'circle' ? 'rounded-full' : 'rounded-md'}"> <div><h4 class="font-bold text-gray-800 text-sm md:text-base">${item.title}</h4><p class="text-[10px] md:text-xs text-gray-500 uppercase mt-1">Target: ${item.target}</p></div> </div> <div class="flex flex-col md:flex-row gap-2"> <button onclick="editHeroItem('${item.id}')" class="bg-blue-50 text-blue-600 px-4 py-2 rounded-lg text-xs md:text-sm font-bold transition">Edit</button> <button onclick="deleteHeroItem(${index})" class="bg-red-50 text-red-600 px-4 py-2 rounded-lg text-xs md:text-sm font-bold transition">Remove</button> </div> </div> `).join(''); 
         }
         function editHeroItem(id) { const item = heroItems.find(i => i.id === id); if(!item) return; document.getElementById('hero-edit-id').value = item.id; document.getElementById('hero-existing-image').value = item.image; document.getElementById('hero-item-title').value = item.title; document.getElementById('hero-item-target').value = item.target; document.getElementById('hero-item-shape').value = item.shape; document.getElementById('hero-form-title').innerText = "Edit Category Item"; const btn = document.getElementById('hero-submit-btn'); btn.textContent = "Update Hero Item"; btn.classList.replace('bg-pink-500', 'bg-blue-600'); document.getElementById('hero-cancel-btn').classList.remove('hidden'); window.scrollTo({top: 0, behavior:'smooth'}); }
@@ -508,16 +516,19 @@
         let homeRevs = [];
         const addHomeRevForm = document.getElementById('add-home-rev-form');
         if(addHomeRevForm) {
-            addHomeRevForm.addEventListener('submit', async (e) => { e.preventDefault(); const btn = document.getElementById('home-rev-submit-btn'); btn.textContent = "Processing..."; btn.disabled = true; const editId = document.getElementById('home-rev-edit-id').value; const fileInput = document.getElementById('home-rev-media'); let mediaData = document.getElementById('home-rev-existing-media').value; if (fileInput.files.length > 0) { const file = fileInput.files[0]; if (file.type.startsWith('video/')) { mediaData = await new Promise((res, rej) => { const r = new FileReader(); r.readAsDataURL(file); r.onload = () => res(r.result); r.onerror = rej; }); } else { mediaData = await compressImage(file); } } const rev = { id: editId || Date.now().toString(), name: document.getElementById('home-rev-name').value, rating: parseInt(document.getElementById('home-rev-rating').value), text: document.getElementById('home-rev-text').value, media: mediaData }; if (editId) { const index = homeRevs.findIndex(r => r.id === editId); if (index !== -1) homeRevs[index] = rev; } else { homeRevs.push(rev); } renderHomeRevsList(); resetHomeRevForm(); btn.disabled = false; });
+            addHomeRevForm.addEventListener('submit', async (e) => { e.preventDefault(); const btn = document.getElementById('home-rev-submit-btn'); btn.textContent = "Processing Media..."; btn.disabled = true; const editId = document.getElementById('home-rev-edit-id').value; const fileInput = document.getElementById('home-rev-media'); let mediaData = document.getElementById('home-rev-existing-media').value; if (fileInput.files.length > 0) { const file = fileInput.files[0]; if (file.type.startsWith('video/')) { if (file.size > 4000000) { alert("Video is too large! Please keep it under 4MB to prevent server issues."); btn.textContent = editId ? "Update" : "Add to Home Page"; btn.disabled = false; return; } mediaData = await new Promise((resolve, reject) => { const reader = new FileReader(); reader.readAsDataURL(file); reader.onload = () => resolve(reader.result); reader.onerror = reject; }); } else { mediaData = await compressImage(file); } } const rev = { id: editId || Date.now().toString(), name: document.getElementById('home-rev-name').value, rating: parseInt(document.getElementById('home-rev-rating').value), text: document.getElementById('home-rev-text').value, media: mediaData }; if (editId) { const index = homeRevs.findIndex(r => r.id === editId); if (index !== -1) homeRevs[index] = rev; } else { homeRevs.push(rev); } renderHomeRevsList(); resetHomeRevForm(); btn.disabled = false; });
         }
         
-        // --- RENDER REVIEWS (FIXED MEDIA VISIBILITY) ---
         function renderHomeRevsList() { 
             const list = document.getElementById('home-revs-list'); 
-            if(!list) return;
-            if (homeRevs.length === 0) { list.innerHTML = "<p class='text-gray-500 italic p-4 bg-gray-50 rounded-xl'>No reviews added yet. Add one using the form.</p>"; return; } 
+            const count = document.getElementById('home-rev-count');
+            if (!list) return;
+            if (count) count.textContent = `(${homeRevs.length} visible)`; 
+            if (homeRevs.length === 0) {
+                list.innerHTML = "<p class='text-gray-500 italic p-4 bg-gray-50 rounded-xl'>No reviews added yet. Add one using the form.</p>";
+                return;
+            }
             list.innerHTML = homeRevs.map((r, i) => { 
-                // NEW: Safe thumbnail generation logic
                 let mediaThumbHtml = '';
                 if (r.media) {
                     const type = r.media.startsWith('data:video') ? 'video' : 'img';
@@ -544,7 +555,6 @@
             }).join(''); 
         }
         
-        // --- EDIT REVIEW (FIXED PREVIEW VISIBILITY) ---
         function editHomeRev(id) { 
             const r = homeRevs.find(x => x.id === id); 
             if(!r) return; 
@@ -555,7 +565,6 @@
             document.getElementById('home-rev-existing-media').value = r.media || ""; 
             document.getElementById('home-rev-form-title').innerText = "Edit Review"; 
             
-            // NEW: Show current media preview in the form
             const formPreview = document.getElementById('home-rev-form-media-preview');
             if (r.media) {
                 formPreview.classList.remove('hidden');
@@ -573,7 +582,6 @@
             btn.textContent = "Update Review"; 
             btn.classList.replace('bg-pink-500', 'bg-indigo-600'); 
             document.getElementById('home-rev-cancel-btn').classList.remove('hidden'); 
-            // Smooth scroll to form
             document.getElementById('tab-home-reviews').scrollTo({top: 0, behavior: 'smooth'});
         }
         
@@ -585,7 +593,6 @@
             document.getElementById('home-rev-existing-media').value = ""; 
             document.getElementById('home-rev-form-title').innerText = "Add Home Review"; 
             
-            // NEW: Hide form preview
             document.getElementById('home-rev-form-media-preview').classList.add('hidden');
             document.getElementById('home-rev-form-media-preview').innerHTML = '';
 
@@ -597,7 +604,7 @@
         async function saveHomeReviewsLayout(btn) { btn.textContent = "Saving..."; btn.disabled = true; try { await fetch(`/api/settings/home_reviews`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }, body: JSON.stringify({ content: JSON.stringify(homeRevs) }) }); btn.textContent = "Saved!"; setTimeout(() => { btn.textContent = "Save Live Layout"; btn.disabled = false; }, 2000); } catch (e) { btn.disabled = false; } }
 
         let rawProductReviews = [];
-        async function loadCustomerReviews() { try { const res = await fetch('/api/admin/reviews', { headers: { 'Authorization': `Bearer ${token}` } }); rawProductReviews = await res.json(); const list = document.getElementById('admin-customer-reviews-list'); if (rawProductReviews.length === 0) { list.innerHTML = "<p class='text-gray-500'>No customer reviews found.</p>"; return; } list.innerHTML = rawProductReviews.map(r => ` <div class="p-4 border rounded-2xl bg-white shadow-sm flex justify-between items-center hover:shadow-md transition"> <div> <p class="text-xs text-pink-500 font-bold uppercase mb-1">Product: ${r.decoration_slug}</p> <p class="text-yellow-400">${'★'.repeat(r.rating)} <span class="text-gray-800 font-bold ml-2">${r.reviewer_name}</span></p> <p class="text-gray-600 mt-1">"${r.review_text}"</p> </div> <div class="flex flex-col gap-2"> <button onclick="editCustomerReview(${r.id})" class="bg-indigo-50 text-indigo-600 px-4 py-2 rounded-xl font-bold shadow-sm hover:bg-indigo-100 transition text-sm">Edit</button> <button onclick="deleteCustomerReview(${r.id})" class="bg-red-50 text-red-600 px-4 py-2 rounded-xl font-bold shadow-sm hover:bg-red-100 transition text-sm">Delete</button> </div> </div> `).join(''); } catch (e) {} }
+        async function loadCustomerReviews() { try { const res = await fetch('/api/admin/reviews', { headers: { 'Authorization': `Bearer ${token}` } }); rawProductReviews = await res.json(); const list = document.getElementById('admin-customer-reviews-list'); document.getElementById('prod-rev-list-container').classList.replace('xl:col-span-3', 'xl:col-span-2'); if (rawProductReviews.length === 0) { list.innerHTML = "<p class='text-gray-500'>No customer reviews found.</p>"; return; } list.innerHTML = rawProductReviews.map(r => ` <div class="p-4 border rounded-2xl bg-white shadow-sm flex justify-between items-center hover:shadow-md transition"> <div> <p class="text-xs text-pink-500 font-bold uppercase mb-1">Product: ${r.decoration_slug}</p> <p class="text-yellow-400">${'★'.repeat(r.rating)} <span class="text-gray-800 font-bold ml-2">${r.reviewer_name}</span></p> <p class="text-gray-600 mt-1">"${r.review_text}"</p> </div> <div class="flex flex-col gap-2"> <button onclick="editCustomerReview(${r.id})" class="bg-indigo-50 text-indigo-600 px-4 py-2 rounded-xl font-bold shadow-sm hover:bg-indigo-100 transition text-sm">Edit</button> <button onclick="deleteCustomerReview(${r.id})" class="bg-red-50 text-red-600 px-4 py-2 rounded-xl font-bold shadow-sm hover:bg-red-100 transition text-sm">Delete</button> </div> </div> `).join(''); } catch (e) {} }
         function editCustomerReview(id) { const review = rawProductReviews.find(r => r.id === id); if (!review) return; document.getElementById('prod-rev-id').value = review.id; document.getElementById('prod-rev-name').value = review.reviewer_name; document.getElementById('prod-rev-rating').value = review.rating; document.getElementById('prod-rev-text').value = review.review_text; document.getElementById('prod-rev-edit-container').classList.remove('hidden'); window.scrollTo({top: 0, behavior:'smooth'}); }
         function closeProdRevEdit() { document.getElementById('edit-prod-rev-form').reset(); document.getElementById('prod-rev-edit-container').classList.add('hidden'); }
         
