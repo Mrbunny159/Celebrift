@@ -4,6 +4,12 @@ import psycopg2
 from psycopg2.extras import RealDictCursor
 import os
 import json
+import requests
+import base64
+import uuid
+import io
+from PIL import Image
+import mimetypes
 
 app = Flask(__name__)
 CORS(app)
@@ -12,8 +18,69 @@ DATABASE_URL = os.environ.get('DATABASE_URL')
 ADMIN_PASSWORD = os.environ.get('ADMIN_PASSWORD', 'celebrift123') 
 SECRET_TOKEN = os.environ.get('SECRET_TOKEN', 'admin_secret_token_123')
 
+# IMPORTANT: You must add BLOB_READ_WRITE_TOKEN to your Vercel Environment Variables!
+BLOB_TOKEN = os.environ.get('BLOB_READ_WRITE_TOKEN')
+
 def get_db_connection():
     return psycopg2.connect(DATABASE_URL)
+
+# --- VERCEL BLOB + WEBP OPTIMIZATION ENGINE ---
+def process_and_upload_to_blob(b64_string):
+    # If it's already a URL or empty, skip it
+    if not b64_string or not b64_string.startswith('data:'):
+        return b64_string
+        
+    try:
+        header, encoded = b64_string.split(',', 1)
+        mime_type = header.split(';')[0].split(':')[1]
+        binary_data = base64.b64decode(encoded)
+        
+        # Scenario A: It's a Video (Upload directly, do not convert)
+        if mime_type.startswith('video/'):
+            ext = mimetypes.guess_extension(mime_type) or '.mp4'
+            filename = f"{uuid.uuid4().hex}{ext}"
+            upload_data = binary_data
+            content_type = mime_type
+            
+        # Scenario B: It's an Image (Convert to WebP to save massive storage!)
+        else:
+            image = Image.open(io.BytesIO(binary_data))
+            
+            # WebP requires RGB or RGBA mode
+            if image.mode not in ("RGB", "RGBA"):
+                image = image.convert("RGBA")
+                
+            output_buffer = io.BytesIO()
+            # Save as highly optimized WebP format
+            image.save(output_buffer, format="WEBP", quality=80, method=4)
+            upload_data = output_buffer.getvalue()
+            
+            filename = f"{uuid.uuid4().hex}.webp"
+            content_type = "image/webp"
+
+        # Push to Vercel Blob REST API
+        headers = {
+            "Authorization": f"Bearer {BLOB_TOKEN}",
+            "Content-Type": content_type
+        }
+        
+        res = requests.put(
+            f"https://blob.vercel-storage.com/{filename}", 
+            data=upload_data, 
+            headers=headers
+        )
+        
+        if res.status_code == 200:
+            return res.json().get('url') # Return the new CDN URL
+        else:
+            print("Blob Upload Failed:", res.text)
+            return b64_string
+            
+    except Exception as e:
+        print("Optimization/Upload Error:", e)
+        return b64_string
+
+# --- STANDARD API ROUTES ---
 
 @app.route('/api/settings', methods=['GET'])
 def get_all_settings():
@@ -30,6 +97,28 @@ def update_setting(key):
     if request.headers.get('Authorization') != f'Bearer {SECRET_TOKEN}':
         return jsonify({'error': 'Unauthorized'}), 401
     content = request.json.get('content', '')
+    
+    # Intercept Base64 elements and convert them to Blob URLs
+    if key == 'promo_media' and content.startswith('data:'):
+        content = process_and_upload_to_blob(content)
+        
+    elif key == 'hero_items':
+        try:
+            items = json.loads(content)
+            for item in items:
+                item['image'] = process_and_upload_to_blob(item.get('image', ''))
+            content = json.dumps(items)
+        except Exception: pass
+        
+    elif key == 'home_reviews':
+        try:
+            revs = json.loads(content)
+            for r in revs:
+                if r.get('media'):
+                    r['media'] = process_and_upload_to_blob(r['media'])
+            content = json.dumps(revs)
+        except Exception: pass
+
     conn = get_db_connection()
     cur = conn.cursor()
     try:
@@ -49,14 +138,11 @@ def manage_decorations():
     if request.method == 'GET':
         cur = conn.cursor(cursor_factory=RealDictCursor)
         category = request.args.get('category')
-        
         query = 'SELECT slug, title, category, sub_category, image_url, price_range, average_rating, offer_text FROM decorations'
-        
         if category and category != 'all':
             cur.execute(query + ' WHERE category = %s ORDER BY views DESC;', (category,))
         else:
             cur.execute(query + ' ORDER BY views DESC;')
-            
         decorations = cur.fetchall()
         cur.close()
         conn.close()
@@ -68,7 +154,11 @@ def manage_decorations():
         data = request.json
         cur = conn.cursor()
         try:
-            images_json = json.dumps(data.get('images', []))
+            # Route new images through the WebP/Blob optimizer
+            final_primary_img = process_and_upload_to_blob(data.get('image_url', ''))
+            final_images_array = [process_and_upload_to_blob(img) for img in data.get('images', [])]
+            
+            images_json = json.dumps(final_images_array)
             package_json = json.dumps(data.get('package_includes', []))
             faqs_json = json.dumps(data.get('faqs', []))
             offer_val = data.get('offer_text', '')
@@ -79,13 +169,13 @@ def manage_decorations():
                 cur.execute('''
                     UPDATE decorations SET title=%s, category=%s, sub_category=%s, image_url=%s, description=%s, 
                     price_range=%s, package_includes=%s, faqs=%s, images=%s, offer_text=%s WHERE slug=%s
-                ''', (data['title'], data['category'], sub_val, data['image_url'], data['description'], 
+                ''', (data['title'], data['category'], sub_val, final_primary_img, data['description'], 
                       data['price_range'], package_json, faqs_json, images_json, offer_val, data['slug']))
             else:
                 cur.execute('''
                     INSERT INTO decorations (slug, title, category, sub_category, image_url, description, price_range, package_includes, faqs, images, offer_text)
                     VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-                ''', (data['slug'], data['title'], data['category'], sub_val, data['image_url'], data['description'], 
+                ''', (data['slug'], data['title'], data['category'], sub_val, final_primary_img, data['description'], 
                       data['price_range'], package_json, faqs_json, images_json, offer_val))
             conn.commit()
             return jsonify({'success': True})
@@ -155,8 +245,7 @@ def modify_review(review_id):
     try:
         cur.execute('SELECT decoration_slug FROM reviews WHERE id = %s', (review_id,))
         res = cur.fetchone()
-        if not res:
-            return jsonify({'error': 'Not found'}), 404
+        if not res: return jsonify({'error': 'Not found'}), 404
         slug = res[0]
 
         if request.method == 'DELETE':
@@ -181,28 +270,79 @@ def get_analytics():
         return jsonify({'error': 'Unauthorized'}), 401
     conn = get_db_connection()
     cur = conn.cursor(cursor_factory=RealDictCursor)
-    
     cur.execute('SELECT SUM(views) as total_views FROM decorations;')
     total_views = cur.fetchone()['total_views'] or 0
-    
     cur.execute('SELECT COUNT(*) as total_listings FROM decorations;')
     total_listings = cur.fetchone()['total_listings'] or 0
-    
     cur.execute('SELECT COUNT(*) as total_reviews FROM reviews;')
     total_reviews = cur.fetchone()['total_reviews'] or 0
-    
     cur.execute('SELECT title, views FROM decorations ORDER BY views DESC LIMIT 5;')
     top_products = cur.fetchall()
-    
     cur.close()
     conn.close()
+    return jsonify({'total_views': total_views, 'total_listings': total_listings, 'total_reviews': total_reviews, 'top_products': top_products})
+
+# --- MIGRATION: Convert all old Base64 DB data into WebP URLs ---
+@app.route('/api/admin/migrate-blobs', methods=['POST'])
+def migrate_blobs():
+    if request.headers.get('Authorization') != f'Bearer {SECRET_TOKEN}':
+        return jsonify({'error': 'Unauthorized'}), 401
     
-    return jsonify({
-        'total_views': total_views,
-        'total_listings': total_listings,
-        'total_reviews': total_reviews,
-        'top_products': top_products
-    })
+    if not BLOB_TOKEN:
+        return jsonify({'error': 'BLOB_READ_WRITE_TOKEN is missing in Vercel environment variables.'}), 500
+
+    conn = get_db_connection()
+    cur = conn.cursor(cursor_factory=RealDictCursor)
+    
+    try:
+        # 1. Migrate Inventory Listings
+        cur.execute("SELECT slug, image_url, images FROM decorations;")
+        decs = cur.fetchall()
+        for d in decs:
+            new_img_url = process_and_upload_to_blob(d['image_url'])
+            old_images = []
+            if d['images']:
+                try: old_images = json.loads(d['images'])
+                except: pass
+            new_images = [process_and_upload_to_blob(img) for img in old_images]
+            cur.execute("UPDATE decorations SET image_url=%s, images=%s WHERE slug=%s", (new_img_url, json.dumps(new_images), d['slug']))
+        
+        # 2. Migrate Promo Banner
+        cur.execute("SELECT content FROM global_settings WHERE key='promo_media';")
+        promo = cur.fetchone()
+        if promo and promo['content'].startswith('data:'):
+            new_promo = process_and_upload_to_blob(promo['content'])
+            cur.execute("UPDATE global_settings SET content=%s WHERE key='promo_media'", (new_promo,))
+        
+        # 3. Migrate Hero Icons
+        cur.execute("SELECT content FROM global_settings WHERE key='hero_items';")
+        hero = cur.fetchone()
+        if hero and hero['content']:
+            try:
+                items = json.loads(hero['content'])
+                for item in items: item['image'] = process_and_upload_to_blob(item.get('image', ''))
+                cur.execute("UPDATE global_settings SET content=%s WHERE key='hero_items'", (json.dumps(items),))
+            except: pass
+        
+        # 4. Migrate Home Reviews Media
+        cur.execute("SELECT content FROM global_settings WHERE key='home_reviews';")
+        revs = cur.fetchone()
+        if revs and revs['content']:
+            try:
+                reviews = json.loads(revs['content'])
+                for r in reviews:
+                    if r.get('media'): r['media'] = process_and_upload_to_blob(r.get('media', ''))
+                cur.execute("UPDATE global_settings SET content=%s WHERE key='home_reviews'", (json.dumps(reviews),))
+            except: pass
+
+        conn.commit()
+        return jsonify({"success": True, "message": "All legacy Base64 images compressed to WebP and migrated to Vercel Blob!"})
+    except Exception as e:
+        conn.rollback()
+        return jsonify({"error": str(e)}), 500
+    finally:
+        cur.close()
+        conn.close()
 
 @app.route('/api/admin/login', methods=['POST'])
 def admin_login():
