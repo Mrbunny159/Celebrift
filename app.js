@@ -10,6 +10,12 @@ let allDecorations = [];
 let currentSearch = "";
 let currentSort = "default";
 
+// Helper function to detect if a URL is a video
+function isVideoFile(url) {
+    if (!url) return false;
+    return url.startsWith('data:video') || url.match(/\.(mp4|webm|ogg)$/i);
+}
+
 async function initPage() {
     try {
         const res = await fetch('/api/settings');
@@ -25,7 +31,8 @@ async function initPage() {
             const promoSection = document.getElementById('promo-banner-section');
             const promoContainer = document.getElementById('promo-banner-container');
             const mediaUrl = globalSettings['promo_media'];
-            if (mediaUrl.startsWith('data:video')) {
+            
+            if (isVideoFile(mediaUrl)) {
                 promoContainer.innerHTML = `<video src="${mediaUrl}" autoplay loop muted playsinline class="w-full h-full object-cover"></video>`;
             } else {
                 promoContainer.innerHTML = `<img src="${mediaUrl}" class="w-full h-full object-cover">`;
@@ -44,7 +51,6 @@ async function initPage() {
                 const catSlug = catName.toLowerCase().replace(/ /g, '-');
                 const subCats = parts[1] ? parts[1].split(',').map(s => s.trim()).filter(s => s !== '') : [];
                 
-                // FIXED: Styled the dynamic links exactly like the fallback links
                 navDropdownHTML += `<a href="index.html?category=${catSlug}" class="px-5 py-3 hover:bg-pink-50 hover:text-pink-500 border-b border-gray-50 font-bold text-sm text-gray-700 transition-colors">${catName}</a>`;
                 
                 categoryOrder.push(catSlug);
@@ -107,8 +113,11 @@ function renderHomeReviews() {
         document.getElementById('home-reviews-container').innerHTML = revs.map(r => {
             let mediaHTML = '';
             if (r.media) {
-                if (r.media.startsWith('data:video')) mediaHTML = `<video src="${r.media}" autoplay loop muted playsinline class="w-full h-48 object-cover rounded-2xl mb-4 shadow-sm border border-gray-100"></video>`;
-                else mediaHTML = `<img src="${r.media}" alt="Review from ${r.name}" class="w-full h-48 object-cover rounded-2xl mb-4 shadow-sm border border-gray-100">`;
+                if (isVideoFile(r.media)) {
+                    mediaHTML = `<video src="${r.media}" autoplay loop muted playsinline class="w-full h-48 object-cover rounded-2xl mb-4 shadow-sm border border-gray-100"></video>`;
+                } else {
+                    mediaHTML = `<img src="${r.media}" alt="Review from ${r.name}" class="w-full h-48 object-cover rounded-2xl mb-4 shadow-sm border border-gray-100">`;
+                }
             }
             return `
             <div class="flex-none w-80 md:w-96 bg-white p-6 md:p-8 rounded-3xl shadow-sm border border-pink-100 snap-center relative flex flex-col">

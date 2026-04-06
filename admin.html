@@ -6,619 +6,590 @@
     <title>Admin Panel | Celebrift</title>
     <link rel="icon" type="image/jpeg" href="logo.jpg">
     <script src="https://cdn.tailwindcss.com"></script>
-    
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
-    <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
-
     <style>
+        body { background-color: #f9fafb; }
         .tab-content { display: none; }
         .tab-content.active { display: block; }
         .nav-btn.active { background-color: #fbcfe8; color: #db2777; font-weight: bold; }
         .theme-card { border: 2px solid transparent; transition: all 0.3s; }
         .theme-card.active { border-color: #db2777; background-color: #fce7f3; transform: scale(1.05); }
-        .hide-scroll-bar::-webkit-scrollbar { display: none; }
-        .hide-scroll-bar { -ms-overflow-style: none; scrollbar-width: none; }
         .ql-container { font-family: inherit; font-size: 1rem; border-bottom-left-radius: 0.75rem; border-bottom-right-radius: 0.75rem; background: #f9fafb;}
         .ql-toolbar { border-top-left-radius: 0.75rem; border-top-right-radius: 0.75rem; background: white; }
     </style>
 </head>
-<body class="bg-gray-50 flex flex-col md:flex-row h-screen overflow-hidden">
+<body class="font-sans text-gray-800 h-screen overflow-hidden flex flex-col md:flex-row">
 
-    <aside class="w-full md:w-64 bg-white border-b md:border-r shadow-sm flex flex-col h-auto md:h-full shrink-0 z-20">
-        <div class="p-4 md:p-6 border-b flex justify-between items-center md:block">
-            <h1 class="text-xl md:text-2xl font-black text-gray-800 flex items-center gap-2">
-                <img src="logo.jpg" class="w-8 h-8 rounded-full object-cover shadow-sm">
-                <span><span class="text-pink-500">Celebr</span>ift</span>
-            </h1>
-            <a href="index.html" class="text-xs text-gray-500 hover:text-pink-500 mt-1 inline-block">← View Site</a>
+    <aside class="w-full md:w-64 bg-white border-r border-gray-200 h-auto md:h-full flex flex-col shadow-sm z-20">
+        <div class="p-6 border-b border-gray-100 flex justify-between items-center">
+            <h1 class="text-2xl font-black tracking-tight text-gray-800"><span class="text-pink-600">Celebr</span>ift <span class="text-sm">👑</span></h1>
+            <a href="index.html" class="text-xs text-indigo-600 font-bold hover:underline md:hidden">View Site</a>
         </div>
-        
-        <nav class="flex-grow p-2 md:p-4 flex md:flex-col overflow-x-auto md:overflow-y-auto space-x-2 md:space-x-0 md:space-y-2 hide-scroll-bar">
-            <button onclick="switchTab('dashboard')" id="btn-dashboard" class="nav-btn active flex-none md:w-full text-left px-4 py-3 rounded-xl text-sm md:text-base text-gray-600 transition whitespace-nowrap">📊 Dashboard</button>
-            <button onclick="switchTab('categories')" id="btn-categories" class="nav-btn flex-none md:w-full text-left px-4 py-3 rounded-xl text-sm md:text-base text-gray-600 transition whitespace-nowrap">📁 Categories</button>
-            <button onclick="switchTab('promotions')" id="btn-promotions" class="nav-btn flex-none md:w-full text-left px-4 py-3 rounded-xl text-sm md:text-base text-gray-600 transition whitespace-nowrap">📢 Promotions</button>
-            <button onclick="switchTab('listings')" id="btn-listings" class="nav-btn flex-none md:w-full text-left px-4 py-3 rounded-xl text-sm md:text-base text-gray-600 transition whitespace-nowrap">📦 Listings</button>
-            <button onclick="switchTab('hero')" id="btn-hero" class="nav-btn flex-none md:w-full text-left px-4 py-3 rounded-xl text-sm md:text-base text-gray-600 transition whitespace-nowrap">🌟 Hero Section</button>
-            <button onclick="switchTab('home-reviews')" id="btn-home-reviews" class="nav-btn flex-none md:w-full text-left px-4 py-3 rounded-xl text-sm md:text-base text-gray-600 transition whitespace-nowrap">⭐ Home Reviews</button>
-            <button onclick="switchTab('product-reviews')" id="btn-product-reviews" class="nav-btn flex-none md:w-full text-left px-4 py-3 rounded-xl text-sm md:text-base text-gray-600 transition whitespace-nowrap">💬 Prod Reviews</button>
-            <button onclick="switchTab('theme')" id="btn-theme" class="nav-btn flex-none md:w-full text-left px-4 py-3 rounded-xl text-sm md:text-base text-gray-600 transition whitespace-nowrap">🎨 Site Theme</button>
-            <button onclick="switchTab('faqs')" id="btn-faqs" class="nav-btn flex-none md:w-full text-left px-4 py-3 rounded-xl text-sm md:text-base text-gray-600 transition whitespace-nowrap">❓ Global FAQs</button>
-            <button onclick="switchTab('tnc')" id="btn-tnc" class="nav-btn flex-none md:w-full text-left px-4 py-3 rounded-xl text-sm md:text-base text-gray-600 transition whitespace-nowrap">📄 Terms</button>
-            <button onclick="switchTab('refunds')" id="btn-refunds" class="nav-btn flex-none md:w-full text-left px-4 py-3 rounded-xl text-sm md:text-base text-gray-600 transition whitespace-nowrap">💸 Refunds</button>
-            <button onclick="switchTab('about')" id="btn-about" class="nav-btn flex-none md:w-full text-left px-4 py-3 rounded-xl text-sm md:text-base text-gray-600 transition whitespace-nowrap">🏢 About Us</button>
-            <button onclick="switchTab('disclaimer')" id="btn-disclaimer" class="nav-btn flex-none md:w-full text-left px-4 py-3 rounded-xl text-sm md:text-base text-gray-600 transition whitespace-nowrap">⚠️ Disclaimer</button>
+        <nav class="flex-grow overflow-y-auto p-4 space-y-1 flex flex-row md:flex-col gap-2 md:gap-0 overflow-x-auto md:overflow-x-hidden hide-scroll-bar">
+            <button onclick="switchTab('analytics')" class="nav-btn active w-full text-left px-4 py-3 rounded-xl text-gray-600 hover:bg-gray-50 transition-colors whitespace-nowrap md:whitespace-normal font-medium text-sm flex items-center gap-2">📊 Analytics</button>
+            <button onclick="switchTab('categories')" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-gray-600 hover:bg-gray-50 transition-colors whitespace-nowrap md:whitespace-normal font-medium text-sm flex items-center gap-2">🗂️ Categories</button>
+            <button onclick="switchTab('promotions')" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-gray-600 hover:bg-gray-50 transition-colors whitespace-nowrap md:whitespace-normal font-medium text-sm flex items-center gap-2">📢 Promotions</button>
+            <button onclick="switchTab('listings')" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-gray-600 hover:bg-gray-50 transition-colors whitespace-nowrap md:whitespace-normal font-medium text-sm flex items-center gap-2">🛍️ Listings</button>
+            <button onclick="switchTab('hero')" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-gray-600 hover:bg-gray-50 transition-colors whitespace-nowrap md:whitespace-normal font-medium text-sm flex items-center gap-2">🌟 Hero Banner</button>
+            <button onclick="switchTab('home-reviews')" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-gray-600 hover:bg-gray-50 transition-colors whitespace-nowrap md:whitespace-normal font-medium text-sm flex items-center gap-2">⭐ Home Reviews</button>
+            <button onclick="switchTab('prod-reviews')" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-gray-600 hover:bg-gray-50 transition-colors whitespace-nowrap md:whitespace-normal font-medium text-sm flex items-center gap-2">💬 Prod Reviews</button>
+            <button onclick="switchTab('theme')" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-gray-600 hover:bg-gray-50 transition-colors whitespace-nowrap md:whitespace-normal font-medium text-sm flex items-center gap-2">🎨 Site Theme</button>
+            
+            <div class="pt-4 pb-2"><p class="text-xs font-bold text-gray-400 uppercase tracking-wider px-4">Static Pages</p></div>
+            <button onclick="switchTab('page-about')" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-gray-600 hover:bg-gray-50 transition-colors whitespace-nowrap md:whitespace-normal font-medium text-sm">About Us</button>
+            <button onclick="switchTab('page-faqs')" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-gray-600 hover:bg-gray-50 transition-colors whitespace-nowrap md:whitespace-normal font-medium text-sm">FAQs</button>
+            <button onclick="switchTab('page-tnc')" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-gray-600 hover:bg-gray-50 transition-colors whitespace-nowrap md:whitespace-normal font-medium text-sm">Terms & Cond</button>
+            <button onclick="switchTab('page-refunds')" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-gray-600 hover:bg-gray-50 transition-colors whitespace-nowrap md:whitespace-normal font-medium text-sm">Refunds</button>
+            <button onclick="switchTab('page-disclaimer')" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-gray-600 hover:bg-gray-50 transition-colors whitespace-nowrap md:whitespace-normal font-medium text-sm">Disclaimer</button>
         </nav>
-        
-        <div class="p-4 border-t hidden md:block">
-            <button onclick="logout()" class="w-full bg-gray-900 text-white py-3 rounded-xl font-bold hover:bg-gray-800 transition">Logout</button>
+        <div class="p-4 border-t border-gray-100 hidden md:block">
+            <a href="index.html" class="block text-center w-full bg-indigo-50 text-indigo-700 font-bold py-3 rounded-xl hover:bg-indigo-100 transition-colors text-sm">← View Live Site</a>
         </div>
     </aside>
 
-    <main class="flex-grow overflow-y-auto p-4 md:p-8 h-full bg-gray-50 w-full">
-
-        <div id="tab-dashboard" class="tab-content active max-w-6xl mx-auto">
-            <h2 class="text-2xl font-bold mb-6 text-gray-800">📊 Business Analytics</h2>
+    <main class="flex-grow overflow-y-auto p-4 md:p-8 bg-gray-50">
+        
+        <div id="tab-analytics" class="tab-content active max-w-5xl mx-auto">
+            <h2 class="text-3xl font-black mb-6 text-gray-800">Dashboard Overview</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                <div class="bg-white p-6 rounded-3xl shadow-sm border-l-4 border-pink-500">
-                    <p class="text-sm font-bold text-gray-500 uppercase tracking-widest mb-1">Total Views</p>
-                    <p id="stat-views" class="text-4xl font-black text-indigo-900 animate-pulse">...</p>
-                </div>
-                <div class="bg-white p-6 rounded-3xl shadow-sm border-l-4 border-indigo-500">
-                    <p class="text-sm font-bold text-gray-500 uppercase tracking-widest mb-1">Total Listings</p>
-                    <p id="stat-listings" class="text-4xl font-black text-indigo-900 animate-pulse">...</p>
-                </div>
-                <div class="bg-white p-6 rounded-3xl shadow-sm border-l-4 border-yellow-400">
-                    <p class="text-sm font-bold text-gray-500 uppercase tracking-widest mb-1">Total Reviews</p>
-                    <p id="stat-reviews" class="text-4xl font-black text-indigo-900 animate-pulse">...</p>
-                </div>
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100"><p class="text-gray-500 font-bold mb-1">Total Views</p><p class="text-4xl font-black text-indigo-600" id="stat-views">0</p></div>
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100"><p class="text-gray-500 font-bold mb-1">Total Listings</p><p class="text-4xl font-black text-pink-600" id="stat-listings">0</p></div>
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100"><p class="text-gray-500 font-bold mb-1">Total Reviews</p><p class="text-4xl font-black text-yellow-500" id="stat-reviews">0</p></div>
             </div>
-            <div class="bg-white p-8 rounded-3xl shadow-sm border border-gray-100">
-                <h3 class="text-lg font-bold mb-6 text-indigo-900 flex items-center gap-2">🏆 Top 5 Most Popular Decors</h3>
-                <div id="stat-top-products" class="space-y-4"></div>
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                <h3 class="text-xl font-bold mb-4">Top 5 Most Viewed</h3>
+                <ul id="stat-top-list" class="space-y-3"></ul>
             </div>
         </div>
 
-        <div id="tab-categories" class="tab-content max-w-6xl mx-auto">
-            <h2 class="text-2xl font-bold mb-6 text-gray-800">📁 Dynamic Category Engine</h2>
-            <div class="bg-white p-6 md:p-8 rounded-3xl shadow-sm border border-pink-100">
-                <p class="text-gray-500 mb-4 text-sm md:text-base">Define your categories and their sub-categories here. <b>The order you list them here is exactly how they will appear on the homepage.</b></p>
-                <div class="bg-blue-50 text-blue-800 p-4 md:p-6 rounded-2xl mb-6 text-sm font-medium border border-blue-100">
-                    <p class="mb-2 uppercase tracking-wider text-xs font-black">Format Rule:</p>
-                    <ul class="list-disc pl-5 space-y-1">
-                        <li>Type one Main Category per line.</li>
-                        <li>Separate the Main Category and its Sub-categories with a straight line ( <b>|</b> ).</li>
-                        <li>Separate multiple sub-categories with commas.</li>
-                    </ul>
-                </div>
-                <textarea id="categories-content" spellcheck="false" placeholder="Birthday Decor | Ring Decoration, Wall Decoration, Premium, U Board&#10;Baby Shower Decor | Premium, Standard&#10;Anniversary Decor | Room, Hotel" class="w-full p-5 border border-gray-200 rounded-2xl bg-gray-50 h-[15rem] focus:ring-2 focus:ring-pink-500 outline-none leading-loose font-medium text-gray-700 shadow-inner"></textarea>
-                <button onclick="saveCategories(this)" class="mt-6 w-full md:w-auto bg-pink-500 text-white px-10 py-4 rounded-xl font-black hover:bg-pink-600 transition">Save & Build Categories</button>
+        <div id="tab-categories" class="tab-content max-w-5xl mx-auto">
+            <h2 class="text-3xl font-black mb-2 text-gray-800">Category Engine</h2>
+            <p class="text-gray-500 mb-6">Define your site's navigation and filters here. Format: <code>Main Category | Sub 1, Sub 2</code></p>
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                <textarea id="setting-categories" rows="8" class="w-full p-4 bg-gray-50 border border-gray-200 rounded-xl mb-4 font-mono text-sm" placeholder="Birthday Decor | Ring, Premium, Standard&#10;Baby Shower Decor | Welcome, Stage"></textarea>
+                <button onclick="saveSetting('site_categories', document.getElementById('setting-categories').value)" class="bg-pink-600 text-white font-bold py-3 px-6 rounded-xl hover:bg-pink-700">Save Categories</button>
             </div>
         </div>
 
-        <div id="tab-promotions" class="tab-content max-w-6xl mx-auto">
-            <h2 class="text-2xl font-bold mb-6 text-gray-800">📢 Manage Promotions & Banners</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div class="bg-white p-6 md:p-8 rounded-3xl shadow-sm border border-pink-100">
-                    <h3 class="text-lg font-bold mb-2 text-indigo-900">Universal Top Bar Offer</h3>
-                    <input type="text" id="global-offer-input" placeholder="e.g. 🎉 Any decor in ₹999! Book Now!" class="w-full p-4 border rounded-xl bg-gray-50 mb-4 outline-none">
-                    <button onclick="saveGlobalOffer(this)" class="w-full bg-pink-500 text-white py-3 rounded-xl font-bold">Save Top Banner</button>
-                    <button onclick="clearGlobalOffer(this)" class="w-full bg-gray-100 text-gray-600 py-3 rounded-xl font-bold mt-3">Remove Top Banner</button>
+        <div id="tab-promotions" class="tab-content max-w-5xl mx-auto">
+            <h2 class="text-3xl font-black mb-6 text-gray-800">Global Promotions</h2>
+            <div class="space-y-6">
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                    <h3 class="font-bold text-lg mb-2">Top Announcement Bar</h3>
+                    <input type="text" id="setting-global-offer" class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl mb-4" placeholder="e.g., 🎉 FLAT 20% OFF ON ALL BOOKINGS THIS WEEK!">
+                    <button onclick="saveSetting('global_offer', document.getElementById('setting-global-offer').value)" class="bg-pink-600 text-white font-bold py-2 px-6 rounded-xl hover:bg-pink-700">Save Banner</button>
                 </div>
-                <div class="bg-white p-6 md:p-8 rounded-3xl shadow-sm border border-indigo-100">
-                    <h3 class="text-lg font-bold mb-2 text-indigo-900">Main Promotional Video/Banner</h3>
-                    <div id="current-promo-media-preview" class="w-full h-32 bg-gray-100 rounded-xl mb-4 overflow-hidden hidden flex items-center justify-center border border-gray-200"></div>
-                    <input type="file" id="promo-media-upload" accept="image/*,video/mp4,video/webm" class="w-full mb-4 text-sm">
-                    <button onclick="uploadPromoMedia(this)" class="w-full bg-indigo-600 text-white py-3 rounded-xl font-bold">Upload & Set Banner</button>
-                    <button onclick="clearPromoMedia(this)" class="w-full bg-red-50 text-red-600 py-3 rounded-xl font-bold mt-3">Remove Banner</button>
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                    <h3 class="font-bold text-lg mb-2">Main Promo Media (Video/Image)</h3>
+                    <input type="file" id="setting-promo-file" accept="image/*,video/*" class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl mb-4">
+                    <input type="hidden" id="current-promo-media">
+                    <div id="promo-preview" class="mb-4"></div>
+                    <button onclick="savePromoMedia()" class="bg-pink-600 text-white font-bold py-2 px-6 rounded-xl hover:bg-pink-700">Upload & Save Media</button>
                 </div>
             </div>
         </div>
 
-        <div id="tab-listings" class="tab-content max-w-7xl mx-auto">
-            <div class="flex justify-between items-center mb-6">
-                <h2 class="text-2xl font-bold text-gray-800">Manage Listings</h2>
-            </div>
-            <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
-                <div class="xl:col-span-1 bg-white p-6 rounded-3xl shadow-sm border border-gray-100 h-fit">
-                    <h3 id="form-title" class="text-lg font-bold mb-6 text-gray-800">Add New Listing</h3>
-                    <form id="add-form" class="space-y-4">
-                        <input type="text" id="title" placeholder="Title" class="w-full p-3 border rounded-xl bg-gray-50 outline-none" required>
-                        <div class="flex gap-2">
-                            <input type="text" id="price" placeholder="Price (e.g. ₹2499)" class="w-1/2 p-3 border rounded-xl bg-gray-50 outline-none" required>
-                            <input type="text" id="offer-text" placeholder="Badge (e.g. 20% OFF)" class="w-1/2 p-3 border rounded-xl bg-red-50 text-red-600 outline-none">
-                        </div>
-
-                        <div class="flex gap-2">
-                            <select id="category" class="w-full p-3 border rounded-xl bg-gray-50 outline-none font-bold text-indigo-900" onchange="updateSubCategories()" required>
-                                <option value="" disabled selected>Select Category</option>
-                            </select>
-                        </div>
-                        <select id="sub-category" class="w-full p-3 border rounded-xl bg-gray-50 outline-none font-bold text-gray-600 hidden"></select>
-
-                        <div class="border-t pt-4">
-                            <label class="block text-xs font-bold text-gray-500 mb-1">Product Description</label>
-                            <div id="description-editor" style="height: 120px;"></div>
-                        </div>
-                        
-                        <div class="border-t pt-4">
-                            <label class="block text-xs font-bold text-gray-500 mb-1">Package Includes (Comma Separated)</label>
-                            <textarea id="package-includes" placeholder="e.g. 100 Balloons, 1 Foil" rows="2" class="w-full p-3 border rounded-xl bg-gray-50 text-sm outline-none"></textarea>
-                        </div>
+        <div id="tab-listings" class="tab-content max-w-6xl mx-auto">
+            <h2 class="text-3xl font-black mb-6 text-gray-800">Manage Inventory</h2>
+            <div class="flex flex-col xl:flex-row gap-8">
+                <div class="w-full xl:w-1/2 bg-white p-6 md:p-8 rounded-3xl shadow-sm border border-gray-100 h-fit sticky top-4">
+                    <h3 id="form-title" class="text-2xl font-black text-indigo-900 mb-6">Add New Setup</h3>
+                    <form id="decor-form" class="space-y-5">
+                        <input type="hidden" id="decor-slug">
                         
                         <div>
-                            <label class="block text-xs font-bold text-gray-500 mb-1">Product FAQs (Question | Answer)</label>
-                            <textarea id="product-faqs" placeholder="How long? | 24 Hours" rows="3" class="w-full p-3 border rounded-xl bg-gray-50 text-sm outline-none"></textarea>
+                            <label class="block text-sm font-bold text-gray-700 mb-1">Title *</label>
+                            <input type="text" id="decor-title" required class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-pink-500">
                         </div>
 
-                        <div class="border rounded-xl p-4 bg-gray-50 mt-4">
-                            <label class="block text-xs font-bold text-gray-500 mb-2">Upload Images (Hold Ctrl to select multiple)</label>
-                            <input type="file" id="image-upload" accept="image/*" multiple class="w-full text-sm">
-                            <input type="hidden" id="existing-images-array"> 
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-bold text-gray-700 mb-1">Category *</label>
+                                <select id="decor-category" required class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-pink-500" onchange="updateSubCategoryDropdown()"></select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold text-gray-700 mb-1">Sub-Category</label>
+                                <select id="decor-sub-category" class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-pink-500"><option value="">None</option></select>
+                            </div>
                         </div>
 
-                        <button type="submit" id="submit-btn" class="w-full bg-pink-500 text-white py-3 rounded-xl font-bold shadow-sm hover:bg-pink-600">Save Listing</button>
-                        <button type="button" id="cancel-edit-btn" onclick="resetForm()" class="hidden w-full bg-gray-200 text-gray-700 py-3 rounded-xl font-bold mt-2">Cancel Edit</button>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-bold text-gray-700 mb-1">Price String *</label>
+                                <input type="text" id="decor-price" required placeholder="e.g. ₹2,499" class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-pink-500">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold text-gray-700 mb-1">Offer Badge Text</label>
+                                <input type="text" id="decor-offer" placeholder="e.g. 20% OFF" class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-pink-500">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 mb-1">Main Thumbnail Image *</label>
+                            <input type="file" id="decor-main-img" accept="image/*" class="w-full p-2 bg-gray-50 border border-gray-200 rounded-xl text-sm">
+                            <input type="hidden" id="decor-main-img-b64">
+                            <div id="main-img-preview" class="mt-2 flex gap-2"></div>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 mb-1">Gallery Images (Multiple)</label>
+                            <input type="file" id="decor-gallery-imgs" accept="image/*" multiple class="w-full p-2 bg-gray-50 border border-gray-200 rounded-xl text-sm">
+                            <div id="gallery-imgs-preview" class="mt-2 flex gap-2 overflow-x-auto hide-scroll-bar pb-2"></div>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 mb-1">Description</label>
+                            <div id="quill-editor" class="bg-white h-40"></div>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 mb-1">Package Includes (One per line)</label>
+                            <textarea id="decor-package" rows="3" class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-pink-500 text-sm" placeholder="100 Metallic Balloons&#10;Happy Birthday Foil&#10;Ribbons & Setup"></textarea>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 mb-1">FAQs (Format: Q: Question | A: Answer)</label>
+                            <textarea id="decor-faqs" rows="3" class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-pink-500 text-sm" placeholder="Q: How long does it last? | A: 24 hours&#10;Q: Do you need a ladder? | A: Yes"></textarea>
+                        </div>
+
+                        <div class="flex gap-3 pt-4">
+                            <button type="submit" id="btn-save" class="flex-1 bg-pink-600 text-white font-black py-4 rounded-xl hover:bg-pink-700 transition-colors shadow-md">Save Setup</button>
+                            <button type="button" onclick="resetForm()" class="px-6 bg-gray-200 text-gray-700 font-bold rounded-xl hover:bg-gray-300 transition-colors">Clear</button>
+                        </div>
                     </form>
                 </div>
-                <div class="xl:col-span-2 bg-white p-6 rounded-3xl shadow-sm border border-gray-100">
-                    <h3 class="text-lg font-bold mb-6 text-gray-800">Current Inventory</h3>
-                    <div id="admin-product-list" class="space-y-3"></div>
-                </div>
-            </div>
-        </div>
-
-        <div id="tab-hero" class="tab-content max-w-6xl mx-auto"><h2 class="text-2xl font-bold mb-6 text-gray-800">Manage Hero Section</h2><div class="grid grid-cols-1 xl:grid-cols-3 gap-8"><div class="xl:col-span-1 space-y-6"><div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100"><h3 class="text-lg font-bold mb-4 border-b pb-2 text-gray-800">1. Section Text</h3><input type="text" id="hero-title-input" placeholder="Main Title" class="w-full p-3 border rounded-xl bg-gray-50 mb-3 font-bold text-indigo-900 outline-none"><input type="text" id="hero-subtitle-input" placeholder="Subtitle" class="w-full p-3 border rounded-xl bg-gray-50 text-gray-500 outline-none"><button onclick="saveHeroText(this)" class="w-full bg-gray-900 hover:bg-gray-800 text-white py-3 rounded-xl font-bold mt-4 transition">Save Text</button></div><div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 h-fit"><h3 id="hero-form-title" class="text-lg font-bold mb-4 border-b pb-2 text-gray-800">2. Add Category Item</h3><form id="add-hero-form" class="space-y-4"><input type="hidden" id="hero-edit-id"><input type="hidden" id="hero-existing-image"><input type="text" id="hero-item-title" placeholder="Icon Label" class="w-full p-3 border rounded-xl bg-gray-50 outline-none" required><select id="hero-item-target" class="w-full p-3 border rounded-xl bg-gray-50 outline-none font-bold" required><option value="" disabled selected>Scrolls to which category?</option></select><select id="hero-item-shape" class="w-full p-3 border rounded-xl bg-gray-50 outline-none" required><option value="circle">Circle 🟢</option><option value="square">Square 🟩</option><option value="rounded-square">Rounded Square 🔲</option><option value="rectangle">Rectangle ▭</option><option value="rounded-rectangle">Rounded Rectangle 🏟️</option></select><div class="border rounded-xl p-4 bg-gray-50"><label class="block text-xs font-bold text-gray-500 mb-2">Upload Icon/Image</label><input type="file" id="hero-item-image" accept="image/*" class="w-full text-sm"></div><button type="submit" id="hero-submit-btn" class="w-full bg-pink-500 text-white py-3 rounded-xl font-bold mt-2 shadow-sm">Add to Hero Section</button><button type="button" id="hero-cancel-btn" onclick="resetHeroForm()" class="hidden w-full bg-gray-200 text-gray-700 py-3 rounded-xl font-bold mt-2">Cancel Edit</button></form></div></div><div class="xl:col-span-2 bg-white p-6 rounded-3xl shadow-sm border border-gray-100"><div class="flex justify-between mb-6 border-b pb-4"><h3 class="text-lg font-bold text-gray-800">Current Layout <span id="hero-count" class="text-pink-500 text-sm ml-2"></span></h3><button onclick="saveHeroLayout(this)" class="bg-green-500 text-white px-6 py-2 rounded-xl font-bold">Save Live Layout</button></div><div id="hero-items-list" class="space-y-3"><p class="text-gray-500">Loading layout...</p></div></div></div></div>
-        
-        <div id="tab-home-reviews" class="tab-content max-w-6xl mx-auto">
-            <h2 class="text-2xl font-bold mb-6 text-gray-800">Manage Home Page Reviews</h2>
-            <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
-                <div class="xl:col-span-1 bg-white p-6 rounded-3xl shadow-sm border h-fit">
-                    <h3 id="home-rev-form-title" class="text-lg font-bold mb-4 border-b pb-2 text-gray-800">Add Home Review</h3>
-                    <form id="add-home-rev-form" class="space-y-4">
-                        <input type="hidden" id="home-rev-edit-id">
-                        <input type="hidden" id="home-rev-existing-media">
-                        
-                        <div id="home-rev-form-media-preview" class="hidden mb-4 rounded-xl border p-2 bg-gray-100 flex items-center justify-center h-32 overflow-hidden"></div>
-                        
-                        <input type="text" id="home-rev-name" placeholder="Customer Name" class="w-full p-3 border rounded-xl bg-gray-50" required>
-                        <select id="home-rev-rating" class="w-full p-3 border rounded-xl bg-gray-50">
-                            <option value="5">5 Stars</option>
-                            <option value="4">4 Stars</option>
-                        </select>
-                        <textarea id="home-rev-text" placeholder="Review content..." rows="4" class="w-full p-3 border rounded-xl bg-gray-50" required></textarea>
-                        <div class="border rounded-xl p-4 bg-gray-50">
-                            <label class="block text-xs font-bold text-gray-500 mb-2">Change Image/Video (Max 4MB)</label>
-                            <input type="file" id="home-rev-media" accept="image/*,video/mp4,video/webm" class="w-full text-sm">
-                        </div>
-                        <button type="submit" id="home-rev-submit-btn" class="w-full bg-pink-500 text-white py-3 rounded-xl font-bold">Add to Home Page</button>
-                        <button type="button" id="home-rev-cancel-btn" onclick="resetHomeRevForm()" class="hidden w-full bg-gray-200 py-3 rounded-xl font-bold mt-2 hover:bg-gray-300">Cancel Edit</button>
-                    </form>
-                </div>
-                <div class="xl:col-span-2 bg-white p-6 rounded-3xl shadow-sm border border-gray-100">
-                    <div class="flex justify-between mb-6 border-b pb-4">
-                        <h3 class="text-lg font-bold text-gray-800">Active Home Reviews</h3>
-                        <button onclick="saveHomeReviewsLayout(this)" class="bg-green-500 text-white px-6 py-2 rounded-xl font-bold hover:bg-green-600">Save Live Layout</button>
+                
+                <div class="w-full xl:w-1/2">
+                    <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 mb-4 sticky top-4 z-10 flex gap-2">
+                        <input type="text" id="inventory-search" placeholder="Search inventory..." class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl outline-none" onkeyup="renderInventoryList()">
                     </div>
-                    <div id="home-revs-list" class="space-y-3"><p class="text-gray-500">Loading reviews...</p></div>
+                    <div id="inventory-list" class="space-y-3"></div>
                 </div>
-            </div>
-        </div>
-        
-        <div id="tab-product-reviews" class="tab-content max-w-6xl mx-auto"><h2 class="text-2xl font-bold mb-6 text-gray-800">Manage Customer Product Reviews</h2><div class="grid grid-cols-1 xl:grid-cols-3 gap-8"><div id="prod-rev-edit-container" class="xl:col-span-1 bg-white p-6 rounded-3xl shadow-sm border border-pink-200 h-fit hidden"><h3 class="text-lg font-bold mb-4 border-b pb-2 text-indigo-900">Edit Customer Review</h3><form id="edit-prod-rev-form" class="space-y-4"><input type="hidden" id="prod-rev-id"><input type="text" id="prod-rev-name" placeholder="Customer Name" class="w-full p-3 border rounded-xl bg-gray-50 outline-none focus:ring-2 focus:ring-pink-500" required><select id="prod-rev-rating" class="w-full p-3 border rounded-xl bg-gray-50 outline-none focus:ring-2 focus:ring-pink-500"><option value="5">5 Stars</option><option value="4">4 Stars</option><option value="3">3 Stars</option><option value="2">2 Stars</option><option value="1">1 Star</option></select><textarea id="prod-rev-text" placeholder="Review content..." rows="4" class="w-full p-3 border rounded-xl bg-gray-50 outline-none focus:ring-2 focus:ring-pink-500" required></textarea><button type="submit" id="prod-rev-submit-btn" class="w-full bg-indigo-600 text-white py-3 rounded-xl font-bold hover:bg-indigo-700 transition">Update Review</button><button type="button" onclick="closeProdRevEdit()" class="w-full bg-gray-200 py-3 rounded-xl font-bold mt-2 hover:bg-gray-300">Cancel</button></form></div><div id="prod-rev-list-container" class="xl:col-span-3 bg-white p-6 rounded-3xl shadow-sm border border-gray-100 transition-all"><div id="admin-customer-reviews-list" class="space-y-4"></div></div></div></div>
-        
-        <div id="tab-theme" class="tab-content max-w-5xl mx-auto">
-            <h2 class="text-2xl font-bold mb-6 text-gray-800">🎉 Festive Vibe Engine</h2>
-            <div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100">
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-                    <div onclick="selectTheme('default')" id="theme-default" class="theme-card active cursor-pointer p-4 rounded-2xl bg-gray-50 text-center"><span class="text-3xl block mb-2">🎈</span><h4 class="font-bold text-gray-800">Standard Pink</h4></div>
-                    <div onclick="selectTheme('purple-gold')" id="theme-purple-gold" class="theme-card cursor-pointer p-4 rounded-2xl bg-purple-50 text-center"><span class="text-3xl block mb-2">👑</span><h4 class="font-bold text-purple-900">Purple & Gold</h4></div>
-                    <div onclick="selectTheme('cyan-splash')" id="theme-cyan-splash" class="theme-card cursor-pointer p-4 rounded-2xl bg-cyan-50 text-center"><span class="text-3xl block mb-2">💎</span><h4 class="font-bold text-cyan-800">Cyan Splash</h4></div>
-                    <div onclick="selectTheme('diwali')" id="theme-diwali" class="theme-card cursor-pointer p-4 rounded-2xl bg-orange-50 text-center"><span class="text-3xl block mb-2">🪔</span><h4 class="font-bold text-orange-800">Diwali Sparkle</h4></div>
-                    <div onclick="selectTheme('christmas')" id="theme-christmas" class="theme-card cursor-pointer p-4 rounded-2xl bg-red-50 text-center"><span class="text-3xl block mb-2">🎄</span><h4 class="font-bold text-red-800">Christmas Magic</h4></div>
-                    <div onclick="selectTheme('holi')" id="theme-holi" class="theme-card cursor-pointer p-4 rounded-2xl bg-fuchsia-50 text-center"><span class="text-3xl block mb-2">🎨</span><h4 class="font-bold text-fuchsia-800">Holi Splash</h4></div>
-                    <div onclick="selectTheme('eid')" id="theme-eid" class="theme-card cursor-pointer p-4 rounded-2xl bg-emerald-50 text-center"><span class="text-3xl block mb-2">🌙</span><h4 class="font-bold text-emerald-800">Eid Blessing</h4></div>
-                    <div onclick="selectTheme('national')" id="theme-national" class="theme-card cursor-pointer p-4 rounded-2xl bg-blue-50 text-center"><span class="text-3xl block mb-2">🇮🇳</span><h4 class="font-bold text-blue-800">Republic/Ind. Day</h4></div>
-                </div>
-                <input type="hidden" id="active-theme-input" value="default">
-                <button onclick="saveSiteTheme(this)" class="bg-pink-500 text-white px-10 py-4 rounded-xl font-black">Apply Theme Live</button>
             </div>
         </div>
 
-        <div id="tab-faqs" class="tab-content max-w-4xl"><h2 class="text-2xl font-bold mb-6 text-gray-800">Global Site FAQs</h2><div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100"><textarea id="faqs-content" class="w-full p-4 border rounded-xl bg-gray-50 h-[30rem] focus:ring-2 focus:ring-pink-500 outline-none font-mono text-sm leading-relaxed" placeholder="Type raw HTML here..."></textarea><button onclick="saveSetting(this, 'faqs', 'faqs-content')" class="mt-4 w-full md:w-auto bg-pink-500 text-white px-8 py-3 rounded-xl font-bold hover:bg-pink-600 transition">Save FAQs</button></div></div>
-        <div id="tab-tnc" class="tab-content max-w-4xl"><h2 class="text-2xl font-bold mb-6 text-gray-800">Terms & Conditions</h2><div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100"><textarea id="tnc-content" class="w-full p-4 border rounded-xl bg-gray-50 h-[30rem] focus:ring-2 focus:ring-pink-500 outline-none font-mono text-sm leading-relaxed" placeholder="Type raw HTML here..."></textarea><button onclick="saveSetting(this, 'tnc', 'tnc-content')" class="mt-4 w-full md:w-auto bg-pink-500 text-white px-8 py-3 rounded-xl font-bold hover:bg-pink-600 transition">Save Terms</button></div></div>
-        <div id="tab-refunds" class="tab-content max-w-4xl"><h2 class="text-2xl font-bold mb-6 text-gray-800">Refunds & Returns</h2><div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100"><textarea id="refunds-content" class="w-full p-4 border rounded-xl bg-gray-50 h-[30rem] focus:ring-2 focus:ring-pink-500 outline-none font-mono text-sm leading-relaxed" placeholder="Type raw HTML here..."></textarea><button onclick="saveSetting(this, 'refunds', 'refunds-content')" class="mt-4 w-full md:w-auto bg-pink-500 text-white px-8 py-3 rounded-xl font-bold hover:bg-pink-600 transition">Save Policy</button></div></div>
-        <div id="tab-about" class="tab-content max-w-4xl"><h2 class="text-2xl font-bold mb-6 text-gray-800">About Us</h2><div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100"><textarea id="about-content" class="w-full p-4 border rounded-xl bg-gray-50 h-[30rem] focus:ring-2 focus:ring-pink-500 outline-none font-mono text-sm leading-relaxed" placeholder="Type raw HTML here..."></textarea><button onclick="saveSetting(this, 'about', 'about-content')" class="mt-4 w-full md:w-auto bg-pink-500 text-white px-8 py-3 rounded-xl font-bold hover:bg-pink-600 transition">Save About Us</button></div></div>
-        <div id="tab-disclaimer" class="tab-content max-w-4xl"><h2 class="text-2xl font-bold mb-6 text-gray-800">Disclaimer</h2><div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100"><textarea id="disclaimer-content" class="w-full p-4 border rounded-xl bg-gray-50 h-[30rem] focus:ring-2 focus:ring-pink-500 outline-none font-mono text-sm leading-relaxed" placeholder="Type raw HTML here..."></textarea><button onclick="saveSetting(this, 'disclaimer', 'disclaimer-content')" class="mt-4 w-full md:w-auto bg-pink-500 text-white px-8 py-3 rounded-xl font-bold hover:bg-pink-600 transition">Save Disclaimer</button></div></div>
+        <div id="tab-hero" class="tab-content max-w-5xl mx-auto">
+            <h2 class="text-3xl font-black mb-6 text-gray-800">Hero Marquee Items</h2>
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 mb-8">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
+                    <div class="col-span-1"><label class="block text-sm font-bold mb-1">Title</label><input type="text" id="hero-title" class="w-full p-2 border rounded"></div>
+                    <div class="col-span-1"><label class="block text-sm font-bold mb-1">Target Category Slug</label><input type="text" id="hero-target" class="w-full p-2 border rounded" placeholder="e.g. birthday-decor"></div>
+                    <div class="col-span-1"><label class="block text-sm font-bold mb-1">Image (Square)</label><input type="file" id="hero-img" accept="image/*" class="w-full p-2 border rounded text-xs"></div>
+                    <div class="col-span-1"><label class="block text-sm font-bold mb-1">Shape</label><select id="hero-shape" class="w-full p-2 border rounded"><option value="circle">Circle</option><option value="square">Square</option><option value="rounded-square">Rounded Square</option><option value="rectangle">Rectangle (Wide)</option><option value="rounded-rectangle">Rounded Rectangle</option></select></div>
+                </div>
+                <button onclick="addHeroItem()" class="mt-4 bg-indigo-600 text-white font-bold py-2 px-6 rounded-xl hover:bg-indigo-700">Add Item</button>
+            </div>
+            <div id="hero-items-list" class="space-y-2"></div>
+        </div>
+
+        <div id="tab-home-reviews" class="tab-content max-w-5xl mx-auto">
+            <h2 class="text-3xl font-black mb-6 text-gray-800">Homepage Reviews</h2>
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 mb-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div><label class="block text-sm font-bold mb-1">Customer Name</label><input type="text" id="hr-name" class="w-full p-2 border rounded"></div>
+                    <div><label class="block text-sm font-bold mb-1">Rating (1-5)</label><input type="number" id="hr-rating" min="1" max="5" value="5" class="w-full p-2 border rounded"></div>
+                </div>
+                <div class="mb-4"><label class="block text-sm font-bold mb-1">Review Text</label><textarea id="hr-text" rows="2" class="w-full p-2 border rounded"></textarea></div>
+                <div class="mb-4"><label class="block text-sm font-bold mb-1">Media (Image/Video)</label><input type="file" id="hr-media" accept="image/*,video/*" class="w-full p-2 border rounded"></div>
+                <button onclick="addHomeReview()" class="bg-indigo-600 text-white font-bold py-2 px-6 rounded-xl hover:bg-indigo-700">Add Review</button>
+            </div>
+            <div id="home-reviews-list" class="space-y-3"></div>
+        </div>
+
+        <div id="tab-prod-reviews" class="tab-content max-w-5xl mx-auto">
+            <h2 class="text-3xl font-black mb-6 text-gray-800">Manage Customer Product Reviews</h2>
+            <div id="admin-reviews-list" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
+        </div>
+
+        <div id="tab-theme" class="tab-content max-w-5xl mx-auto">
+            <h2 class="text-3xl font-black mb-6 text-gray-800">Festive Site Theme</h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="theme-grid">
+                <div onclick="setTheme('default')" class="theme-card cursor-pointer bg-white p-4 rounded-2xl shadow-sm text-center" data-theme="default"><div class="text-3xl mb-2">⚪</div><p class="font-bold">Standard</p></div>
+                <div onclick="setTheme('purple-gold')" class="theme-card cursor-pointer bg-white p-4 rounded-2xl shadow-sm text-center" data-theme="purple-gold"><div class="text-3xl mb-2">💜✨</div><p class="font-bold">Premium Gold</p></div>
+                <div onclick="setTheme('cyan-splash')" class="theme-card cursor-pointer bg-white p-4 rounded-2xl shadow-sm text-center" data-theme="cyan-splash"><div class="text-3xl mb-2">🌊💎</div><p class="font-bold">Cyan Splash</p></div>
+                <div onclick="setTheme('diwali')" class="theme-card cursor-pointer bg-white p-4 rounded-2xl shadow-sm text-center" data-theme="diwali"><div class="text-3xl mb-2">🪔🎆</div><p class="font-bold">Diwali</p></div>
+                <div onclick="setTheme('christmas')" class="theme-card cursor-pointer bg-white p-4 rounded-2xl shadow-sm text-center" data-theme="christmas"><div class="text-3xl mb-2">🎄❄️</div><p class="font-bold">Christmas</p></div>
+                <div onclick="setTheme('new-year')" class="theme-card cursor-pointer bg-white p-4 rounded-2xl shadow-sm text-center" data-theme="new-year"><div class="text-3xl mb-2">🥂🕛</div><p class="font-bold">New Year</p></div>
+                <div onclick="setTheme('holi')" class="theme-card cursor-pointer bg-white p-4 rounded-2xl shadow-sm text-center" data-theme="holi"><div class="text-3xl mb-2">🎨💦</div><p class="font-bold">Holi</p></div>
+                <div onclick="setTheme('eid')" class="theme-card cursor-pointer bg-white p-4 rounded-2xl shadow-sm text-center" data-theme="eid"><div class="text-3xl mb-2">🌙🕌</div><p class="font-bold">Eid</p></div>
+            </div>
+        </div>
+
+        <div id="tab-page-about" class="tab-content max-w-5xl mx-auto"><h2 class="text-3xl font-black mb-6">Edit About Us</h2><textarea id="setting-about" rows="15" class="w-full p-4 border rounded-xl font-mono text-sm"></textarea><button onclick="saveSetting('about', document.getElementById('setting-about').value)" class="mt-4 bg-pink-600 text-white font-bold py-3 px-6 rounded-xl hover:bg-pink-700">Save Page</button></div>
+        <div id="tab-page-faqs" class="tab-content max-w-5xl mx-auto"><h2 class="text-3xl font-black mb-6">Edit FAQs Page</h2><textarea id="setting-faqs" rows="15" class="w-full p-4 border rounded-xl font-mono text-sm"></textarea><button onclick="saveSetting('faqs', document.getElementById('setting-faqs').value)" class="mt-4 bg-pink-600 text-white font-bold py-3 px-6 rounded-xl hover:bg-pink-700">Save Page</button></div>
+        <div id="tab-page-tnc" class="tab-content max-w-5xl mx-auto"><h2 class="text-3xl font-black mb-6">Edit Terms & Conditions</h2><textarea id="setting-tnc" rows="15" class="w-full p-4 border rounded-xl font-mono text-sm"></textarea><button onclick="saveSetting('tnc', document.getElementById('setting-tnc').value)" class="mt-4 bg-pink-600 text-white font-bold py-3 px-6 rounded-xl hover:bg-pink-700">Save Page</button></div>
+        <div id="tab-page-refunds" class="tab-content max-w-5xl mx-auto"><h2 class="text-3xl font-black mb-6">Edit Refunds Policy</h2><textarea id="setting-refunds" rows="15" class="w-full p-4 border rounded-xl font-mono text-sm"></textarea><button onclick="saveSetting('refunds', document.getElementById('setting-refunds').value)" class="mt-4 bg-pink-600 text-white font-bold py-3 px-6 rounded-xl hover:bg-pink-700">Save Page</button></div>
+        <div id="tab-page-disclaimer" class="tab-content max-w-5xl mx-auto"><h2 class="text-3xl font-black mb-6">Edit Disclaimer</h2><textarea id="setting-disclaimer" rows="15" class="w-full p-4 border rounded-xl font-mono text-sm"></textarea><button onclick="saveSetting('disclaimer', document.getElementById('setting-disclaimer').value)" class="mt-4 bg-pink-600 text-white font-bold py-3 px-6 rounded-xl hover:bg-pink-700">Save Page</button></div>
 
     </main>
 
+    <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
     <script>
         const token = localStorage.getItem('adminToken');
         if (!token) window.location.href = 'admin-login.html';
 
-        // INITALIZE QUILL RICH TEXT EDITOR (Used only for Product Descriptions)
-        const quillConfig = { theme: 'snow', modules: { toolbar: [['bold', 'italic', 'underline'], [{'list': 'ordered'}, {'list': 'bullet'}], [{ 'header': [1, 2, 3, false] }], ['link', 'clean']] } };
-        let descQuill;
-
-        if(document.getElementById('description-editor')) descQuill = new Quill('#description-editor', quillConfig);
-
-        function logout() { localStorage.removeItem('adminToken'); window.location.href = 'admin-login.html'; }
+        let quill;
+        let inventory = [];
+        let heroItems = [];
+        let homeReviews = [];
+        let galleryArray = []; 
+        let globalCategoryMap = {};
+        
+        // --- HELPER: VERCEL BLOB VIDEO CHECKER ---
+        function isVideoFile(url) {
+            if (!url) return false;
+            return url.startsWith('data:video') || url.match(/\.(mp4|webm|ogg)$/i);
+        }
 
         function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
-            const targetTab = document.getElementById('tab-' + tabId);
-            const targetBtn = document.getElementById('btn-' + tabId);
-            if(targetTab) targetTab.classList.add('active');
-            if(targetBtn) targetBtn.classList.add('active');
-            
-            if(tabId === 'product-reviews') loadCustomerReviews();
+            document.getElementById(`tab-${tabId}`).classList.add('active');
+            event.currentTarget.classList.add('active');
         }
 
-        async function compressImage(file) {
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader(); reader.readAsDataURL(file);
-                reader.onload = (e) => {
-                    const img = new Image(); img.src = e.target.result;
+        async function apiCall(endpoint, method = 'GET', body = null) {
+            const options = { method, headers: { 'Authorization': `Bearer ${token}` } };
+            if (body) { options.headers['Content-Type'] = 'application/json'; options.body = JSON.stringify(body); }
+            const res = await fetch(endpoint, options);
+            if (res.status === 401) { localStorage.removeItem('adminToken'); window.location.href = 'admin-login.html'; }
+            return res.json();
+        }
+
+        // --- IMAGE COMPRESSION (For new uploads) ---
+        async function compressImage(file, maxWidth = 800) {
+            if(file.type.startsWith('video/')) {
+                return new Promise((resolve) => {
+                    const reader = new FileReader();
+                    reader.onload = (e) => resolve(e.target.result);
+                    reader.readAsDataURL(file);
+                });
+            }
+            return new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = (event) => {
+                    const img = new Image();
+                    img.src = event.target.result;
                     img.onload = () => {
-                        const canvas = document.createElement('canvas'); const MAX_WIDTH = 800; const scaleSize = MAX_WIDTH / img.width;
-                        canvas.width = MAX_WIDTH; canvas.height = img.height * scaleSize;
-                        const ctx = canvas.getContext('2d'); ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                        resolve(canvas.toDataURL('image/jpeg', 0.6)); 
+                        const canvas = document.createElement('canvas');
+                        const scaleSize = maxWidth / img.width;
+                        canvas.width = maxWidth;
+                        canvas.height = img.height * scaleSize;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                        resolve(canvas.toDataURL('image/jpeg', 0.6));
                     };
                 };
             });
         }
 
-        async function loadDashboard() {
-            try {
-                const res = await fetch('/api/admin/analytics', { headers: { 'Authorization': `Bearer ${token}` } });
-                if (!res.ok) throw new Error("Fetch failed");
-                const data = await res.json();
-                document.getElementById('stat-views').textContent = data.total_views || 0; document.getElementById('stat-listings').textContent = data.total_listings || 0; document.getElementById('stat-reviews').textContent = data.total_reviews || 0;
-                document.getElementById('stat-views').classList.remove('animate-pulse'); document.getElementById('stat-listings').classList.remove('animate-pulse'); document.getElementById('stat-reviews').classList.remove('animate-pulse');
-                const topList = document.getElementById('stat-top-products');
-                if(!data.top_products || data.top_products.length === 0) { topList.innerHTML = "<p class='text-gray-500'>No data yet.</p>"; }
-                else { topList.innerHTML = data.top_products.map((p, i) => `<div class="flex justify-between items-center bg-gray-50 p-4 rounded-xl border border-gray-100"><span class="font-bold text-gray-800">#${i+1} ${p.title}</span><span class="text-sm font-black text-pink-500 bg-pink-100 px-3 py-1 rounded-lg">${p.views} Views</span></div>`).join(''); }
-            } catch(e) {
-                console.error(e);
-                document.getElementById('stat-views').textContent = "0"; document.getElementById('stat-listings').textContent = "0"; document.getElementById('stat-reviews').textContent = "0";
-                document.getElementById('stat-views').classList.remove('animate-pulse'); document.getElementById('stat-listings').classList.remove('animate-pulse'); document.getElementById('stat-reviews').classList.remove('animate-pulse');
+        document.getElementById('decor-main-img').addEventListener('change', async (e) => {
+            const file = e.target.files[0]; if (!file) return;
+            document.getElementById('btn-save').textContent = "Compressing Image...";
+            const b64 = await compressImage(file);
+            document.getElementById('decor-main-img-b64').value = b64;
+            document.getElementById('main-img-preview').innerHTML = `<img src="${b64}" class="w-20 h-20 object-cover rounded-xl border border-gray-200">`;
+            document.getElementById('btn-save').textContent = "Save Setup";
+        });
+
+        document.getElementById('decor-gallery-imgs').addEventListener('change', async (e) => {
+            const files = Array.from(e.target.files);
+            document.getElementById('btn-save').textContent = "Compressing Gallery...";
+            for (let file of files) {
+                const b64 = await compressImage(file);
+                galleryArray.push(b64);
             }
+            renderGalleryPreview();
+            document.getElementById('btn-save').textContent = "Save Setup";
+        });
+
+        function renderGalleryPreview() {
+            document.getElementById('gallery-imgs-preview').innerHTML = galleryArray.map((img, i) => `
+                <div class="relative flex-none">
+                    <img src="${img}" class="w-16 h-16 object-cover rounded-xl border border-gray-200">
+                    <button type="button" onclick="galleryArray.splice(${i}, 1); renderGalleryPreview()" class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">x</button>
+                </div>
+            `).join('');
         }
 
-        let globalCategoryMap = {};
-        async function saveCategories(btn) {
-            const content = document.getElementById('categories-content').value;
-            const originalText = btn.textContent; btn.textContent = "Saving..."; btn.disabled = true;
-            try {
-                const res = await fetch(`/api/settings/site_categories`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }, body: JSON.stringify({ content }) });
-                if (res.ok) { btn.textContent = "Categories Built!"; btn.classList.replace('bg-pink-500', 'bg-green-500'); parseAndLoadCategories(content); setTimeout(() => { btn.textContent = originalText; btn.classList.replace('bg-green-500', 'bg-pink-500'); btn.disabled = false; }, 2000); }
-            } catch (e) { btn.disabled = false; }
-        }
-
-        function parseAndLoadCategories(rawText) {
-            globalCategoryMap = {};
-            rawText.split('\n').forEach(line => {
-                if(!line.trim()) return;
-                const parts = line.split('|'); const catName = parts[0].trim();
-                const subCats = parts[1] ? parts[1].split(',').map(s => s.trim()).filter(s => s !== '') : [];
-                globalCategoryMap[catName] = subCats;
-            });
-            const catSelect = document.getElementById('category');
-            if(catSelect) {
-                catSelect.innerHTML = `<option value="" disabled selected>Select Category</option>` + Object.keys(globalCategoryMap).map(c => `<option value="${c.toLowerCase().replace(/ /g, '-')}">${c}</option>`).join('');
-                updateSubCategories();
-            }
-            const heroSelect = document.getElementById('hero-item-target');
-            if(heroSelect) heroSelect.innerHTML = `<option value="" disabled selected>Scrolls to which category?</option>` + Object.keys(globalCategoryMap).map(c => `<option value="${c.toLowerCase().replace(/ /g, '-')}">${c}</option>`).join('');
-        }
-
-        function updateSubCategories() {
-            const catSelect = document.getElementById('category'); const subSelect = document.getElementById('sub-category');
-            if(!catSelect || !subSelect) return;
-            const realName = Object.keys(globalCategoryMap).find(c => c.toLowerCase().replace(/ /g, '-') === catSelect.value);
-            if (realName && globalCategoryMap[realName].length > 0) { subSelect.innerHTML = `<option value="">-- No Sub-category --</option>` + globalCategoryMap[realName].map(sc => `<option value="${sc.toLowerCase().replace(/ /g, '-')}">${sc}</option>`).join(''); subSelect.classList.remove('hidden'); } 
-            else { subSelect.innerHTML = ""; subSelect.classList.add('hidden'); }
-        }
-
-        async function saveGlobalOffer(btn) { const val = document.getElementById('global-offer-input').value; const original = btn.textContent; btn.textContent = "Saving..."; btn.disabled = true; try { await fetch(`/api/settings/global_offer`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }, body: JSON.stringify({ content: val }) }); btn.textContent = "Saved!"; setTimeout(() => { btn.textContent = original; btn.disabled = false; }, 2000); } catch(e) { btn.disabled = false; } }
-        async function clearGlobalOffer(btn) { document.getElementById('global-offer-input').value = ''; await saveGlobalOffer(btn); }
-        async function uploadPromoMedia(btn) { const fileInput = document.getElementById('promo-media-upload'); if (fileInput.files.length === 0) return alert("Select a file."); const file = fileInput.files[0]; const original = btn.textContent; btn.textContent = "Processing..."; btn.disabled = true; let mediaData = ""; if (file.type.startsWith('video/')) { if (file.size > 4000000) { alert("Video too large! Max 4MB."); btn.disabled = false; return; } mediaData = await new Promise((res, rej) => { const r = new FileReader(); r.readAsDataURL(file); r.onload = () => res(r.result); r.onerror = rej; }); } else { mediaData = await compressImage(file); } try { await fetch(`/api/settings/promo_media`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }, body: JSON.stringify({ content: mediaData }) }); document.getElementById('current-promo-media-preview').classList.remove('hidden'); if (mediaData.startsWith('data:video')) document.getElementById('current-promo-media-preview').innerHTML = `<video src="${mediaData}" class="h-full object-cover"></video>`; else document.getElementById('current-promo-media-preview').innerHTML = `<img src="${mediaData}" class="h-full object-cover">`; btn.textContent = "Saved!"; setTimeout(() => { btn.textContent = original; btn.disabled = false; }, 2000); } catch(e) { btn.disabled = false; } }
-        async function clearPromoMedia(btn) { btn.textContent = "Removing..."; btn.disabled = true; try { await fetch(`/api/settings/promo_media`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }, body: JSON.stringify({ content: "" }) }); document.getElementById('current-promo-media-preview').classList.add('hidden'); document.getElementById('promo-media-upload').value = ""; btn.textContent = "Removed"; setTimeout(() => { btn.textContent = "Remove Banner"; btn.disabled = false; }, 2000); } catch(e) { btn.disabled = false; } }
-
-        async function loadAdminProducts() {
-            const res = await fetch('/api/decorations'); const data = await res.json();
-            document.getElementById('admin-product-list').innerHTML = data.map(item => {
-                let primaryImage = '';
-                if (item.image_url) {
-                    primaryImage = item.image_url;
-                } else if (item.images) {
-                    try {
-                        const parsedImages = JSON.parse(item.images);
-                        if (Array.isArray(parsedImages) && parsedImages.length > 0) primaryImage = parsedImages[0];
-                    } catch (e) {}
-                }
-
-                const offerBadge = item.offer_text ? `<span class="bg-red-100 text-red-600 px-2 py-0.5 rounded text-[10px] font-bold ml-2">${item.offer_text}</span>` : '';
-                
-                let imageHtml = '';
-                if (primaryImage && primaryImage.length > 50) { 
-                    imageHtml = `<img src="${primaryImage}" class="w-14 h-14 md:w-16 md:h-16 object-cover rounded-xl border bg-white">`;
+        // --- SETTINGS LOGIC ---
+        async function loadSettings() {
+            const data = await apiCall('/api/settings');
+            
+            if(data['global_offer']) document.getElementById('setting-global-offer').value = data['global_offer'];
+            if(data['site_categories']) {
+                document.getElementById('setting-categories').value = data['site_categories'];
+                parseCategories(data['site_categories']);
+            } else { parseCategories(""); }
+            
+            if(data['promo_media']) { 
+                document.getElementById('current-promo-media').value = data['promo_media'];
+                if (isVideoFile(data['promo_media'])) {
+                    document.getElementById('promo-preview').innerHTML = `<video src="${data['promo_media']}" autoplay loop muted playsinline class="w-full h-32 object-cover rounded-xl"></video>`;
                 } else {
-                    imageHtml = `<div class="w-14 h-14 md:w-16 md:h-16 rounded-xl border-2 border-dashed border-gray-200 bg-gray-100 flex items-center justify-center text-gray-400 font-medium text-[10px] text-center">No Image</div>`;
+                    document.getElementById('promo-preview').innerHTML = `<img src="${data['promo_media']}" class="w-full h-32 object-cover rounded-xl">`; 
                 }
+            }
+            if(data['hero_items']) { heroItems = JSON.parse(data['hero_items']); renderHeroList(); }
+            if(data['home_reviews']) { homeReviews = JSON.parse(data['home_reviews']); renderHomeReviewsList(); }
+            
+            ['about', 'faqs', 'tnc', 'refunds', 'disclaimer'].forEach(key => {
+                if(data[key]) document.getElementById(`setting-${key}`).value = data[key];
+            });
 
-                return `
-                <div class="flex items-center justify-between p-4 border rounded-2xl bg-white shadow-sm hover:shadow-md transition">
+            if(data['site_theme']) {
+                document.querySelectorAll('.theme-card').forEach(c => c.classList.remove('active'));
+                const activeCard = document.querySelector(`.theme-card[data-theme="${data['site_theme']}"]`);
+                if(activeCard) activeCard.classList.add('active');
+            }
+        }
+
+        async function saveSetting(key, content) {
+            const btn = event.target; const origText = btn.textContent; btn.textContent = "Saving...";
+            await apiCall(`/api/settings/${key}`, 'POST', { content });
+            btn.textContent = "Saved!"; setTimeout(() => btn.textContent = origText, 2000);
+            if(key === 'site_categories') parseCategories(content);
+        }
+
+        async function savePromoMedia() {
+            const file = document.getElementById('setting-promo-file').files[0];
+            if(file) {
+                const b64 = await compressImage(file, 1200);
+                await saveSetting('promo_media', b64);
+                loadSettings();
+            }
+        }
+
+        async function setTheme(theme) {
+            await apiCall(`/api/settings/site_theme`, 'POST', { content: theme });
+            document.querySelectorAll('.theme-card').forEach(c => c.classList.remove('active'));
+            document.querySelector(`.theme-card[data-theme="${theme}"]`).classList.add('active');
+        }
+
+        function parseCategories(catString) {
+            globalCategoryMap = {};
+            const lines = catString.split('\n');
+            const catSelect = document.getElementById('decor-category');
+            catSelect.innerHTML = '<option value="">Select Category</option>';
+            
+            lines.forEach(line => {
+                if(!line.trim()) return;
+                const parts = line.split('|');
+                const catName = parts[0].trim();
+                const catSlug = catName.toLowerCase().replace(/ /g, '-');
+                const subCats = parts[1] ? parts[1].split(',').map(s => s.trim()).filter(s => s !== '') : [];
+                globalCategoryMap[catSlug] = subCats;
+                catSelect.innerHTML += `<option value="${catSlug}">${catName}</option>`;
+            });
+            updateSubCategoryDropdown();
+        }
+
+        window.updateSubCategoryDropdown = function() {
+            const catSlug = document.getElementById('decor-category').value;
+            const subSelect = document.getElementById('decor-sub-category');
+            subSelect.innerHTML = '<option value="">None</option>';
+            if(globalCategoryMap[catSlug]) {
+                globalCategoryMap[catSlug].forEach(sub => {
+                    const subSlug = sub.toLowerCase().replace(/ /g, '-');
+                    subSelect.innerHTML += `<option value="${subSlug}">${sub}</option>`;
+                });
+            }
+        }
+
+        // --- INVENTORY LOGIC ---
+        async function loadInventory() {
+            inventory = await apiCall('/api/decorations');
+            renderInventoryList();
+            const analytics = await apiCall('/api/admin/analytics');
+            document.getElementById('stat-views').textContent = analytics.total_views;
+            document.getElementById('stat-listings').textContent = analytics.total_listings;
+            document.getElementById('stat-reviews').textContent = analytics.total_reviews;
+            document.getElementById('stat-top-list').innerHTML = analytics.top_products.map(p => `<li class="flex justify-between border-b pb-2"><span class="font-medium truncate pr-4">${p.title}</span><span class="text-gray-500 font-bold">${p.views} views</span></li>`).join('');
+        }
+
+        function renderInventoryList() {
+            const q = document.getElementById('inventory-search').value.toLowerCase();
+            const filtered = inventory.filter(i => i.title.toLowerCase().includes(q) || i.category.includes(q));
+            document.getElementById('inventory-list').innerHTML = filtered.map(item => `
+                <div class="flex items-center justify-between p-3 bg-gray-50 rounded-xl border border-gray-100 hover:bg-white transition-colors cursor-pointer" onclick="editItem('${item.slug}')">
+                    <div class="flex items-center gap-3">
+                        <img src="${item.image_url || 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs='}" class="w-12 h-12 object-cover rounded-lg border border-gray-200">
+                        <div><p class="font-bold text-gray-800 text-sm line-clamp-1">${item.title}</p><p class="text-xs text-pink-600 font-bold">${item.price_range}</p></div>
+                    </div>
+                    <button onclick="event.stopPropagation(); deleteItem('${item.slug}')" class="text-red-500 hover:bg-red-50 p-2 rounded-lg">🗑️</button>
+                </div>
+            `).join('');
+        }
+
+        document.getElementById('decor-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('btn-save'); btn.textContent = "Uploading to Database...";
+            
+            const payload = {
+                slug: document.getElementById('decor-slug').value || document.getElementById('decor-title').value.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, ''),
+                title: document.getElementById('decor-title').value,
+                category: document.getElementById('decor-category').value,
+                sub_category: document.getElementById('decor-sub-category').value,
+                price_range: document.getElementById('decor-price').value,
+                offer_text: document.getElementById('decor-offer').value,
+                image_url: document.getElementById('decor-main-img-b64').value,
+                images: galleryArray,
+                description: quill.root.innerHTML,
+                package_includes: document.getElementById('decor-package').value.split('\n').filter(l => l.trim() !== ''),
+                faqs: document.getElementById('decor-faqs').value.split('\n').filter(l => l.includes('|')).map(l => { const p = l.split('|'); return {q: p[0].replace('Q:','').trim(), a: p[1].replace('A:','').trim()} })
+            };
+
+            await apiCall('/api/decorations', 'POST', payload);
+            alert("Saved successfully!");
+            resetForm(); loadInventory();
+        });
+
+        async function editItem(slug) {
+            const data = await apiCall(`/api/decorations/${slug}`);
+            document.getElementById('form-title').textContent = "Edit Setup";
+            document.getElementById('decor-slug').value = data.slug;
+            document.getElementById('decor-title').value = data.title;
+            document.getElementById('decor-category').value = data.category;
+            updateSubCategoryDropdown();
+            document.getElementById('decor-sub-category').value = data.sub_category || '';
+            document.getElementById('decor-price').value = data.price_range;
+            document.getElementById('decor-offer').value = data.offer_text || '';
+            document.getElementById('decor-main-img-b64').value = data.image_url;
+            document.getElementById('main-img-preview').innerHTML = `<img src="${data.image_url}" class="w-20 h-20 object-cover rounded-xl border border-gray-200">`;
+            
+            galleryArray = [];
+            try { if(data.images) galleryArray = typeof data.images === 'string' ? JSON.parse(data.images) : data.images; } catch(e){}
+            renderGalleryPreview();
+
+            quill.root.innerHTML = data.description || '';
+            
+            let pkgs = []; try { pkgs = typeof data.package_includes === 'string' ? JSON.parse(data.package_includes) : data.package_includes; } catch(e){}
+            document.getElementById('decor-package').value = pkgs ? pkgs.join('\n') : '';
+            
+            let faqs = []; try { faqs = typeof data.faqs === 'string' ? JSON.parse(data.faqs) : data.faqs; } catch(e){}
+            document.getElementById('decor-faqs').value = faqs ? faqs.map(f => `Q: ${f.q} | A: ${f.a}`).join('\n') : '';
+            
+            document.getElementById('tab-listings').scrollIntoView();
+        }
+
+        function resetForm() {
+            document.getElementById('decor-form').reset();
+            document.getElementById('form-title').textContent = "Add New Setup";
+            document.getElementById('decor-slug').value = "";
+            document.getElementById('decor-main-img-b64').value = "";
+            document.getElementById('main-img-preview').innerHTML = "";
+            galleryArray = []; renderGalleryPreview();
+            quill.root.innerHTML = "";
+            updateSubCategoryDropdown();
+            document.getElementById('btn-save').textContent = "Save Setup";
+        }
+
+        async function deleteItem(slug) {
+            if(confirm("Delete this setup forever?")) {
+                await apiCall(`/api/decorations/${slug}`, 'DELETE');
+                loadInventory();
+            }
+        }
+
+        // --- HERO LIST LOGIC ---
+        async function addHeroItem() {
+            const file = document.getElementById('hero-img').files[0];
+            if(!file) return alert("Select an image");
+            const b64 = await compressImage(file, 400);
+            heroItems.push({
+                title: document.getElementById('hero-title').value,
+                target: document.getElementById('hero-target').value,
+                shape: document.getElementById('hero-shape').value,
+                image: b64
+            });
+            saveSetting('hero_items', JSON.stringify(heroItems));
+        }
+
+        function renderHeroList() {
+            const list = document.getElementById('hero-items-list');
+            list.innerHTML = heroItems.map((item, i) => `
+                <div class="flex items-center justify-between p-3 bg-gray-50 rounded-xl border border-gray-100">
                     <div class="flex items-center gap-4">
-                        ${imageHtml}
-                        <div>
-                            <h3 class="font-bold text-gray-800 text-sm md:text-base line-clamp-1">${item.title} ${offerBadge}</h3>
-                            <p class="text-[10px] md:text-xs font-bold text-pink-500 uppercase tracking-wider mt-1">${item.category.replace(/-/g, ' ')}</p>
-                            <p class="text-xs md:text-sm text-gray-500 mt-1">${item.price_range} | ★ ${item.average_rating || 5}</p>
-                        </div>
+                        <img src="${item.image}" class="w-12 h-12 object-cover rounded-lg">
+                        <div><p class="font-bold text-gray-800">${item.title}</p><p class="text-xs text-gray-500">Links to: ${item.target}</p></div>
                     </div>
-                    <div class="flex flex-col gap-2">
-                        <button onclick="editProduct('${item.slug}')" class="bg-blue-50 text-blue-600 px-4 py-2 rounded-lg text-xs md:text-sm font-bold hover:bg-blue-100 transition">Edit</button>
-                        <button onclick="deleteProduct('${item.slug}')" class="bg-red-50 text-red-600 px-4 py-2 rounded-lg text-xs md:text-sm font-bold hover:bg-red-100 transition">Delete</button>
+                    <button onclick="heroItems.splice(${i}, 1); saveSetting('hero_items', JSON.stringify(heroItems))" class="text-red-500 hover:text-red-700 font-bold text-sm bg-red-50 px-3 py-1 rounded-lg">Remove</button>
+                </div>
+            `).join('');
+        }
+
+        // --- HOME REVIEWS LOGIC ---
+        async function addHomeReview() {
+            const file = document.getElementById('hr-media').files[0];
+            let mediaData = "";
+            if(file) mediaData = await compressImage(file, 600);
+            homeReviews.push({
+                name: document.getElementById('hr-name').value,
+                rating: document.getElementById('hr-rating').value,
+                text: document.getElementById('hr-text').value,
+                media: mediaData
+            });
+            saveSetting('home_reviews', JSON.stringify(homeReviews));
+        }
+
+        function renderHomeReviewsList() {
+            const list = document.getElementById('home-reviews-list');
+            list.innerHTML = homeReviews.map((r, i) => {
+                let mediaPreview = '';
+                if (r.media) {
+                    if (isVideoFile(r.media)) {
+                        mediaPreview = `<video src="${r.media}" autoplay loop muted playsinline class="w-16 h-16 object-cover rounded-lg"></video>`;
+                    } else {
+                        mediaPreview = `<img src="${r.media}" class="w-16 h-16 object-cover rounded-lg">`;
+                    }
+                }
+                return `
+                <div class="flex items-center justify-between p-4 bg-gray-50 rounded-xl border border-gray-100">
+                    <div class="flex items-center gap-4">
+                        ${mediaPreview}
+                        <div><p class="font-bold text-gray-800">${r.name}</p><p class="text-sm text-gray-500">${'★'.repeat(r.rating)}</p></div>
                     </div>
-                </div>`
+                    <button onclick="homeReviews.splice(${i}, 1); saveSetting('home_reviews', JSON.stringify(homeReviews))" class="text-red-500 hover:text-red-700 font-bold text-sm bg-red-50 px-3 py-1 rounded-lg">Remove</button>
+                </div>`;
             }).join('');
         }
 
-        const addForm = document.getElementById('add-form');
-        if(addForm) {
-            addForm.addEventListener('submit', async (e) => {
-                e.preventDefault(); const btn = document.getElementById('submit-btn'); btn.textContent = "Compressing & Uploading..."; btn.disabled = true;
-                const fileInput = document.getElementById('image-upload'); const existingImagesJSON = document.getElementById('existing-images-array').value;
-                let finalImageArray = [];
-                if (fileInput.files.length > 0) { for (let i = 0; i < fileInput.files.length; i++) finalImageArray.push(await compressImage(fileInput.files[i])); } 
-                else if (existingImagesJSON) { finalImageArray = JSON.parse(existingImagesJSON); }
-                if (finalImageArray.length === 0) { alert("Upload at least 1 image."); btn.textContent = "Save Listing"; btn.disabled = false; return; }
-
-                let priceInput = document.getElementById('price').value.trim();
-                if (!priceInput.includes('₹') && !priceInput.toLowerCase().includes('rs')) priceInput = '₹' + priceInput;
-
-                const descriptionHTML = descQuill ? descQuill.root.innerHTML : '';
-                const pkgString = document.getElementById('package-includes').value; const packageIncludesArray = pkgString ? pkgString.split(',').map(s => s.trim()).filter(s => s !== "") : [];
-                const faqString = document.getElementById('product-faqs').value; const faqsArray = faqString ? faqString.split('\n').map(line => { const p = line.split('|'); return p.length >= 2 ? { q: p[0].trim(), a: p.slice(1).join('|').trim() } : null; }).filter(f => f) : [];
-                const generatedSlug = document.getElementById('title').value.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
-
-                const payload = { 
-                    slug: generatedSlug, title: document.getElementById('title').value, price_range: priceInput, 
-                    category: document.getElementById('category').value, sub_category: document.getElementById('sub-category').value, 
-                    description: descriptionHTML, image_url: finalImageArray[0], images: finalImageArray, package_includes: packageIncludesArray, faqs: faqsArray, offer_text: document.getElementById('offer-text').value
-                };
-
-                try { const res = await fetch('/api/decorations', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }, body: JSON.stringify(payload) });
-                    if (res.ok) { alert("Saved successfully!"); resetForm(); loadAdminProducts(); loadDashboard(); } else { alert("Failed to save."); }
-                } catch (err) { alert("Server error."); }
-                btn.disabled = false; btn.textContent = "Save Listing";
-            });
+        // --- PROD REVIEWS (MODERATION) ---
+        async function loadAdminReviews() {
+            const revs = await apiCall('/api/admin/reviews');
+            const container = document.getElementById('admin-reviews-list');
+            if (revs.length === 0) { container.innerHTML = "<p class='text-gray-500 col-span-2'>No reviews found.</p>"; return; }
+            container.innerHTML = revs.map(r => `
+                <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 relative">
+                    <p class="text-xs font-bold text-pink-600 mb-2 uppercase">Product: ${r.decoration_slug}</p>
+                    <div class="flex gap-2 mb-2">
+                        <input type="number" id="rev-rate-${r.id}" value="${r.rating}" min="1" max="5" class="w-16 p-1 border rounded text-sm font-bold text-yellow-500">
+                        <input type="text" id="rev-name-${r.id}" value="${r.reviewer_name}" class="flex-grow p-1 border rounded text-sm font-bold">
+                    </div>
+                    <textarea id="rev-text-${r.id}" class="w-full p-2 border rounded text-sm mb-3 text-gray-600" rows="3">${r.review_text}</textarea>
+                    <div class="flex justify-end gap-2">
+                        <button onclick="updateReview(${r.id})" class="text-xs font-bold text-indigo-600 bg-indigo-50 px-3 py-1 rounded hover:bg-indigo-100">Save Edit</button>
+                        <button onclick="deleteReview(${r.id})" class="text-xs font-bold text-red-600 bg-red-50 px-3 py-1 rounded hover:bg-red-100">Delete</button>
+                    </div>
+                </div>
+            `).join('');
         }
 
-        async function editProduct(slug) {
-            try {
-                const res = await fetch(`/api/decorations/${slug}`); const item = await res.json();
-                document.getElementById('title').value = item.title; document.getElementById('price').value = item.price_range; 
-                document.getElementById('category').value = item.category; document.getElementById('offer-text').value = item.offer_text || ''; 
-                if(descQuill) descQuill.root.innerHTML = item.description || '';
-                updateSubCategories(); setTimeout(() => { document.getElementById('sub-category').value = item.sub_category || ''; }, 50);
-                
-                let imgs = item.images ? JSON.parse(item.images) : (item.image_url ? [item.image_url] : []); document.getElementById('existing-images-array').value = JSON.stringify(imgs);
-                let parsedPkg = []; let parsedFaqs = [];
-                if (typeof item.package_includes === 'string') { try { parsedPkg = JSON.parse(item.package_includes); } catch(e) {} } else { parsedPkg = item.package_includes || []; }
-                if (typeof item.faqs === 'string') { try { parsedFaqs = JSON.parse(item.faqs); } catch(e) {} } else { parsedFaqs = item.faqs || []; }
-                document.getElementById('package-includes').value = parsedPkg.join(', '); document.getElementById('product-faqs').value = parsedFaqs.map(f => `${f.q} | ${f.a}`).join('\n');
-                
-                const btn = document.getElementById('submit-btn'); document.getElementById('form-title').innerText = "Edit Listing"; btn.textContent = "Update Listing"; btn.classList.replace('bg-pink-500', 'bg-blue-600'); document.getElementById('cancel-edit-btn').classList.remove('hidden');
-                switchTab('listings'); document.getElementById('tab-listings').scrollTo({top: 0, behavior:'smooth'});
-            } catch (e) {}
-        }
-        
-        async function deleteProduct(slug) { if(!confirm("Delete this listing permanently?")) return; try { await fetch(`/api/decorations/${slug}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` } }); loadAdminProducts(); loadDashboard(); } catch (e) { } }
-        function resetForm() { document.getElementById('add-form').reset(); document.getElementById('existing-images-array').value = ''; if(descQuill) descQuill.root.innerHTML = ''; document.getElementById('form-title').innerText = "Add New Listing"; const btn = document.getElementById('submit-btn'); btn.textContent = "Save Listing"; btn.classList.replace('bg-blue-600', 'bg-pink-500'); document.getElementById('cancel-edit-btn').classList.add('hidden'); }
-
-        async function saveSetting(btnElement, key, textareaId) {
-            const content = document.getElementById(textareaId).value;
-            const originalText = btnElement.textContent;
-            btnElement.textContent = "Saving..."; btnElement.disabled = true;
-            try {
-                const res = await fetch(`/api/settings/${key}`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }, body: JSON.stringify({ content }) });
-                if (res.ok) {
-                    btnElement.textContent = "Saved!"; btnElement.classList.replace('bg-pink-500', 'bg-green-500');
-                    setTimeout(() => { btnElement.textContent = originalText; btnElement.classList.replace('bg-green-500', 'bg-pink-500'); btnElement.disabled = false; }, 2000);
-                } else { alert("Failed to save."); btnElement.textContent = originalText; btnElement.disabled = false;}
-            } catch (e) { btnElement.textContent = originalText; btnElement.disabled = false; }
-        }
-        
-        async function loadSettings() {
-            try {
-                const res = await fetch('/api/settings'); const settings = await res.json();
-                
-                try { if (settings['faqs']) document.getElementById('faqs-content').value = settings['faqs']; } catch(e){}
-                try { if (settings['tnc']) document.getElementById('tnc-content').value = settings['tnc']; } catch(e){}
-                try { if (settings['refunds']) document.getElementById('refunds-content').value = settings['refunds']; } catch(e){}
-                try { if (settings['about']) document.getElementById('about-content').value = settings['about']; } catch(e){}
-                try { if (settings['disclaimer']) document.getElementById('disclaimer-content').value = settings['disclaimer']; } catch(e){}
-                
-                try { if (settings['hero_title']) document.getElementById('hero-title-input').value = settings['hero_title']; } catch(e){}
-                try { if (settings['hero_subtitle']) document.getElementById('hero-subtitle-input').value = settings['hero_subtitle']; } catch(e){}
-                try { if (settings['global_offer']) document.getElementById('global-offer-input').value = settings['global_offer']; } catch(e){}
-                
-                try { 
-                    if (settings['promo_media']) { 
-                        document.getElementById('current-promo-media-preview').classList.remove('hidden'); 
-                        if (settings['promo_media'].startsWith('data:video')) document.getElementById('current-promo-media-preview').innerHTML = `<video src="${settings['promo_media']}" class="h-full object-cover"></video>`; 
-                        else document.getElementById('current-promo-media-preview').innerHTML = `<img src="${settings['promo_media']}" class="h-full object-cover">`; 
-                    }
-                } catch(e){}
-                
-                try { if (settings['site_theme']) selectTheme(settings['site_theme']); } catch(e){}
-                
-                try {
-                    if (settings['site_categories']) { 
-                        const catEl = document.getElementById('categories-content');
-                        if(catEl) catEl.value = settings['site_categories']; 
-                        parseAndLoadCategories(settings['site_categories']); 
-                    } else { 
-                        const defaultCats = "Birthday Decor | Ring Decoration, Wall Decoration, Premium, U Board\nBaby Shower Decor | \nAnniversary Decor | \nNaming Ceremony | \nStore Decor | \nRomantic Decor | "; 
-                        const catEl = document.getElementById('categories-content');
-                        if(catEl) catEl.value = defaultCats; 
-                        parseAndLoadCategories(defaultCats); 
-                    }
-                } catch(e){}
-
-                try { 
-                    if (settings['hero_items']) { heroItems = JSON.parse(settings['hero_items']); }
-                } catch (e) { heroItems = []; }
-                renderHeroAdminList();
-
-                try {
-                    if (settings['home_reviews']) { homeRevs = JSON.parse(settings['home_reviews']); }
-                } catch (e) { homeRevs = []; }
-                renderHomeRevsList();
-
-            } catch (e) { 
-                console.error("Critical Settings Load Error:", e);
-                renderHeroAdminList();
-                renderHomeRevsList();
-            }
+        async function updateReview(id) {
+            const payload = { name: document.getElementById(`rev-name-${id}`).value, rating: parseInt(document.getElementById(`rev-rate-${id}`).value), review: document.getElementById(`rev-text-${id}`).value };
+            await apiCall(`/api/admin/reviews/${id}`, 'PUT', payload); alert('Review updated.');
         }
 
-        function selectTheme(themeName) { document.querySelectorAll('.theme-card').forEach(el => el.classList.remove('active')); const selectedCard = document.getElementById(`theme-${themeName}`); if(selectedCard) selectedCard.classList.add('active'); document.getElementById('active-theme-input').value = themeName; }
-        async function saveSiteTheme(btnElement) { const theme = document.getElementById('active-theme-input').value; const originalText = btnElement.textContent; btnElement.textContent = "Applying Magic..."; btnElement.disabled = true; try { const res = await fetch(`/api/settings/site_theme`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }, body: JSON.stringify({ content: theme }) }); if (res.ok) { btnElement.textContent = "Theme Applied Live!"; btnElement.classList.replace('bg-pink-500', 'bg-green-500'); setTimeout(() => { btnElement.textContent = originalText; btnElement.classList.replace('bg-green-500', 'bg-pink-500'); btnElement.disabled = false; }, 2000); } } catch (e) { btnElement.disabled = false;} }
-
-        let heroItems = [];
-        async function saveHeroText(btnElement) { const title = document.getElementById('hero-title-input').value; const subtitle = document.getElementById('hero-subtitle-input').value; btnElement.textContent = "Saving..."; await fetch(`/api/settings/hero_title`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }, body: JSON.stringify({ content: title }) }); await fetch(`/api/settings/hero_subtitle`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }, body: JSON.stringify({ content: subtitle }) }); btnElement.textContent = "Save Text"; }
-        
-        const addHeroForm = document.getElementById('add-hero-form');
-        if(addHeroForm) {
-            addHeroForm.addEventListener('submit', async (e) => { e.preventDefault(); const btn = document.getElementById('hero-submit-btn'); btn.textContent = "Processing..."; btn.disabled = true; const editId = document.getElementById('hero-edit-id').value; const fileInput = document.getElementById('hero-item-image'); let base64Image = document.getElementById('hero-existing-image').value; if (fileInput.files.length > 0) { const file = fileInput.files[0]; base64Image = await new Promise((resolve, reject) => { const reader = new FileReader(); reader.readAsDataURL(file); reader.onload = () => resolve(reader.result); reader.onerror = error => reject(error); }); } else if (!editId && fileInput.files.length === 0) { alert("Please select an image for the new category."); btn.textContent = "Add to Hero Section"; btn.disabled = false; return; } if (editId) { const index = heroItems.findIndex(i => i.id === editId); if (index !== -1) { heroItems[index].title = document.getElementById('hero-item-title').value; heroItems[index].target = document.getElementById('hero-item-target').value; heroItems[index].shape = document.getElementById('hero-item-shape').value; heroItems[index].image = base64Image; } } else { heroItems.push({ id: Date.now().toString(), title: document.getElementById('hero-item-title').value, target: document.getElementById('hero-item-target').value, shape: document.getElementById('hero-item-shape').value, image: base64Image }); } renderHeroAdminList(); resetHeroForm(); btn.disabled = false; });
+        async function deleteReview(id) {
+            if(confirm("Delete this review forever?")) { await apiCall(`/api/admin/reviews/${id}`, 'DELETE'); loadAdminReviews(); }
         }
-        
-        function renderHeroAdminList() { 
-            const list = document.getElementById('hero-items-list'); 
-            const count = document.getElementById('hero-count');
-            if(count) count.textContent = `(${heroItems.length} items)`; 
-            if (heroItems.length === 0) { 
-                list.innerHTML = "<p class='text-gray-500 italic p-4 bg-gray-50 rounded-xl'>No items added yet. Add items using the form.</p>"; 
-                return; 
-            } 
-            list.innerHTML = heroItems.map((item, index) => ` <div class="flex items-center justify-between p-4 border rounded-2xl bg-white shadow-sm hover:shadow-md transition"> <div class="flex items-center gap-4"> <img src="${item.image}" class="w-12 h-12 md:w-16 md:h-16 object-cover border bg-white ${item.shape === 'circle' ? 'rounded-full' : 'rounded-md'}"> <div><h4 class="font-bold text-gray-800 text-sm md:text-base">${item.title}</h4><p class="text-[10px] md:text-xs text-gray-500 uppercase mt-1">Target: ${item.target}</p></div> </div> <div class="flex flex-col md:flex-row gap-2"> <button onclick="editHeroItem('${item.id}')" class="bg-blue-50 text-blue-600 px-4 py-2 rounded-lg text-xs md:text-sm font-bold transition">Edit</button> <button onclick="deleteHeroItem(${index})" class="bg-red-50 text-red-600 px-4 py-2 rounded-lg text-xs md:text-sm font-bold transition">Remove</button> </div> </div> `).join(''); 
-        }
-        function editHeroItem(id) { const item = heroItems.find(i => i.id === id); if(!item) return; document.getElementById('hero-edit-id').value = item.id; document.getElementById('hero-existing-image').value = item.image; document.getElementById('hero-item-title').value = item.title; document.getElementById('hero-item-target').value = item.target; document.getElementById('hero-item-shape').value = item.shape; document.getElementById('hero-form-title').innerText = "Edit Category Item"; const btn = document.getElementById('hero-submit-btn'); btn.textContent = "Update Hero Item"; btn.classList.replace('bg-pink-500', 'bg-blue-600'); document.getElementById('hero-cancel-btn').classList.remove('hidden'); window.scrollTo({top: 0, behavior:'smooth'}); }
-        function resetHeroForm() { document.getElementById('add-hero-form').reset(); document.getElementById('hero-edit-id').value = ""; document.getElementById('hero-existing-image').value = ""; document.getElementById('hero-form-title').innerText = "2. Add Category Item"; const btn = document.getElementById('hero-submit-btn'); btn.textContent = "Add to Hero Section"; btn.classList.replace('bg-blue-600', 'bg-pink-500'); document.getElementById('hero-cancel-btn').classList.add('hidden'); }
-        function deleteHeroItem(index) { heroItems.splice(index, 1); renderHeroAdminList(); }
-        async function saveHeroLayout(btnElement) { btnElement.textContent = "Saving Layout..."; btnElement.disabled = true; try { const res = await fetch(`/api/settings/hero_items`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }, body: JSON.stringify({ content: JSON.stringify(heroItems) }) }); if (res.ok) { btnElement.textContent = "Layout Saved!"; btnElement.classList.replace('bg-green-500', 'bg-blue-600'); setTimeout(() => { btnElement.textContent = "Save Live Layout"; btnElement.classList.replace('bg-blue-600', 'bg-green-500'); btnElement.disabled = false; }, 2000); } } catch (e) { btnElement.disabled = false;} }
 
-        let homeRevs = [];
-        const addHomeRevForm = document.getElementById('add-home-rev-form');
-        if(addHomeRevForm) {
-            addHomeRevForm.addEventListener('submit', async (e) => { e.preventDefault(); const btn = document.getElementById('home-rev-submit-btn'); btn.textContent = "Processing Media..."; btn.disabled = true; const editId = document.getElementById('home-rev-edit-id').value; const fileInput = document.getElementById('home-rev-media'); let mediaData = document.getElementById('home-rev-existing-media').value; if (fileInput.files.length > 0) { const file = fileInput.files[0]; if (file.type.startsWith('video/')) { if (file.size > 4000000) { alert("Video is too large! Please keep it under 4MB to prevent server issues."); btn.textContent = editId ? "Update" : "Add to Home Page"; btn.disabled = false; return; } mediaData = await new Promise((resolve, reject) => { const reader = new FileReader(); reader.readAsDataURL(file); reader.onload = () => resolve(reader.result); reader.onerror = reject; }); } else { mediaData = await compressImage(file); } } const rev = { id: editId || Date.now().toString(), name: document.getElementById('home-rev-name').value, rating: parseInt(document.getElementById('home-rev-rating').value), text: document.getElementById('home-rev-text').value, media: mediaData }; if (editId) { const index = homeRevs.findIndex(r => r.id === editId); if (index !== -1) homeRevs[index] = rev; } else { homeRevs.push(rev); } renderHomeRevsList(); resetHomeRevForm(); btn.disabled = false; });
-        }
-        
-        function renderHomeRevsList() { 
-            const list = document.getElementById('home-revs-list'); 
-            const count = document.getElementById('home-rev-count');
-            if (!list) return;
-            if (count) count.textContent = `(${homeRevs.length} visible)`; 
-            if (homeRevs.length === 0) {
-                list.innerHTML = "<p class='text-gray-500 italic p-4 bg-gray-50 rounded-xl'>No reviews added yet. Add one using the form.</p>";
-                return;
-            }
-            list.innerHTML = homeRevs.map((r, i) => { 
-                let mediaThumbHtml = '';
-                if (r.media) {
-                    const type = r.media.startsWith('data:video') ? 'video' : 'img';
-                    mediaThumbHtml = `<${type} src="${r.media}" class="w-12 h-12 rounded-lg object-cover flex-none bg-gray-100 border"></${type}>`;
-                } else {
-                    mediaThumbHtml = `<div class="w-12 h-12 rounded-lg border-2 border-dashed border-gray-200 bg-gray-50 flex items-center justify-center text-gray-400 text-[9px] text-center flex-none">No Media</div>`;
-                }
-
-                return ` 
-                <div class="flex items-center justify-between p-4 border rounded-2xl bg-white shadow-sm hover:shadow-md transition"> 
-                    <div class="flex items-center gap-4"> 
-                        ${mediaThumbHtml}
-                        <div> 
-                            <p class="text-yellow-400 text-lg">${'★'.repeat(r.rating)}</p> 
-                            <p class="font-bold text-gray-800">${r.name}</p> 
-                            <p class="text-gray-500 text-sm line-clamp-1 italic">"${r.text}"</p>
-                        </div> 
-                    </div> 
-                    <div class="flex gap-2 flex-none ml-4"> 
-                        <button onclick="editHomeRev('${r.id}')" class="bg-blue-50 text-blue-600 px-4 py-2 rounded-lg font-bold text-sm">Edit</button> 
-                        <button onclick="deleteHomeRev(${i})" class="bg-red-50 text-red-600 px-4 py-2 rounded-lg font-bold text-sm">Del</button> 
-                    </div> 
-                </div> `
-            }).join(''); 
-        }
-        
-        function editHomeRev(id) { 
-            const r = homeRevs.find(x => x.id === id); 
-            if(!r) return; 
-            document.getElementById('home-rev-edit-id').value = r.id; 
-            document.getElementById('home-rev-name').value = r.name; 
-            document.getElementById('home-rev-rating').value = r.rating; 
-            document.getElementById('home-rev-text').value = r.text; 
-            document.getElementById('home-rev-existing-media').value = r.media || ""; 
-            document.getElementById('home-rev-form-title').innerText = "Edit Review"; 
-            
-            const formPreview = document.getElementById('home-rev-form-media-preview');
-            if (r.media) {
-                formPreview.classList.remove('hidden');
-                if (r.media.startsWith('data:video')) {
-                    formPreview.innerHTML = `<video src="${r.media}" autoplay muted loop class="h-full object-cover rounded-lg"></video>`;
-                } else {
-                    formPreview.innerHTML = `<img src="${r.media}" class="h-full object-cover rounded-lg">`;
-                }
-            } else {
-                formPreview.classList.add('hidden');
-                formPreview.innerHTML = '';
-            }
-
-            const btn = document.getElementById('home-rev-submit-btn'); 
-            btn.textContent = "Update Review"; 
-            btn.classList.replace('bg-pink-500', 'bg-indigo-600'); 
-            document.getElementById('home-rev-cancel-btn').classList.remove('hidden'); 
-            document.getElementById('tab-home-reviews').scrollTo({top: 0, behavior: 'smooth'});
-        }
-        
-        function deleteHomeRev(index) { homeRevs.splice(index, 1); renderHomeRevsList(); }
-        
-        function resetHomeRevForm() { 
-            document.getElementById('add-home-rev-form').reset(); 
-            document.getElementById('home-rev-edit-id').value = ""; 
-            document.getElementById('home-rev-existing-media').value = ""; 
-            document.getElementById('home-rev-form-title').innerText = "Add Home Review"; 
-            
-            document.getElementById('home-rev-form-media-preview').classList.add('hidden');
-            document.getElementById('home-rev-form-media-preview').innerHTML = '';
-
-            const btn = document.getElementById('home-rev-submit-btn'); 
-            btn.textContent = "Add to Home Page"; 
-            btn.classList.replace('bg-indigo-600', 'bg-pink-500'); 
-            document.getElementById('home-rev-cancel-btn').classList.add('hidden'); 
-        }
-        async function saveHomeReviewsLayout(btn) { btn.textContent = "Saving..."; btn.disabled = true; try { await fetch(`/api/settings/home_reviews`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }, body: JSON.stringify({ content: JSON.stringify(homeRevs) }) }); btn.textContent = "Saved!"; setTimeout(() => { btn.textContent = "Save Live Layout"; btn.disabled = false; }, 2000); } catch (e) { btn.disabled = false; } }
-
-        let rawProductReviews = [];
-        async function loadCustomerReviews() { try { const res = await fetch('/api/admin/reviews', { headers: { 'Authorization': `Bearer ${token}` } }); rawProductReviews = await res.json(); const list = document.getElementById('admin-customer-reviews-list'); document.getElementById('prod-rev-list-container').classList.replace('xl:col-span-3', 'xl:col-span-2'); if (rawProductReviews.length === 0) { list.innerHTML = "<p class='text-gray-500'>No customer reviews found.</p>"; return; } list.innerHTML = rawProductReviews.map(r => ` <div class="p-4 border rounded-2xl bg-white shadow-sm flex justify-between items-center hover:shadow-md transition"> <div> <p class="text-xs text-pink-500 font-bold uppercase mb-1">Product: ${r.decoration_slug}</p> <p class="text-yellow-400">${'★'.repeat(r.rating)} <span class="text-gray-800 font-bold ml-2">${r.reviewer_name}</span></p> <p class="text-gray-600 mt-1">"${r.review_text}"</p> </div> <div class="flex flex-col gap-2"> <button onclick="editCustomerReview(${r.id})" class="bg-indigo-50 text-indigo-600 px-4 py-2 rounded-xl font-bold shadow-sm hover:bg-indigo-100 transition text-sm">Edit</button> <button onclick="deleteCustomerReview(${r.id})" class="bg-red-50 text-red-600 px-4 py-2 rounded-xl font-bold shadow-sm hover:bg-red-100 transition text-sm">Delete</button> </div> </div> `).join(''); } catch (e) {} }
-        function editCustomerReview(id) { const review = rawProductReviews.find(r => r.id === id); if (!review) return; document.getElementById('prod-rev-id').value = review.id; document.getElementById('prod-rev-name').value = review.reviewer_name; document.getElementById('prod-rev-rating').value = review.rating; document.getElementById('prod-rev-text').value = review.review_text; document.getElementById('prod-rev-edit-container').classList.remove('hidden'); window.scrollTo({top: 0, behavior:'smooth'}); }
-        function closeProdRevEdit() { document.getElementById('edit-prod-rev-form').reset(); document.getElementById('prod-rev-edit-container').classList.add('hidden'); }
-        
-        const editProdRevForm = document.getElementById('edit-prod-rev-form');
-        if (editProdRevForm) {
-            editProdRevForm.addEventListener('submit', async (e) => { e.preventDefault(); const btn = document.getElementById('prod-rev-submit-btn'); btn.textContent = "Updating..."; btn.disabled = true; const id = document.getElementById('prod-rev-id').value; const payload = { name: document.getElementById('prod-rev-name').value, rating: parseInt(document.getElementById('prod-rev-rating').value), review: document.getElementById('prod-rev-text').value }; try { const res = await fetch(`/api/admin/reviews/${id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }, body: JSON.stringify(payload) }); if (res.ok) { closeProdRevEdit(); loadCustomerReviews(); loadAdminProducts(); } else { alert("Failed to update review."); } } catch(e) { alert("Server error."); } btn.textContent = "Update Review"; btn.disabled = false; });
-        }
-        
-        async function deleteCustomerReview(id) { if(!confirm("Permanently delete this customer review?")) return; try { await fetch(`/api/admin/reviews/${id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` } }); loadCustomerReviews(); loadAdminProducts(); } catch (e) {} }
-
-        // Start initialization
-        loadDashboard();
-        loadAdminProducts();
+        // Initialize
+        quill = new Quill('#quill-editor', { theme: 'snow', modules: { toolbar: [['bold', 'italic', 'underline'], [{ 'list': 'bullet' }], ['clean']] } });
         loadSettings();
+        loadInventory();
+        loadAdminReviews();
     </script>
 </body>
 </html>
