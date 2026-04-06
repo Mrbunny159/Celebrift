@@ -177,7 +177,10 @@
                     <div class="col-span-1"><label class="block text-sm font-bold mb-1">Image (Square)</label><input type="file" id="hero-img" accept="image/*" class="w-full p-2 border rounded text-xs"></div>
                     <div class="col-span-1"><label class="block text-sm font-bold mb-1">Shape</label><select id="hero-shape" class="w-full p-2 border rounded"><option value="circle">Circle</option><option value="square">Square</option><option value="rounded-square">Rounded Square</option><option value="rectangle">Rectangle (Wide)</option><option value="rounded-rectangle">Rounded Rectangle</option></select></div>
                 </div>
-                <button onclick="addHeroItem()" class="mt-4 bg-indigo-600 text-white font-bold py-2 px-6 rounded-xl hover:bg-indigo-700">Add Item</button>
+                <div class="mt-4 flex gap-2">
+                    <button id="btn-hero-add" onclick="saveHeroItem()" class="bg-indigo-600 text-white font-bold py-2 px-6 rounded-xl hover:bg-indigo-700">Add Item</button>
+                    <button onclick="resetHeroForm()" class="bg-gray-200 text-gray-700 font-bold py-2 px-6 rounded-xl hover:bg-gray-300">Clear</button>
+                </div>
             </div>
             <div id="hero-items-list" class="space-y-2"></div>
         </div>
@@ -191,7 +194,10 @@
                 </div>
                 <div class="mb-4"><label class="block text-sm font-bold mb-1">Review Text</label><textarea id="hr-text" rows="2" class="w-full p-2 border rounded"></textarea></div>
                 <div class="mb-4"><label class="block text-sm font-bold mb-1">Media (Image/Video)</label><input type="file" id="hr-media" accept="image/*,video/*" class="w-full p-2 border rounded"></div>
-                <button onclick="addHomeReview()" class="bg-indigo-600 text-white font-bold py-2 px-6 rounded-xl hover:bg-indigo-700">Add Review</button>
+                <div class="flex gap-2">
+                    <button id="btn-review-add" onclick="saveHomeReview()" class="bg-indigo-600 text-white font-bold py-2 px-6 rounded-xl hover:bg-indigo-700">Add Review</button>
+                    <button onclick="resetReviewForm()" class="bg-gray-200 text-gray-700 font-bold py-2 px-6 rounded-xl hover:bg-gray-300">Clear</button>
+                </div>
             </div>
             <div id="home-reviews-list" class="space-y-3"></div>
         </div>
@@ -202,16 +208,19 @@
         </div>
 
         <div id="tab-theme" class="tab-content max-w-5xl mx-auto">
-            <h2 class="text-3xl font-black mb-6 text-gray-800">Festive Site Theme</h2>
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
+                <h2 class="text-3xl font-black text-gray-800">Festive Site Theme</h2>
+                <button onclick="saveSelectedTheme()" id="btn-save-theme" class="bg-pink-600 text-white font-bold py-3 px-8 rounded-xl hover:bg-pink-700 shadow-md">Apply Theme to Live Site</button>
+            </div>
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="theme-grid">
-                <div onclick="setTheme('default')" class="theme-card cursor-pointer bg-white p-4 rounded-2xl shadow-sm text-center" data-theme="default"><div class="text-3xl mb-2">⚪</div><p class="font-bold">Standard</p></div>
-                <div onclick="setTheme('purple-gold')" class="theme-card cursor-pointer bg-white p-4 rounded-2xl shadow-sm text-center" data-theme="purple-gold"><div class="text-3xl mb-2">💜✨</div><p class="font-bold">Premium Gold</p></div>
-                <div onclick="setTheme('cyan-splash')" class="theme-card cursor-pointer bg-white p-4 rounded-2xl shadow-sm text-center" data-theme="cyan-splash"><div class="text-3xl mb-2">🌊💎</div><p class="font-bold">Cyan Splash</p></div>
-                <div onclick="setTheme('diwali')" class="theme-card cursor-pointer bg-white p-4 rounded-2xl shadow-sm text-center" data-theme="diwali"><div class="text-3xl mb-2">🪔🎆</div><p class="font-bold">Diwali</p></div>
-                <div onclick="setTheme('christmas')" class="theme-card cursor-pointer bg-white p-4 rounded-2xl shadow-sm text-center" data-theme="christmas"><div class="text-3xl mb-2">🎄❄️</div><p class="font-bold">Christmas</p></div>
-                <div onclick="setTheme('new-year')" class="theme-card cursor-pointer bg-white p-4 rounded-2xl shadow-sm text-center" data-theme="new-year"><div class="text-3xl mb-2">🥂🕛</div><p class="font-bold">New Year</p></div>
-                <div onclick="setTheme('holi')" class="theme-card cursor-pointer bg-white p-4 rounded-2xl shadow-sm text-center" data-theme="holi"><div class="text-3xl mb-2">🎨💦</div><p class="font-bold">Holi</p></div>
-                <div onclick="setTheme('eid')" class="theme-card cursor-pointer bg-white p-4 rounded-2xl shadow-sm text-center" data-theme="eid"><div class="text-3xl mb-2">🌙🕌</div><p class="font-bold">Eid</p></div>
+                <div onclick="selectTheme('default')" class="theme-card cursor-pointer bg-white p-4 rounded-2xl shadow-sm text-center" data-theme="default"><div class="text-3xl mb-2">⚪</div><p class="font-bold">Standard</p></div>
+                <div onclick="selectTheme('purple-gold')" class="theme-card cursor-pointer bg-white p-4 rounded-2xl shadow-sm text-center" data-theme="purple-gold"><div class="text-3xl mb-2">💜✨</div><p class="font-bold">Premium Gold</p></div>
+                <div onclick="selectTheme('cyan-splash')" class="theme-card cursor-pointer bg-white p-4 rounded-2xl shadow-sm text-center" data-theme="cyan-splash"><div class="text-3xl mb-2">🌊💎</div><p class="font-bold">Cyan Splash</p></div>
+                <div onclick="selectTheme('diwali')" class="theme-card cursor-pointer bg-white p-4 rounded-2xl shadow-sm text-center" data-theme="diwali"><div class="text-3xl mb-2">🪔🎆</div><p class="font-bold">Diwali</p></div>
+                <div onclick="selectTheme('christmas')" class="theme-card cursor-pointer bg-white p-4 rounded-2xl shadow-sm text-center" data-theme="christmas"><div class="text-3xl mb-2">🎄❄️</div><p class="font-bold">Christmas</p></div>
+                <div onclick="selectTheme('new-year')" class="theme-card cursor-pointer bg-white p-4 rounded-2xl shadow-sm text-center" data-theme="new-year"><div class="text-3xl mb-2">🥂🕛</div><p class="font-bold">New Year</p></div>
+                <div onclick="selectTheme('holi')" class="theme-card cursor-pointer bg-white p-4 rounded-2xl shadow-sm text-center" data-theme="holi"><div class="text-3xl mb-2">🎨💦</div><p class="font-bold">Holi</p></div>
+                <div onclick="selectTheme('eid')" class="theme-card cursor-pointer bg-white p-4 rounded-2xl shadow-sm text-center" data-theme="eid"><div class="text-3xl mb-2">🌙🕌</div><p class="font-bold">Eid</p></div>
             </div>
         </div>
 
@@ -234,6 +243,11 @@
         let homeReviews = [];
         let galleryArray = []; 
         let globalCategoryMap = {};
+        
+        // Tracking Variables for Edit Modes
+        let editingHeroIndex = -1;
+        let editingReviewIndex = -1;
+        let selectedTheme = 'default';
         
         // --- HELPER: VERCEL BLOB VIDEO CHECKER ---
         function isVideoFile(url) {
@@ -339,6 +353,7 @@
             });
 
             if(data['site_theme']) {
+                selectedTheme = data['site_theme'];
                 document.querySelectorAll('.theme-card').forEach(c => c.classList.remove('active'));
                 const activeCard = document.querySelector(`.theme-card[data-theme="${data['site_theme']}"]`);
                 if(activeCard) activeCard.classList.add('active');
@@ -361,10 +376,19 @@
             }
         }
 
-        async function setTheme(theme) {
-            await apiCall(`/api/settings/site_theme`, 'POST', { content: theme });
+        function selectTheme(theme) {
+            selectedTheme = theme;
             document.querySelectorAll('.theme-card').forEach(c => c.classList.remove('active'));
             document.querySelector(`.theme-card[data-theme="${theme}"]`).classList.add('active');
+        }
+
+        async function saveSelectedTheme() {
+            const btn = document.getElementById('btn-save-theme');
+            const orig = btn.textContent;
+            btn.textContent = "Saving to Database...";
+            await apiCall(`/api/settings/site_theme`, 'POST', { content: selectedTheme });
+            btn.textContent = "Theme Applied Successfully!";
+            setTimeout(() => btn.textContent = orig, 3000);
         }
 
         function parseCategories(catString) {
@@ -412,12 +436,15 @@
             const q = document.getElementById('inventory-search').value.toLowerCase();
             const filtered = inventory.filter(i => i.title.toLowerCase().includes(q) || i.category.includes(q));
             document.getElementById('inventory-list').innerHTML = filtered.map(item => `
-                <div class="flex items-center justify-between p-3 bg-gray-50 rounded-xl border border-gray-100 hover:bg-white transition-colors cursor-pointer" onclick="editItem('${item.slug}')">
+                <div class="flex items-center justify-between p-3 bg-white rounded-xl border border-gray-200 hover:shadow-md transition-shadow">
                     <div class="flex items-center gap-3">
                         <img src="${item.image_url || 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs='}" class="w-12 h-12 object-cover rounded-lg border border-gray-200">
                         <div><p class="font-bold text-gray-800 text-sm line-clamp-1">${item.title}</p><p class="text-xs text-pink-600 font-bold">${item.price_range}</p></div>
                     </div>
-                    <button onclick="event.stopPropagation(); deleteItem('${item.slug}')" class="text-red-500 hover:bg-red-50 p-2 rounded-lg">🗑️</button>
+                    <div class="flex gap-2">
+                        <button onclick="editItem('${item.slug}')" class="text-indigo-600 hover:bg-indigo-50 px-3 py-1 rounded-lg font-bold text-sm border border-indigo-100 transition-colors">Edit</button>
+                        <button onclick="deleteItem('${item.slug}')" class="text-red-500 hover:bg-red-50 px-3 py-1 rounded-lg font-bold text-sm border border-red-100 transition-colors">Delete</button>
+                    </div>
                 </div>
             `).join('');
         }
@@ -492,45 +519,111 @@
             }
         }
 
-        // --- HERO LIST LOGIC ---
-        async function addHeroItem() {
+        // --- HERO LIST LOGIC (WITH EDIT) ---
+        async function saveHeroItem() {
             const file = document.getElementById('hero-img').files[0];
-            if(!file) return alert("Select an image");
-            const b64 = await compressImage(file, 400);
-            heroItems.push({
+            let b64 = "";
+            if(file) {
+                b64 = await compressImage(file, 400);
+            }
+            
+            const newItem = {
                 title: document.getElementById('hero-title').value,
                 target: document.getElementById('hero-target').value,
                 shape: document.getElementById('hero-shape').value,
-                image: b64
-            });
-            saveSetting('hero_items', JSON.stringify(heroItems));
+                image: b64 || (editingHeroIndex > -1 ? heroItems[editingHeroIndex].image : '')
+            };
+
+            if(!newItem.image) return alert("You must select an image.");
+
+            if (editingHeroIndex > -1) {
+                heroItems[editingHeroIndex] = newItem;
+            } else {
+                heroItems.push(newItem);
+            }
+            
+            await apiCall(`/api/settings/hero_items`, 'POST', { content: JSON.stringify(heroItems) });
+            resetHeroForm();
+            renderHeroList();
+        }
+
+        function editHeroItem(i) {
+            editingHeroIndex = i;
+            const item = heroItems[i];
+            document.getElementById('hero-title').value = item.title;
+            document.getElementById('hero-target').value = item.target;
+            document.getElementById('hero-shape').value = item.shape;
+            document.getElementById('btn-hero-add').textContent = "Update Item";
+            document.getElementById('tab-hero').scrollIntoView();
+        }
+
+        function resetHeroForm() {
+            editingHeroIndex = -1;
+            document.getElementById('hero-title').value = '';
+            document.getElementById('hero-target').value = '';
+            document.getElementById('hero-img').value = '';
+            document.getElementById('btn-hero-add').textContent = "Add Item";
         }
 
         function renderHeroList() {
             const list = document.getElementById('hero-items-list');
             list.innerHTML = heroItems.map((item, i) => `
-                <div class="flex items-center justify-between p-3 bg-gray-50 rounded-xl border border-gray-100">
+                <div class="flex items-center justify-between p-3 bg-white rounded-xl border border-gray-200">
                     <div class="flex items-center gap-4">
                         <img src="${item.image}" class="w-12 h-12 object-cover rounded-lg">
                         <div><p class="font-bold text-gray-800">${item.title}</p><p class="text-xs text-gray-500">Links to: ${item.target}</p></div>
                     </div>
-                    <button onclick="heroItems.splice(${i}, 1); saveSetting('hero_items', JSON.stringify(heroItems))" class="text-red-500 hover:text-red-700 font-bold text-sm bg-red-50 px-3 py-1 rounded-lg">Remove</button>
+                    <div class="flex gap-2">
+                        <button onclick="editHeroItem(${i})" class="text-indigo-600 hover:bg-indigo-50 px-3 py-1 rounded-lg font-bold text-sm border border-indigo-100">Edit</button>
+                        <button onclick="heroItems.splice(${i}, 1); apiCall('/api/settings/hero_items', 'POST', { content: JSON.stringify(heroItems) }); renderHeroList();" class="text-red-500 hover:bg-red-50 px-3 py-1 rounded-lg font-bold text-sm border border-red-100">Remove</button>
+                    </div>
                 </div>
             `).join('');
         }
 
-        // --- HOME REVIEWS LOGIC ---
-        async function addHomeReview() {
+        // --- HOME REVIEWS LOGIC (WITH EDIT) ---
+        async function saveHomeReview() {
             const file = document.getElementById('hr-media').files[0];
             let mediaData = "";
-            if(file) mediaData = await compressImage(file, 600);
-            homeReviews.push({
+            if(file) {
+                mediaData = await compressImage(file, 600);
+            }
+            
+            const newRev = {
                 name: document.getElementById('hr-name').value,
                 rating: document.getElementById('hr-rating').value,
                 text: document.getElementById('hr-text').value,
-                media: mediaData
-            });
-            saveSetting('home_reviews', JSON.stringify(homeReviews));
+                media: mediaData || (editingReviewIndex > -1 ? homeReviews[editingReviewIndex].media : '')
+            };
+
+            if (editingReviewIndex > -1) {
+                homeReviews[editingReviewIndex] = newRev;
+            } else {
+                homeReviews.push(newRev);
+            }
+            
+            await apiCall(`/api/settings/home_reviews`, 'POST', { content: JSON.stringify(homeReviews) });
+            resetReviewForm();
+            renderHomeReviewsList();
+        }
+
+        function editHomeReview(i) {
+            editingReviewIndex = i;
+            const r = homeReviews[i];
+            document.getElementById('hr-name').value = r.name;
+            document.getElementById('hr-rating').value = r.rating;
+            document.getElementById('hr-text').value = r.text;
+            document.getElementById('btn-review-add').textContent = "Update Review";
+            document.getElementById('tab-home-reviews').scrollIntoView();
+        }
+
+        function resetReviewForm() {
+            editingReviewIndex = -1;
+            document.getElementById('hr-name').value = '';
+            document.getElementById('hr-rating').value = '5';
+            document.getElementById('hr-text').value = '';
+            document.getElementById('hr-media').value = '';
+            document.getElementById('btn-review-add').textContent = "Add Review";
         }
 
         function renderHomeReviewsList() {
@@ -545,12 +638,15 @@
                     }
                 }
                 return `
-                <div class="flex items-center justify-between p-4 bg-gray-50 rounded-xl border border-gray-100">
+                <div class="flex items-center justify-between p-4 bg-white rounded-xl border border-gray-200">
                     <div class="flex items-center gap-4">
                         ${mediaPreview}
                         <div><p class="font-bold text-gray-800">${r.name}</p><p class="text-sm text-gray-500">${'★'.repeat(r.rating)}</p></div>
                     </div>
-                    <button onclick="homeReviews.splice(${i}, 1); saveSetting('home_reviews', JSON.stringify(homeReviews))" class="text-red-500 hover:text-red-700 font-bold text-sm bg-red-50 px-3 py-1 rounded-lg">Remove</button>
+                    <div class="flex gap-2">
+                        <button onclick="editHomeReview(${i})" class="text-indigo-600 hover:bg-indigo-50 px-3 py-1 rounded-lg font-bold text-sm border border-indigo-100">Edit</button>
+                        <button onclick="homeReviews.splice(${i}, 1); apiCall('/api/settings/home_reviews', 'POST', { content: JSON.stringify(homeReviews) }); renderHomeReviewsList();" class="text-red-500 hover:bg-red-50 px-3 py-1 rounded-lg font-bold text-sm border border-red-100">Remove</button>
+                    </div>
                 </div>`;
             }).join('');
         }

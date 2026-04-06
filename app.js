@@ -90,15 +90,16 @@ function renderHeroSection() {
     const items = JSON.parse(globalSettings['hero_items']);
     if (items.length === 0) return;
     const buildItemHTML = (item) => {
-        let shapeClasses = "w-24 h-24 md:w-32 md:h-32 rounded-full"; 
-        if (item.shape === 'square') shapeClasses = "w-24 h-24 md:w-32 md:h-32 rounded-none";
-        if (item.shape === 'rounded-square') shapeClasses = "w-24 h-24 md:w-32 md:h-32 rounded-2xl";
-        if (item.shape === 'rectangle') shapeClasses = "w-32 h-24 md:w-40 md:h-32 rounded-none";
-        if (item.shape === 'rounded-rectangle') shapeClasses = "w-32 h-24 md:w-40 md:h-32 rounded-3xl";
+        // ELEGANCE FIX: Sizes reduced for desktop (w-28 instead of w-32)
+        let shapeClasses = "w-24 h-24 md:w-28 md:h-28 rounded-full"; 
+        if (item.shape === 'square') shapeClasses = "w-24 h-24 md:w-28 md:h-28 rounded-none";
+        if (item.shape === 'rounded-square') shapeClasses = "w-24 h-24 md:w-28 md:h-28 rounded-2xl";
+        if (item.shape === 'rectangle') shapeClasses = "w-32 h-24 md:w-36 md:h-28 rounded-none";
+        if (item.shape === 'rounded-rectangle') shapeClasses = "w-32 h-24 md:w-36 md:h-28 rounded-3xl";
         return `
         <a href="index.html?category=${item.target}" aria-label="View ${item.title} category" class="flex flex-col items-center gap-3 cursor-pointer group flex-none mx-4 md:mx-6">
-            <img src="${item.image}" alt="${item.title} Decoration Category" class="${shapeClasses} object-cover border-4 border-white shadow-lg group-hover:border-pink-400 transition-all bg-white">
-            <span class="text-sm font-bold text-indigo-900 text-center w-24 md:w-32 line-clamp-2 leading-tight">${item.title}</span>
+            <img src="${item.image}" alt="${item.title} Decoration Category" class="${shapeClasses} object-cover border-[3px] border-white shadow-md group-hover:shadow-lg group-hover:border-pink-300 transition-all bg-white">
+            <span class="text-sm md:text-base font-bold text-indigo-900 text-center w-24 md:w-28 line-clamp-2 leading-tight">${item.title}</span>
         </a>`;
     };
     const repeatedItems = [...items, ...items, ...items, ...items, ...items, ...items];
@@ -120,12 +121,12 @@ function renderHomeReviews() {
                 }
             }
             return `
-            <div class="flex-none w-80 md:w-96 bg-white p-6 md:p-8 rounded-3xl shadow-sm border border-pink-100 snap-center relative flex flex-col">
+            <div class="flex-none w-80 md:w-96 bg-white p-6 md:p-8 rounded-3xl shadow-sm border border-pink-100 snap-center relative flex flex-col hover:shadow-lg transition-shadow">
                 <span class="absolute top-4 right-6 text-4xl text-pink-100">"</span>
                 <div class="flex text-yellow-400 mb-4 text-xl">${'★'.repeat(r.rating)}</div>
                 ${mediaHTML}
                 <p class="text-gray-600 italic mb-6 relative z-10 flex-grow text-lg">"${r.text}"</p>
-                <p class="font-black text-indigo-900 border-t pt-4">- ${r.name}</p>
+                <p class="font-black text-indigo-900 border-t border-gray-50 pt-4">- ${r.name}</p>
             </div>`;
         }).join('');
     }
@@ -133,14 +134,6 @@ function renderHomeReviews() {
 
 async function fetchDecorations() {
     const container = document.getElementById('rows-container');
-    container.innerHTML = `
-        <section class="animate-pulse">
-            <div class="h-8 bg-pink-100 rounded-lg w-48 mb-6"></div>
-            <div class="flex overflow-x-hidden gap-6 pb-8">
-                <div class="w-64 md:w-80 h-64 bg-pink-50 rounded-3xl flex-none"></div>
-                <div class="w-64 md:w-80 h-64 bg-pink-50 rounded-3xl flex-none"></div>
-            </div>
-        </section>`;
     try {
         const res = await fetch('/api/decorations');
         allDecorations = await res.json();
@@ -182,7 +175,7 @@ function renderDecorationsGrid() {
     if (currentSearch !== "" || currentSort !== "default") {
         container.innerHTML = `
             <h2 class="text-2xl font-black text-indigo-900 mb-6">Search Results</h2>
-            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6 pb-8">
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6 pb-8">
                 ${activeItems.map(item => generateCardHTML(item, true)).join('')}
             </div>
         `;
@@ -203,7 +196,9 @@ function renderDecorationsGrid() {
     container.innerHTML = categories.map(cat => {
         const catItems = activeItems.filter(i => i.category === cat);
         const title = cat.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
-        const wrapperClasses = isGridMode ? "grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6 pb-8" : "flex overflow-x-auto flex-nowrap gap-4 md:gap-6 pb-8 hide-scroll-bar px-2 snap-x";
+        
+        // ELEGANCE FIX: Added xl:grid-cols-5 so items stay nicely sized on huge monitors
+        const wrapperClasses = isGridMode ? "grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6 pb-8" : "flex overflow-x-auto flex-nowrap gap-4 md:gap-6 pb-8 hide-scroll-bar px-2 snap-x";
             
         let subCategoryPillsHTML = '';
         if (isGridMode && globalCategoryMap[cat] && globalCategoryMap[cat].length > 0) {
@@ -235,22 +230,24 @@ function generateCardHTML(item, isGridMode) {
     let primaryImg = item.image_url;
     if (item.images) { try { primaryImg = JSON.parse(item.images)[0] || item.image_url; } catch(e) {} }
 
-    const cardClasses = isGridMode ? "w-full group" : "flex-none w-60 md:w-80 group snap-center";
-    const imgHeightClasses = isGridMode ? "h-40 md:h-48" : "h-48";
-    const offerBadge = item.offer_text ? `<div class="absolute top-3 left-3 bg-red-600 text-white font-black text-xs md:text-sm px-3 py-1 rounded-full shadow-lg z-10 uppercase tracking-widest animate-pulse border border-red-400">${item.offer_text}</div>` : '';
+    // ELEGANCE FIX: Changed from w-80 to w-72 for slider cards so they are less chunky
+    const cardClasses = isGridMode ? "w-full group" : "flex-none w-64 md:w-72 group snap-center";
+    const imgHeightClasses = "h-40 md:h-48";
+    const offerBadge = item.offer_text ? `<div class="absolute top-3 left-3 bg-red-600 text-white font-black text-[10px] md:text-xs px-3 py-1 rounded-full shadow-lg z-10 uppercase tracking-widest animate-pulse border border-red-400">${item.offer_text}</div>` : '';
 
     return `
     <a href="details.html?id=${item.slug}" aria-label="View details for ${item.title}" class="${cardClasses}">
-        <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden transition-all group-hover:shadow-xl h-full flex flex-col relative">
+        <div class="bg-white rounded-[1.5rem] shadow-sm border border-gray-100 overflow-hidden transition-all group-hover:shadow-xl group-hover:-translate-y-1 h-full flex flex-col relative">
             ${offerBadge}
-            <div class="${imgHeightClasses} overflow-hidden w-full bg-gray-50">
-                <img src="${primaryImg}" alt="${item.title} Setup" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+            <div class="${imgHeightClasses} overflow-hidden w-full bg-gray-50 relative">
+                <img src="${primaryImg}" alt="${item.title} Setup" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
             </div>
-            <div class="p-3 md:p-5 flex-grow flex flex-col justify-between">
-                <h3 class="font-bold text-gray-800 text-sm md:text-base line-clamp-2 leading-tight">${item.title}</h3>
-                <div class="flex justify-between items-center mt-3">
-                    <span class="text-pink-600 font-black text-sm md:text-base">${item.price_range}</span>
-                    <span class="text-xs text-yellow-500 font-bold">★ ${item.average_rating || '5.0'}</span>
+            <div class="p-4 md:p-5 flex-grow flex flex-col justify-between">
+                <h3 class="font-bold text-gray-800 text-sm md:text-base line-clamp-2 leading-snug">${item.title}</h3>
+                <div class="flex justify-between items-center mt-4 border-t border-gray-50 pt-3">
+                    <span class="text-pink-600 font-black text-sm md:text-lg">${item.price_range}</span>
+                    <span class="text-xs text-yellow-500 font-black bg-yellow-50 px-2 py-1 rounded-md">★ ${item.average_rating || '5.0'}</span>
                 </div>
             </div>
         </div>
