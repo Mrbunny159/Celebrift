@@ -58,10 +58,11 @@ def process_and_upload_to_blob(b64_string):
             filename = f"{uuid.uuid4().hex}.webp"
             content_type = "image/webp"
 
-        # Push to Vercel Blob REST API
+        # FIXED: Vercel Blob REST API strictly requires these exact headers!
         headers = {
             "Authorization": f"Bearer {BLOB_TOKEN}",
-            "Content-Type": content_type
+            "x-api-version": "7",
+            "x-content-type": content_type
         }
         
         res = requests.put(
