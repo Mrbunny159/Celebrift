@@ -92,7 +92,7 @@
         <div id="tab-listings" class="tab-content max-w-6xl mx-auto">
             <h2 class="text-3xl font-black mb-6 text-gray-800">Manage Inventory</h2>
             <div class="flex flex-col xl:flex-row gap-8">
-                <div class="w-full xl:w-1/2 bg-white p-6 md:p-8 rounded-3xl shadow-sm border border-gray-100 h-fit sticky top-4">
+                <div class="w-full xl:w-1/2 bg-white p-6 md:p-8 rounded-3xl shadow-sm border border-gray-100 h-fit xl:sticky top-4 relative z-20">
                     <h3 id="form-title" class="text-2xl font-black text-indigo-900 mb-6">Add New Setup</h3>
                     <form id="decor-form" class="space-y-5">
                         <input type="hidden" id="decor-slug">
@@ -160,7 +160,7 @@
                 </div>
                 
                 <div class="w-full xl:w-1/2">
-                    <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 mb-4 sticky top-4 z-10 flex gap-2">
+                    <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 mb-4 xl:sticky top-4 z-10 flex gap-2">
                         <input type="text" id="inventory-search" placeholder="Search inventory..." class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl outline-none" onkeyup="renderInventoryList()">
                     </div>
                     <div id="inventory-list" class="space-y-3"></div>
@@ -244,12 +244,10 @@
         let galleryArray = []; 
         let globalCategoryMap = {};
         
-        // Tracking Variables for Edit Modes
         let editingHeroIndex = -1;
         let editingReviewIndex = -1;
         let selectedTheme = 'default';
         
-        // --- HELPER: VERCEL BLOB VIDEO CHECKER ---
         function isVideoFile(url) {
             if (!url) return false;
             return url.startsWith('data:video') || url.match(/\.(mp4|webm|ogg)$/i);
@@ -270,7 +268,6 @@
             return res.json();
         }
 
-        // --- IMAGE COMPRESSION (For new uploads) ---
         async function compressImage(file, maxWidth = 800) {
             if(file.type.startsWith('video/')) {
                 return new Promise((resolve) => {
@@ -327,7 +324,6 @@
             `).join('');
         }
 
-        // --- SETTINGS LOGIC ---
         async function loadSettings() {
             const data = await apiCall('/api/settings');
             
@@ -421,7 +417,6 @@
             }
         }
 
-        // --- INVENTORY LOGIC ---
         async function loadInventory() {
             inventory = await apiCall('/api/decorations');
             renderInventoryList();
@@ -519,7 +514,6 @@
             }
         }
 
-        // --- HERO LIST LOGIC (WITH EDIT) ---
         async function saveHeroItem() {
             const file = document.getElementById('hero-img').files[0];
             let b64 = "";
@@ -581,7 +575,6 @@
             `).join('');
         }
 
-        // --- HOME REVIEWS LOGIC (WITH EDIT) ---
         async function saveHomeReview() {
             const file = document.getElementById('hr-media').files[0];
             let mediaData = "";
@@ -651,7 +644,6 @@
             }).join('');
         }
 
-        // --- PROD REVIEWS (MODERATION) ---
         async function loadAdminReviews() {
             const revs = await apiCall('/api/admin/reviews');
             const container = document.getElementById('admin-reviews-list');
@@ -681,7 +673,6 @@
             if(confirm("Delete this review forever?")) { await apiCall(`/api/admin/reviews/${id}`, 'DELETE'); loadAdminReviews(); }
         }
 
-        // Initialize
         quill = new Quill('#quill-editor', { theme: 'snow', modules: { toolbar: [['bold', 'italic', 'underline'], [{ 'list': 'bullet' }], ['clean']] } });
         loadSettings();
         loadInventory();

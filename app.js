@@ -10,10 +10,34 @@ let allDecorations = [];
 let currentSearch = "";
 let currentSort = "default";
 
-// Helper function to detect if a URL is a video
 function isVideoFile(url) {
     if (!url) return false;
     return url.startsWith('data:video') || url.match(/\.(mp4|webm|ogg)$/i);
+}
+
+// AUTO SCROLL (MARQUEE) FUNCTION
+function startAutoScroll(containerId, speed = 1) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+    
+    let isHovered = false;
+    let isTouching = false;
+    
+    // Pause on hover or touch so users can read
+    container.addEventListener('mouseenter', () => isHovered = true);
+    container.addEventListener('mouseleave', () => isHovered = false);
+    container.addEventListener('touchstart', () => isTouching = true, {passive: true});
+    container.addEventListener('touchend', () => setTimeout(() => isTouching = false, 1500));
+
+    setInterval(() => {
+        if (!isHovered && !isTouching) {
+            container.scrollLeft += speed;
+            // Loop back to start smoothly
+            if (container.scrollLeft >= (container.scrollWidth - container.clientWidth - 1)) {
+                container.scrollLeft = 0;
+            }
+        }
+    }, 25);
 }
 
 async function initPage() {
@@ -63,6 +87,13 @@ async function initPage() {
         
         renderHeroSection();
         renderHomeReviews();
+
+        // Start the scrolling animations after everything is loaded!
+        setTimeout(() => {
+            startAutoScroll('hero-categories-track', 1);
+            startAutoScroll('home-reviews-container', 1);
+        }, 500);
+
     } catch (e) {}
     
     await fetchDecorations();
@@ -89,8 +120,8 @@ function renderHeroSection() {
     const track = document.getElementById('hero-categories-track');
     const items = JSON.parse(globalSettings['hero_items']);
     if (items.length === 0) return;
+    
     const buildItemHTML = (item) => {
-        // ELEGANCE FIX: Sizes reduced for desktop (w-28 instead of w-32)
         let shapeClasses = "w-24 h-24 md:w-28 md:h-28 rounded-full"; 
         if (item.shape === 'square') shapeClasses = "w-24 h-24 md:w-28 md:h-28 rounded-none";
         if (item.shape === 'rounded-square') shapeClasses = "w-24 h-24 md:w-28 md:h-28 rounded-2xl";
@@ -102,7 +133,9 @@ function renderHeroSection() {
             <span class="text-sm md:text-base font-bold text-indigo-900 text-center w-24 md:w-28 line-clamp-2 leading-tight">${item.title}</span>
         </a>`;
     };
-    const repeatedItems = [...items, ...items, ...items, ...items, ...items, ...items];
+    
+    // Duplicate 10x to ensure the marquee auto-scroll never visibly ends
+    const repeatedItems = Array(10).fill(items).flat();
     track.innerHTML = repeatedItems.map(buildItemHTML).join('');
 }
 
@@ -111,7 +144,8 @@ function renderHomeReviews() {
     const revs = JSON.parse(globalSettings['home_reviews']);
     if (revs.length > 0) {
         document.getElementById('home-reviews-section').classList.remove('hidden');
-        document.getElementById('home-reviews-container').innerHTML = revs.map(r => {
+        
+        const buildReviewHTML = (r) => {
             let mediaHTML = '';
             if (r.media) {
                 if (isVideoFile(r.media)) {
@@ -121,14 +155,18 @@ function renderHomeReviews() {
                 }
             }
             return `
-            <div class="flex-none w-80 md:w-96 bg-white p-6 md:p-8 rounded-3xl shadow-sm border border-pink-100 snap-center relative flex flex-col hover:shadow-lg transition-shadow">
+            <div class="flex-none w-80 md:w-96 bg-white/80 backdrop-blur-sm p-6 md:p-8 rounded-3xl shadow-sm border border-pink-100 relative flex flex-col hover:shadow-lg transition-shadow">
                 <span class="absolute top-4 right-6 text-4xl text-pink-100">"</span>
                 <div class="flex text-yellow-400 mb-4 text-xl">${'★'.repeat(r.rating)}</div>
                 ${mediaHTML}
                 <p class="text-gray-600 italic mb-6 relative z-10 flex-grow text-lg">"${r.text}"</p>
                 <p class="font-black text-indigo-900 border-t border-gray-50 pt-4">- ${r.name}</p>
             </div>`;
-        }).join('');
+        };
+
+        // Duplicate reviews to fill the marquee
+        const repeatedRevs = Array(5).fill(revs).flat();
+        document.getElementById('home-reviews-container').innerHTML = repeatedRevs.map(buildReviewHTML).join('');
     }
 }
 
@@ -197,7 +235,6 @@ function renderDecorationsGrid() {
         const catItems = activeItems.filter(i => i.category === cat);
         const title = cat.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
         
-        // ELEGANCE FIX: Added xl:grid-cols-5 so items stay nicely sized on huge monitors
         const wrapperClasses = isGridMode ? "grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6 pb-8" : "flex overflow-x-auto flex-nowrap gap-4 md:gap-6 pb-8 hide-scroll-bar px-2 snap-x";
             
         let subCategoryPillsHTML = '';
@@ -205,9 +242,9 @@ function renderDecorationsGrid() {
             const subs = globalCategoryMap[cat];
             subCategoryPillsHTML = `
             <div class="flex overflow-x-auto gap-3 pb-6 hide-scroll-bar px-2 md:px-0">
-                <a href="index.html?category=${cat}" class="${!filterSubCat ? 'bg-pink-600 text-white border-pink-600 shadow-md' : 'bg-white text-gray-600 border-gray-200 hover:bg-pink-50'} border px-5 py-2 rounded-full text-sm font-bold whitespace-nowrap transition-all">${!filterSubCat ? '✓ All' : 'All'}</a>
+                <a href="index.html?category=${cat}" class="${!filterSubCat ? 'bg-pink-600 text-white border-pink-600 shadow-md' : 'bg-white/80 backdrop-blur-sm text-gray-600 border-gray-200 hover:bg-pink-50'} border px-5 py-2 rounded-full text-sm font-bold whitespace-nowrap transition-all">${!filterSubCat ? '✓ All' : 'All'}</a>
                 ${subs.map(sub => `
-                    <a href="index.html?category=${cat}&sub=${sub.slug}" class="${filterSubCat === sub.slug ? 'bg-pink-600 text-white border-pink-600 shadow-md' : 'bg-white text-gray-600 border-gray-200 hover:bg-pink-50'} border px-5 py-2 rounded-full text-sm font-bold whitespace-nowrap transition-all">${filterSubCat === sub.slug ? '✓ ' + sub.name : sub.name}</a>
+                    <a href="index.html?category=${cat}&sub=${sub.slug}" class="${filterSubCat === sub.slug ? 'bg-pink-600 text-white border-pink-600 shadow-md' : 'bg-white/80 backdrop-blur-sm text-gray-600 border-gray-200 hover:bg-pink-50'} border px-5 py-2 rounded-full text-sm font-bold whitespace-nowrap transition-all">${filterSubCat === sub.slug ? '✓ ' + sub.name : sub.name}</a>
                 `).join('')}
             </div>`;
         }
@@ -230,14 +267,13 @@ function generateCardHTML(item, isGridMode) {
     let primaryImg = item.image_url;
     if (item.images) { try { primaryImg = JSON.parse(item.images)[0] || item.image_url; } catch(e) {} }
 
-    // ELEGANCE FIX: Changed from w-80 to w-72 for slider cards so they are less chunky
     const cardClasses = isGridMode ? "w-full group" : "flex-none w-64 md:w-72 group snap-center";
     const imgHeightClasses = "h-40 md:h-48";
     const offerBadge = item.offer_text ? `<div class="absolute top-3 left-3 bg-red-600 text-white font-black text-[10px] md:text-xs px-3 py-1 rounded-full shadow-lg z-10 uppercase tracking-widest animate-pulse border border-red-400">${item.offer_text}</div>` : '';
 
     return `
     <a href="details.html?id=${item.slug}" aria-label="View details for ${item.title}" class="${cardClasses}">
-        <div class="bg-white rounded-[1.5rem] shadow-sm border border-gray-100 overflow-hidden transition-all group-hover:shadow-xl group-hover:-translate-y-1 h-full flex flex-col relative">
+        <div class="bg-white/90 backdrop-blur-sm rounded-[1.5rem] shadow-sm border border-gray-100 overflow-hidden transition-all group-hover:shadow-xl group-hover:-translate-y-1 h-full flex flex-col relative">
             ${offerBadge}
             <div class="${imgHeightClasses} overflow-hidden w-full bg-gray-50 relative">
                 <img src="${primaryImg}" alt="${item.title} Setup" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
