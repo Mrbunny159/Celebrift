@@ -8,6 +8,16 @@ let imagesArray = [];
 
 window.updateActiveThumb = function(activeIndex) { imagesArray.forEach((_, idx) => { const el = document.getElementById(`thumb-${idx}`); if (el) { el.classList.remove('border-pink-500'); el.classList.add('border-transparent'); if (idx === activeIndex) { el.classList.remove('border-transparent'); el.classList.add('border-pink-500'); } } }); }
 
+// SMART PRICE FORMATTER
+function formatPrice(price) {
+    if (!price) return '';
+    const p = String(price).trim();
+    if (p.includes('₹') || p.toLowerCase().includes('rs')) {
+        return p; 
+    }
+    return '₹' + p; 
+}
+
 async function fetchProductDetails() {
     try {
         const sRes = await fetch('/api/settings');
@@ -35,14 +45,11 @@ async function fetchProductDetails() {
         document.getElementById('detail-container').classList.remove('hidden');
         document.getElementById('detail-footer')?.classList.remove('hidden');
         
-        // --- FIXED IMAGE LOGIC ---
-        // Always push the main image URL first
         imagesArray = [];
         if (data.image_url) {
             imagesArray.push(data.image_url);
         }
 
-        // Safely parse gallery images and avoid duplicates
         try {
             let parsedGallery = [];
             if (data.images && typeof data.images === 'string') {
@@ -67,10 +74,11 @@ async function fetchProductDetails() {
         if (thumbContainer && imagesArray.length > 1) { 
             thumbContainer.innerHTML = imagesArray.map((img, index) => `<img src="${img}" onclick="document.getElementById('decor-image').src='${img}'; updateActiveThumb(${index})" id="thumb-${index}" class="w-20 h-20 md:w-24 md:h-24 rounded-xl object-cover cursor-pointer border-2 ${index === 0 ? 'border-pink-500' : 'border-transparent'} hover:border-pink-400 transition-all flex-none shadow-sm snap-center bg-gray-50">`).join(''); 
         }
-        // ------------------------
 
         if(document.getElementById('decor-title')) document.getElementById('decor-title').textContent = data.title || 'Beautiful Decoration';
-        if(document.getElementById('decor-price')) document.getElementById('decor-price').textContent = data.price_range || '';
+        
+        // APPLIED FORMAT PRICE HERE
+        if(document.getElementById('decor-price')) document.getElementById('decor-price').textContent = formatPrice(data.price_range);
         
         if(document.getElementById('decor-desc')) {
             document.getElementById('decor-desc').innerHTML = data.description || '';
@@ -97,7 +105,8 @@ async function loadRelated() {
     try {
         const res = await fetch('/api/decorations'); const data = await res.json(); const related = data.filter(i => i.slug !== decorId).slice(0, 8); const container = document.getElementById('related-products-container');
         if (related.length === 0) { if(container) container.innerHTML = ""; return; }
-        if(container) { container.innerHTML = `<h3 class="text-3xl font-black mb-8 px-2 text-indigo-900">More Designs for You</h3><div class="flex overflow-x-auto gap-6 pb-10 hide-scroll-bar px-2 snap-x">${related.map(item => { let primaryImg = item.image_url; if (item.images) { try { primaryImg = JSON.parse(item.images)[0] || item.image_url; } catch(e) {} } return `<a href="details.html?id=${item.slug}" class="flex-none w-64 bg-white/80 backdrop-blur-sm rounded-[1.5rem] shadow-sm border border-gray-100 group overflow-hidden snap-center"><img src="${primaryImg}" class="w-full h-48 object-cover group-hover:scale-105 transition duration-700"><div class="p-5"><h4 class="font-bold text-gray-800 line-clamp-1">${item.title}</h4><p class="text-pink-600 font-black mt-1">${item.price_range}</p></div></a>`; }).join('')}</div>`; }
+        // APPLIED FORMAT PRICE TO RELATED CARDS HERE
+        if(container) { container.innerHTML = `<h3 class="text-3xl font-black mb-8 px-2 text-indigo-900">More Designs for You</h3><div class="flex overflow-x-auto gap-6 pb-10 hide-scroll-bar px-2 snap-x">${related.map(item => { let primaryImg = item.image_url; if (item.images) { try { primaryImg = JSON.parse(item.images)[0] || item.image_url; } catch(e) {} } return `<a href="details.html?id=${item.slug}" class="flex-none w-64 bg-white/80 backdrop-blur-sm rounded-[1.5rem] shadow-sm border border-gray-100 group overflow-hidden snap-center"><img src="${primaryImg}" class="w-full h-48 object-cover group-hover:scale-105 transition duration-700"><div class="p-5"><h4 class="font-bold text-gray-800 line-clamp-1">${item.title}</h4><p class="text-pink-600 font-black mt-1">${formatPrice(item.price_range)}</p></div></a>`; }).join('')}</div>`; }
     } catch (e) { }
 }
 

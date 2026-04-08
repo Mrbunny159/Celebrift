@@ -10,9 +10,20 @@ let allDecorations = [];
 let currentSearch = "";
 let currentSort = "default";
 
+// --- HELPERS ---
 function isVideoFile(url) {
     if (!url) return false;
     return url.startsWith('data:video') || url.match(/\.(mp4|webm|ogg)$/i);
+}
+
+// SMART PRICE FORMATTER: Auto-adds ₹ if it's missing!
+function formatPrice(price) {
+    if (!price) return '';
+    const p = String(price).trim();
+    if (p.includes('₹') || p.toLowerCase().includes('rs')) {
+        return p; // Already has a currency symbol
+    }
+    return '₹' + p; // Add the symbol automatically
 }
 
 // AUTO SCROLL (MARQUEE) FUNCTION
@@ -23,7 +34,6 @@ function startAutoScroll(containerId, speed = 1) {
     let isHovered = false;
     let isTouching = false;
     
-    // Pause on hover or touch so users can read
     container.addEventListener('mouseenter', () => isHovered = true);
     container.addEventListener('mouseleave', () => isHovered = false);
     container.addEventListener('touchstart', () => isTouching = true, {passive: true});
@@ -32,7 +42,6 @@ function startAutoScroll(containerId, speed = 1) {
     setInterval(() => {
         if (!isHovered && !isTouching) {
             container.scrollLeft += speed;
-            // Loop back to start smoothly
             if (container.scrollLeft >= (container.scrollWidth - container.clientWidth - 1)) {
                 container.scrollLeft = 0;
             }
@@ -88,7 +97,6 @@ async function initPage() {
         renderHeroSection();
         renderHomeReviews();
 
-        // Start the scrolling animations after everything is loaded!
         setTimeout(() => {
             startAutoScroll('hero-categories-track', 1);
             startAutoScroll('home-reviews-container', 1);
@@ -134,7 +142,6 @@ function renderHeroSection() {
         </a>`;
     };
     
-    // Duplicate 10x to ensure the marquee auto-scroll never visibly ends
     const repeatedItems = Array(10).fill(items).flat();
     track.innerHTML = repeatedItems.map(buildItemHTML).join('');
 }
@@ -164,7 +171,6 @@ function renderHomeReviews() {
             </div>`;
         };
 
-        // Duplicate reviews to fill the marquee
         const repeatedRevs = Array(5).fill(revs).flat();
         document.getElementById('home-reviews-container').innerHTML = repeatedRevs.map(buildReviewHTML).join('');
     }
@@ -282,7 +288,7 @@ function generateCardHTML(item, isGridMode) {
             <div class="p-4 md:p-5 flex-grow flex flex-col justify-between">
                 <h3 class="font-bold text-gray-800 text-sm md:text-base line-clamp-2 leading-snug">${item.title}</h3>
                 <div class="flex justify-between items-center mt-4 border-t border-gray-50 pt-3">
-                    <span class="text-pink-600 font-black text-sm md:text-lg">${item.price_range}</span>
+                    <span class="text-pink-600 font-black text-sm md:text-lg">${formatPrice(item.price_range)}</span>
                     <span class="text-xs text-yellow-500 font-black bg-yellow-50 px-2 py-1 rounded-md">★ ${item.average_rating || '5.0'}</span>
                 </div>
             </div>
