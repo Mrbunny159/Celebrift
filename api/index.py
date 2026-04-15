@@ -114,14 +114,20 @@ def manage_decorations():
         query = 'SELECT slug, title, category, sub_category, image_url, price_range, average_rating, offer_text FROM decorations'
         
         if category and category != 'all':
-            cur.execute(query + ' WHERE category LIKE %s ORDER BY views DESC;', (f'%"{category}"%',))
+            cur.execute(query + ' WHERE category = %s ORDER BY views DESC;', (category,))
         else:
             cur.execute(query + ' ORDER BY views DESC;')
             
         decorations = cur.fetchall()
         cur.close()
         conn.close()
-        return jsonify(decorations)
+        
+        # --- THE NEW CACHING LOGIC ---
+        from flask import make_response
+        response = make_response(jsonify(decorations))
+        # Cache on Vercel's Edge Network for 60 seconds
+        response.headers['Cache-Control'] = 's-maxage=60, stale-while-revalidate'
+        return response
 
     if request.method == 'POST':
         if request.headers.get('Authorization') != f'Bearer {SECRET_TOKEN}': return jsonify({'error': 'Unauthorized'}), 401

@@ -68,12 +68,25 @@ async function initPage() {
         const res = await fetch('/api/settings');
         globalSettings = await res.json();
         
-        if (globalSettings['global_offer']) {
-            const banner = document.getElementById('global-announcement');
-            if(banner) {
-                banner.textContent = globalSettings['global_offer'];
-                banner.classList.remove('hidden');
+        if (globalSettings['promo_media']) {
+            const promoSection = document.getElementById('promo-banner-section');
+            const promoContainer = document.getElementById('promo-banner-container');
+            const mediaUrl = globalSettings['promo_media'];
+            
+            // --- NEW PRELOAD LOGIC ---
+            const preloadLink = document.createElement("link");
+            preloadLink.rel = "preload";
+            preloadLink.as = isVideoFile(mediaUrl) ? "video" : "image";
+            preloadLink.href = mediaUrl;
+            document.head.appendChild(preloadLink);
+            // -------------------------
+
+            if (isVideoFile(mediaUrl)) {
+                promoContainer.innerHTML = `<video src="${mediaUrl}" autoplay loop muted playsinline class="w-full h-full object-cover"></video>`;
+            } else {
+                promoContainer.innerHTML = `<img src="${mediaUrl}" class="w-full h-full object-cover">`;
             }
+            promoSection.classList.remove('hidden');
         }
 
         if (globalSettings['promo_media']) {
@@ -301,13 +314,14 @@ function renderDecorationsGrid() {
                 </div>
                 ${isGridMode ? subCategoryPillsHTML : ''}
                 <div class="${wrapperClasses}">
-                    ${catItems.map(item => generateCardHTML(item, isGridMode)).join('')}
+                    ${catItems.map((item, index) => generateCardHTML(item, isGridMode, index)).join('')}
                 </div>
             </section>`;
     }).join('');
 }
 
-function generateCardHTML(item, isGridMode) {
+// Add index as the third parameter with a default of 999
+function generateCardHTML(item, isGridMode, index = 999) {
     let primaryImg = item.image_url;
     if (item.images) { try { primaryImg = JSON.parse(item.images)[0] || item.image_url; } catch(e) {} }
 
@@ -315,12 +329,18 @@ function generateCardHTML(item, isGridMode) {
     const imgHeightClasses = "h-40 md:h-48";
     const offerBadge = item.offer_text ? `<div class="absolute top-3 left-3 bg-red-600 text-white font-black text-[10px] md:text-xs px-3 py-1 rounded-full shadow-lg z-10 uppercase tracking-widest animate-pulse border border-red-400">${item.offer_text}</div>` : '';
 
+    // --- NEW SMART LOADING LOGIC ---
+    // If it's one of the first 4 items, load it immediately. Otherwise, lazy load it.
+    const imageLoading = index < 4 ? 'loading="eager" fetchpriority="high"' : 'loading="lazy"';
+
     return `
     <a href="details.html?id=${item.slug}" aria-label="View details for ${item.title}" class="${cardClasses}">
         <div class="bg-white/90 backdrop-blur-sm rounded-[1.5rem] shadow-sm border border-gray-100 overflow-hidden transition-all group-hover:shadow-xl group-hover:-translate-y-1 h-full flex flex-col relative">
             ${offerBadge}
             <div class="${imgHeightClasses} overflow-hidden w-full bg-gray-50 relative">
-                <img src="${primaryImg}" loading="lazy" alt="${item.title} Setup" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                
+                <img src="${primaryImg}" ${imageLoading} alt="${item.title} Setup" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                
                 <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
             </div>
             <div class="p-4 md:p-5 flex-grow flex flex-col justify-between">
