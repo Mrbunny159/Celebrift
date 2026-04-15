@@ -15,8 +15,8 @@ app = Flask(__name__)
 CORS(app)
 
 DATABASE_URL = os.environ.get('DATABASE_URL')
-ADMIN_PASSWORD = os.environ.get('ADMIN_PASSWORD', 'celebrift123') 
-SECRET_TOKEN = os.environ.get('SECRET_TOKEN', 'admin_secret_token_123')
+ADMIN_PASSWORD = os.environ.get('ADMIN_PASSWORD') 
+SECRET_TOKEN = os.environ.get('SECRET_TOKEN')
 BLOB_TOKEN = os.environ.get('BLOB_READ_WRITE_TOKEN')
 
 def get_db_connection():
