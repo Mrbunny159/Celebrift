@@ -1,76 +1,93 @@
 const urlParams = new URLSearchParams(window.location.search);
 const filterCat = urlParams.get('category');
 const filterSubCat = urlParams.get('sub');
+const initialSearch = urlParams.get('search') || "";
 
 let globalSettings = null;
 let globalCategoryMap = {};
 let categoryOrder = [];
 
 let allDecorations = [];
-let currentSearch = "";
+let currentSearch = initialSearch.toLowerCase();
 let currentSort = "default";
 
-// --- HELPERS ---
 function isVideoFile(url) {
     if (!url) return false;
     return url.startsWith('data:video') || url.match(/\.(mp4|webm|ogg)$/i);
 }
 
-// SMART PRICE FORMATTER: Auto-adds ₹ if it's missing!
 function formatPrice(price) {
     if (!price) return '';
     const p = String(price).trim();
-    if (p.includes('₹') || p.toLowerCase().includes('rs')) {
-        return p; // Already has a currency symbol
-    }
-    return '₹' + p; // Add the symbol automatically
+    if (p.includes('₹') || p.toLowerCase().includes('rs')) return p;
+    return '₹' + p; 
 }
 
-// AUTO SCROLL (MARQUEE) FUNCTION
 function startAutoScroll(containerId, speed = 1) {
     const container = document.getElementById(containerId);
     if (!container) return;
-    
-    let isHovered = false;
-    let isTouching = false;
-    
+    let isHovered = false; let isTouching = false;
     container.addEventListener('mouseenter', () => isHovered = true);
     container.addEventListener('mouseleave', () => isHovered = false);
     container.addEventListener('touchstart', () => isTouching = true, {passive: true});
     container.addEventListener('touchend', () => setTimeout(() => isTouching = false, 1500));
-
     setInterval(() => {
         if (!isHovered && !isTouching) {
             container.scrollLeft += speed;
-            if (container.scrollLeft >= (container.scrollWidth - container.clientWidth - 1)) {
-                container.scrollLeft = 0;
-            }
+            if (container.scrollLeft >= (container.scrollWidth - container.clientWidth - 1)) container.scrollLeft = 0;
         }
     }, 25);
 }
 
+function executeGlobalSearch() {
+    const searchInput = document.getElementById('globalSearchInput');
+    if (!searchInput) return;
+    const query = searchInput.value.toLowerCase();
+    
+    if (!window.location.pathname.endsWith('index.html') && window.location.pathname !== '/' && !window.location.pathname.includes('index')) {
+        window.location.href = `index.html?search=${encodeURIComponent(query)}`;
+        return;
+    }
+    
+    currentSearch = query;
+    renderDecorationsGrid();
+}
+
 async function initPage() {
+    const searchInput = document.getElementById('globalSearchInput');
+    if(searchInput && initialSearch) searchInput.value = initialSearch;
+
+    if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+            currentSearch = e.target.value.toLowerCase();
+            renderDecorationsGrid();
+        });
+    }
+
     try {
         const res = await fetch('/api/settings');
         globalSettings = await res.json();
         
         if (globalSettings['global_offer']) {
             const banner = document.getElementById('global-announcement');
-            banner.textContent = globalSettings['global_offer'];
-            banner.classList.remove('hidden');
+            if(banner) {
+                banner.textContent = globalSettings['global_offer'];
+                banner.classList.remove('hidden');
+            }
         }
 
         if (globalSettings['promo_media']) {
             const promoSection = document.getElementById('promo-banner-section');
             const promoContainer = document.getElementById('promo-banner-container');
             const mediaUrl = globalSettings['promo_media'];
-            
-            if (isVideoFile(mediaUrl)) {
-                promoContainer.innerHTML = `<video src="${mediaUrl}" autoplay loop muted playsinline class="w-full h-full object-cover"></video>`;
-            } else {
-                promoContainer.innerHTML = `<img src="${mediaUrl}" class="w-full h-full object-cover">`;
+            if(promoSection && promoContainer) {
+                if (isVideoFile(mediaUrl)) {
+                    promoContainer.innerHTML = `<video src="${mediaUrl}" autoplay loop muted playsinline class="w-full h-full object-cover"></video>`;
+                } else {
+                    promoContainer.innerHTML = `<img src="${mediaUrl}" class="w-full h-full object-cover">`;
+                }
+                promoSection.classList.remove('hidden');
             }
-            promoSection.classList.remove('hidden');
         }
 
         if (globalSettings['site_categories']) {
@@ -106,26 +123,24 @@ async function initPage() {
     
     await fetchDecorations();
     
-    const searchBar = document.getElementById('search-bar');
-    if (searchBar) {
-        searchBar.addEventListener('input', (e) => {
-            currentSearch = e.target.value.toLowerCase();
-            renderDecorationsGrid();
-        });
-    }
-    
     const sortBar = document.getElementById('sort-bar');
-    if(sortBar) {
-        sortBar.addEventListener('change', (e) => {
-            currentSort = e.target.value;
-            renderDecorationsGrid();
-        });
-    }
+    const mobileSortBar = document.getElementById('mobile-sort-bar');
+    
+    const handleSortChange = (e) => {
+        currentSort = e.target.value;
+        if(sortBar) sortBar.value = currentSort;
+        if(mobileSortBar) mobileSortBar.value = currentSort;
+        renderDecorationsGrid();
+    };
+
+    if(sortBar) sortBar.addEventListener('change', handleSortChange);
+    if(mobileSortBar) mobileSortBar.addEventListener('change', handleSortChange);
 }
 
 function renderHeroSection() {
     if (!globalSettings || !globalSettings['hero_items']) return;
     const track = document.getElementById('hero-categories-track');
+    if (!track) return;
     const items = JSON.parse(globalSettings['hero_items']);
     if (items.length === 0) return;
     
@@ -150,7 +165,8 @@ function renderHomeReviews() {
     if (!globalSettings || !globalSettings['home_reviews']) return;
     const revs = JSON.parse(globalSettings['home_reviews']);
     if (revs.length > 0) {
-        document.getElementById('home-reviews-section').classList.remove('hidden');
+        const section = document.getElementById('home-reviews-section');
+        if (section) section.classList.remove('hidden');
         
         const buildReviewHTML = (r) => {
             let mediaHTML = '';
@@ -158,7 +174,7 @@ function renderHomeReviews() {
                 if (isVideoFile(r.media)) {
                     mediaHTML = `<video src="${r.media}" autoplay loop muted playsinline class="w-full h-48 object-cover rounded-2xl mb-4 shadow-sm border border-gray-100"></video>`;
                 } else {
-                    mediaHTML = `<img src="${r.media}" alt="Review from ${r.name}" class="w-full h-48 object-cover rounded-2xl mb-4 shadow-sm border border-gray-100">`;
+                    mediaHTML = `<img src="${r.media}" alt="Review from ${r.name}" loading="lazy" class="w-full h-48 object-cover rounded-2xl mb-4 shadow-sm border border-gray-100">`;
                 }
             }
             return `
@@ -171,16 +187,29 @@ function renderHomeReviews() {
             </div>`;
         };
 
-        const repeatedRevs = Array(5).fill(revs).flat();
-        document.getElementById('home-reviews-container').innerHTML = repeatedRevs.map(buildReviewHTML).join('');
+        const container = document.getElementById('home-reviews-container');
+        if (container) {
+            const repeatedRevs = Array(5).fill(revs).flat();
+            container.innerHTML = repeatedRevs.map(buildReviewHTML).join('');
+        }
     }
 }
 
 async function fetchDecorations() {
     const container = document.getElementById('rows-container');
+    if (!container) return;
     try {
         const res = await fetch('/api/decorations');
         allDecorations = await res.json();
+        
+        allDecorations.forEach(item => {
+            try { item.categoryArray = JSON.parse(item.category); } 
+            catch(e) { item.categoryArray = [item.category]; }
+            
+            try { item.subCategoryArray = JSON.parse(item.sub_category); } 
+            catch(e) { item.subCategoryArray = item.sub_category ? [item.sub_category] : []; }
+        });
+        
         renderDecorationsGrid();
     } catch (e) { 
         container.innerHTML = "<p class='text-center text-red-500 font-bold'>Error loading data.</p>"; 
@@ -189,15 +218,23 @@ async function fetchDecorations() {
 
 function renderDecorationsGrid() {
     const container = document.getElementById('rows-container');
+    if (!container) return;
     if (allDecorations.length === 0) {
         container.innerHTML = "<p class='text-center text-gray-500 font-bold py-10'>No decorations added yet.</p>";
         return;
     }
 
     let activeItems = allDecorations.filter(item => {
-        const matchesSearch = item.title.toLowerCase().includes(currentSearch) || item.category.replace(/-/g, ' ').includes(currentSearch) || (item.sub_category || '').replace(/-/g, ' ').includes(currentSearch);
-        const matchesCat = filterCat ? item.category === filterCat : true;
-        const matchesSubCat = filterSubCat ? item.sub_category === filterSubCat : true;
+        const joinedCategories = item.categoryArray.join(' ').replace(/-/g, ' ');
+        const joinedSubCategories = item.subCategoryArray.join(' ').replace(/-/g, ' ');
+        
+        const matchesSearch = item.title.toLowerCase().includes(currentSearch) || 
+                              joinedCategories.includes(currentSearch) || 
+                              joinedSubCategories.includes(currentSearch);
+                              
+        const matchesCat = filterCat ? item.categoryArray.includes(filterCat) : true;
+        const matchesSubCat = filterSubCat ? item.subCategoryArray.includes(filterSubCat) : true;
+        
         return matchesSearch && matchesCat && matchesSubCat;
     });
 
@@ -226,7 +263,7 @@ function renderDecorationsGrid() {
         return;
     }
 
-    let categories = [...new Set(activeItems.map(i => i.category))];
+    let categories = [...new Set(activeItems.flatMap(i => i.categoryArray))];
     
     const fallbackOrder = ['birthday-decor', 'baby-shower-decor', 'anniversary-decor', 'naming-ceremony', 'store-decor', 'romantic-decor'];
     const activeOrder = categoryOrder.length > 0 ? categoryOrder : fallbackOrder;
@@ -238,9 +275,10 @@ function renderDecorationsGrid() {
     });
 
     container.innerHTML = categories.map(cat => {
-        const catItems = activeItems.filter(i => i.category === cat);
-        const title = cat.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+        const catItems = activeItems.filter(i => i.categoryArray.includes(cat));
+        if (catItems.length === 0) return '';
         
+        const title = cat.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
         const wrapperClasses = isGridMode ? "grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6 pb-8" : "flex overflow-x-auto flex-nowrap gap-4 md:gap-6 pb-8 hide-scroll-bar px-2 snap-x";
             
         let subCategoryPillsHTML = '';
@@ -282,7 +320,7 @@ function generateCardHTML(item, isGridMode) {
         <div class="bg-white/90 backdrop-blur-sm rounded-[1.5rem] shadow-sm border border-gray-100 overflow-hidden transition-all group-hover:shadow-xl group-hover:-translate-y-1 h-full flex flex-col relative">
             ${offerBadge}
             <div class="${imgHeightClasses} overflow-hidden w-full bg-gray-50 relative">
-                <img src="${primaryImg}" alt="${item.title} Setup" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                <img src="${primaryImg}" loading="lazy" alt="${item.title} Setup" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
             </div>
             <div class="p-4 md:p-5 flex-grow flex flex-col justify-between">

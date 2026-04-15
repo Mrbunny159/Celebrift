@@ -104,12 +104,12 @@
 
                         <div class="grid grid-cols-2 gap-4">
                             <div>
-                                <label class="block text-sm font-bold text-gray-700 mb-1">Category *</label>
-                                <select id="decor-category" required class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-pink-500" onchange="updateSubCategoryDropdown()"></select>
+                                <label class="block text-sm font-bold text-gray-700 mb-1">Category (Hold Ctrl/Cmd) *</label>
+                                <select id="decor-category" multiple required class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-pink-500" style="height: 120px" onchange="updateSubCategoryDropdown()"></select>
                             </div>
                             <div>
-                                <label class="block text-sm font-bold text-gray-700 mb-1">Sub-Category</label>
-                                <select id="decor-sub-category" class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-pink-500"><option value="">None</option></select>
+                                <label class="block text-sm font-bold text-gray-700 mb-1">Sub-Category (Hold Ctrl/Cmd)</label>
+                                <select id="decor-sub-category" multiple class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-pink-500" style="height: 120px"></select>
                             </div>
                         </div>
 
@@ -406,15 +406,20 @@
         }
 
         window.updateSubCategoryDropdown = function() {
-            const catSlug = document.getElementById('decor-category').value;
+            const catSelect = document.getElementById('decor-category');
             const subSelect = document.getElementById('decor-sub-category');
             subSelect.innerHTML = '<option value="">None</option>';
-            if(globalCategoryMap[catSlug]) {
-                globalCategoryMap[catSlug].forEach(sub => {
-                    const subSlug = sub.toLowerCase().replace(/ /g, '-');
-                    subSelect.innerHTML += `<option value="${subSlug}">${sub}</option>`;
-                });
-            }
+            
+            const selectedOptions = Array.from(catSelect.selectedOptions).map(opt => opt.value);
+            
+            selectedOptions.forEach(catSlug => {
+                if(globalCategoryMap[catSlug]) {
+                    globalCategoryMap[catSlug].forEach(sub => {
+                        const subSlug = sub.toLowerCase().replace(/ /g, '-');
+                        subSelect.innerHTML += `<option value="${subSlug}">${sub}</option>`;
+                    });
+                }
+            });
         }
 
         async function loadInventory() {
@@ -448,11 +453,17 @@
             e.preventDefault();
             const btn = document.getElementById('btn-save'); btn.textContent = "Uploading to Database...";
             
+            const categorySelect = document.getElementById('decor-category');
+            const selectedCategories = Array.from(categorySelect.selectedOptions).map(opt => opt.value);
+
+            const subCategorySelect = document.getElementById('decor-sub-category');
+            const selectedSubCategories = Array.from(subCategorySelect.selectedOptions).map(opt => opt.value);
+
             const payload = {
                 slug: document.getElementById('decor-slug').value || document.getElementById('decor-title').value.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, ''),
                 title: document.getElementById('decor-title').value,
-                category: document.getElementById('decor-category').value,
-                sub_category: document.getElementById('decor-sub-category').value,
+                category: selectedCategories, 
+                sub_category: selectedSubCategories,
                 price_range: document.getElementById('decor-price').value,
                 offer_text: document.getElementById('decor-offer').value,
                 image_url: document.getElementById('decor-main-img-b64').value,
@@ -472,9 +483,23 @@
             document.getElementById('form-title').textContent = "Edit Setup";
             document.getElementById('decor-slug').value = data.slug;
             document.getElementById('decor-title').value = data.title;
-            document.getElementById('decor-category').value = data.category;
+            
+            let catArray = [];
+            try { catArray = JSON.parse(data.category); } catch(e) { catArray = [data.category]; }
+            const catSelect = document.getElementById('decor-category');
+            Array.from(catSelect.options).forEach(opt => {
+                opt.selected = catArray.includes(opt.value);
+            });
+            
             updateSubCategoryDropdown();
-            document.getElementById('decor-sub-category').value = data.sub_category || '';
+            
+            let subCatArray = [];
+            try { subCatArray = JSON.parse(data.sub_category); } catch(e) { subCatArray = data.sub_category ? [data.sub_category] : []; }
+            const subCatSelect = document.getElementById('decor-sub-category');
+            Array.from(subCatSelect.options).forEach(opt => {
+                opt.selected = subCatArray.includes(opt.value);
+            });
+
             document.getElementById('decor-price').value = data.price_range;
             document.getElementById('decor-offer').value = data.offer_text || '';
             document.getElementById('decor-main-img-b64').value = data.image_url;

@@ -14,9 +14,6 @@ import mimetypes
 app = Flask(__name__)
 CORS(app)
 
-# ==========================================
-# ENVIRONMENT VARIABLES (Set these in Vercel)
-# ==========================================
 DATABASE_URL = os.environ.get('DATABASE_URL')
 ADMIN_PASSWORD = os.environ.get('ADMIN_PASSWORD', 'celebrift123') 
 SECRET_TOKEN = os.environ.get('SECRET_TOKEN', 'admin_secret_token_123')
@@ -25,9 +22,7 @@ BLOB_TOKEN = os.environ.get('BLOB_READ_WRITE_TOKEN')
 def get_db_connection():
     return psycopg2.connect(DATABASE_URL)
 
-# --- VERCEL BLOB + WEBP OPTIMIZATION ENGINE ---
 def process_and_upload_to_blob(b64_string):
-    # If it's already a URL or empty, just return it
     if not b64_string or not b64_string.startswith('data:'):
         return b64_string
         
@@ -36,56 +31,36 @@ def process_and_upload_to_blob(b64_string):
         mime_type = header.split(';')[0].split(':')[1]
         binary_data = base64.b64decode(encoded)
         
-        # Scenario A: It's a Video (Upload directly, do not convert)
         if mime_type.startswith('video/'):
             ext = mimetypes.guess_extension(mime_type) or '.mp4'
             filename = f"{uuid.uuid4().hex}{ext}"
             upload_data = binary_data
             content_type = mime_type
-            
-        # Scenario B: It's an Image (Convert to WebP to save massive storage!)
         else:
             image = Image.open(io.BytesIO(binary_data))
-            
-            # WebP requires RGB or RGBA mode
             if image.mode not in ("RGB", "RGBA"):
                 image = image.convert("RGBA")
-                
             output_buffer = io.BytesIO()
-            # Save as highly optimized WebP format
             image.save(output_buffer, format="WEBP", quality=80, method=4)
             upload_data = output_buffer.getvalue()
-            
             filename = f"{uuid.uuid4().hex}.webp"
             content_type = "image/webp"
 
-        # Vercel Blob REST API strictly requires these exact headers!
         headers = {
             "Authorization": f"Bearer {BLOB_TOKEN}",
             "x-api-version": "7",
             "x-content-type": content_type
         }
         
-        res = requests.put(
-            f"https://blob.vercel-storage.com/{filename}", 
-            data=upload_data, 
-            headers=headers
-        )
+        res = requests.put(f"https://blob.vercel-storage.com/{filename}", data=upload_data, headers=headers)
         
         if res.status_code == 200:
-            return res.json().get('url') # Return the new fast CDN URL
+            return res.json().get('url')
         else:
-            print("Blob Upload Failed:", res.text)
             return b64_string
-            
     except Exception as e:
         print("Optimization/Upload Error:", e)
         return b64_string
-
-
-# ==========================================
-# STANDARD API ROUTES
-# ==========================================
 
 @app.route('/api/settings', methods=['GET'])
 def get_all_settings():
@@ -103,10 +78,8 @@ def update_setting(key):
         return jsonify({'error': 'Unauthorized'}), 401
     content = request.json.get('content', '')
     
-    # Intercept Base64 elements and convert them to Blob URLs
     if key == 'promo_media' and content.startswith('data:'):
         content = process_and_upload_to_blob(content)
-        
     elif key == 'hero_items':
         try:
             items = json.loads(content)
@@ -114,23 +87,18 @@ def update_setting(key):
                 item['image'] = process_and_upload_to_blob(item.get('image', ''))
             content = json.dumps(items)
         except Exception: pass
-        
     elif key == 'home_reviews':
         try:
             revs = json.loads(content)
             for r in revs:
-                if r.get('media'):
-                    r['media'] = process_and_upload_to_blob(r['media'])
+                if r.get('media'): r['media'] = process_and_upload_to_blob(r['media'])
             content = json.dumps(revs)
         except Exception: pass
 
     conn = get_db_connection()
     cur = conn.cursor()
     try:
-        cur.execute('''
-            INSERT INTO global_settings (key, content) VALUES (%s, %s)
-            ON CONFLICT (key) DO UPDATE SET content = EXCLUDED.content;
-        ''', (key, content))
+        cur.execute('INSERT INTO global_settings (key, content) VALUES (%s, %s) ON CONFLICT (key) DO UPDATE SET content = EXCLUDED.content;', (key, content))
         conn.commit()
         return jsonify({'success': True})
     finally:
@@ -143,11 +111,10 @@ def manage_decorations():
     if request.method == 'GET':
         cur = conn.cursor(cursor_factory=RealDictCursor)
         category = request.args.get('category')
-        
         query = 'SELECT slug, title, category, sub_category, image_url, price_range, average_rating, offer_text FROM decorations'
         
         if category and category != 'all':
-            cur.execute(query + ' WHERE category = %s ORDER BY views DESC;', (category,))
+            cur.execute(query + ' WHERE category LIKE %s ORDER BY views DESC;', (f'%"{category}"%',))
         else:
             cur.execute(query + ' ORDER BY views DESC;')
             
@@ -157,12 +124,10 @@ def manage_decorations():
         return jsonify(decorations)
 
     if request.method == 'POST':
-        if request.headers.get('Authorization') != f'Bearer {SECRET_TOKEN}':
-            return jsonify({'error': 'Unauthorized'}), 401
+        if request.headers.get('Authorization') != f'Bearer {SECRET_TOKEN}': return jsonify({'error': 'Unauthorized'}), 401
         data = request.json
         cur = conn.cursor()
         try:
-            # Route new images through the WebP/Blob optimizer
             final_primary_img = process_and_upload_to_blob(data.get('image_url', ''))
             final_images_array = [process_and_upload_to_blob(img) for img in data.get('images', [])]
             
@@ -170,21 +135,22 @@ def manage_decorations():
             package_json = json.dumps(data.get('package_includes', []))
             faqs_json = json.dumps(data.get('faqs', []))
             offer_val = data.get('offer_text', '')
-            sub_val = data.get('sub_category', '')
+
+            # Convert Category to JSON Array
+            cat_val = data.get('category', [])
+            if not isinstance(cat_val, list): cat_val = [cat_val] if cat_val else []
+            category_json = json.dumps(cat_val)
+
+            # Convert Sub-Category to JSON Array
+            sub_val = data.get('sub_category', [])
+            if not isinstance(sub_val, list): sub_val = [sub_val] if sub_val else []
+            sub_category_json = json.dumps(sub_val)
 
             cur.execute("SELECT slug FROM decorations WHERE slug = %s", (data['slug'],))
             if cur.fetchone():
-                cur.execute('''
-                    UPDATE decorations SET title=%s, category=%s, sub_category=%s, image_url=%s, description=%s, 
-                    price_range=%s, package_includes=%s, faqs=%s, images=%s, offer_text=%s WHERE slug=%s
-                ''', (data['title'], data['category'], sub_val, final_primary_img, data['description'], 
-                      data['price_range'], package_json, faqs_json, images_json, offer_val, data['slug']))
+                cur.execute('UPDATE decorations SET title=%s, category=%s, sub_category=%s, image_url=%s, description=%s, price_range=%s, package_includes=%s, faqs=%s, images=%s, offer_text=%s WHERE slug=%s', (data['title'], category_json, sub_category_json, final_primary_img, data['description'], data['price_range'], package_json, faqs_json, images_json, offer_val, data['slug']))
             else:
-                cur.execute('''
-                    INSERT INTO decorations (slug, title, category, sub_category, image_url, description, price_range, package_includes, faqs, images, offer_text)
-                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-                ''', (data['slug'], data['title'], data['category'], sub_val, final_primary_img, data['description'], 
-                      data['price_range'], package_json, faqs_json, images_json, offer_val))
+                cur.execute('INSERT INTO decorations (slug, title, category, sub_category, image_url, description, price_range, package_includes, faqs, images, offer_text) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)', (data['slug'], data['title'], category_json, sub_category_json, final_primary_img, data['description'], data['price_range'], package_json, faqs_json, images_json, offer_val))
             conn.commit()
             return jsonify({'success': True})
         except Exception as e:
@@ -211,8 +177,7 @@ def single_decoration(slug):
         return jsonify(decoration) if decoration else (jsonify({'error': 'Not found'}), 404)
 
     if request.method == 'DELETE':
-        if request.headers.get('Authorization') != f'Bearer {SECRET_TOKEN}':
-            return jsonify({'error': 'Unauthorized'}), 401
+        if request.headers.get('Authorization') != f'Bearer {SECRET_TOKEN}': return jsonify({'error': 'Unauthorized'}), 401
         cur = conn.cursor()
         cur.execute('DELETE FROM decorations WHERE slug = %s', (slug,))
         conn.commit()
@@ -234,8 +199,7 @@ def add_review(slug):
 
 @app.route('/api/admin/reviews', methods=['GET'])
 def get_all_reviews():
-    if request.headers.get('Authorization') != f'Bearer {SECRET_TOKEN}':
-        return jsonify({'error': 'Unauthorized'}), 401
+    if request.headers.get('Authorization') != f'Bearer {SECRET_TOKEN}': return jsonify({'error': 'Unauthorized'}), 401
     conn = get_db_connection()
     cur = conn.cursor(cursor_factory=RealDictCursor)
     cur.execute('SELECT id, decoration_slug, reviewer_name, rating, review_text, created_at FROM reviews ORDER BY created_at DESC;')
@@ -246,19 +210,16 @@ def get_all_reviews():
 
 @app.route('/api/admin/reviews/<int:review_id>', methods=['DELETE', 'PUT'])
 def modify_review(review_id):
-    if request.headers.get('Authorization') != f'Bearer {SECRET_TOKEN}':
-        return jsonify({'error': 'Unauthorized'}), 401
+    if request.headers.get('Authorization') != f'Bearer {SECRET_TOKEN}': return jsonify({'error': 'Unauthorized'}), 401
     conn = get_db_connection()
     cur = conn.cursor()
     try:
         cur.execute('SELECT decoration_slug FROM reviews WHERE id = %s', (review_id,))
         res = cur.fetchone()
-        if not res:
-            return jsonify({'error': 'Not found'}), 404
+        if not res: return jsonify({'error': 'Not found'}), 404
         slug = res[0]
 
-        if request.method == 'DELETE':
-            cur.execute('DELETE FROM reviews WHERE id = %s', (review_id,))
+        if request.method == 'DELETE': cur.execute('DELETE FROM reviews WHERE id = %s', (review_id,))
         elif request.method == 'PUT':
             data = request.json
             cur.execute('UPDATE reviews SET reviewer_name = %s, rating = %s, review_text = %s WHERE id = %s', (data['name'], data['rating'], data['review'], review_id))
@@ -275,40 +236,23 @@ def modify_review(review_id):
 
 @app.route('/api/admin/analytics', methods=['GET'])
 def get_analytics():
-    if request.headers.get('Authorization') != f'Bearer {SECRET_TOKEN}':
-        return jsonify({'error': 'Unauthorized'}), 401
+    if request.headers.get('Authorization') != f'Bearer {SECRET_TOKEN}': return jsonify({'error': 'Unauthorized'}), 401
     conn = get_db_connection()
     cur = conn.cursor(cursor_factory=RealDictCursor)
-    
     cur.execute('SELECT SUM(views) as total_views FROM decorations;')
     total_views = cur.fetchone()['total_views'] or 0
-    
     cur.execute('SELECT COUNT(*) as total_listings FROM decorations;')
     total_listings = cur.fetchone()['total_listings'] or 0
-    
     cur.execute('SELECT COUNT(*) as total_reviews FROM reviews;')
     total_reviews = cur.fetchone()['total_reviews'] or 0
-    
     cur.execute('SELECT title, views FROM decorations ORDER BY views DESC LIMIT 5;')
     top_products = cur.fetchall()
-    
     cur.close()
     conn.close()
-    
-    return jsonify({
-        'total_views': total_views,
-        'total_listings': total_listings,
-        'total_reviews': total_reviews,
-        'top_products': top_products
-    })
+    return jsonify({'total_views': total_views, 'total_listings': total_listings, 'total_reviews': total_reviews, 'top_products': top_products})
 
 @app.route('/api/admin/login', methods=['POST'])
 def admin_login():
     data = request.json
-    if data and data.get('password') == ADMIN_PASSWORD:
-        return jsonify({'success': True, 'token': SECRET_TOKEN})
+    if data and data.get('password') == ADMIN_PASSWORD: return jsonify({'success': True, 'token': SECRET_TOKEN})
     return jsonify({'success': False}), 401
-
-# Allow running locally
-if __name__ == '__main__':
-    app.run(debug=True)

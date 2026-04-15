@@ -3,35 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Information | Celebrift</title>
+    
+    <title>Celebrift - Premium Event & Birthday Decorations</title>
+    <meta name="description" content="Book premium, affordable decorations for birthdays, anniversaries, and baby showers. Custom balloon setups and event styling delivered to your door.">
+    <meta name="keywords" content="birthday decoration, event planner, balloon decor, baby shower decorations, anniversary setup">
+    
+    <meta property="og:title" content="Celebrift - Premium Event Decorations">
+    <meta property="og:description" content="Make your celebrations unforgettable with our premium decoration setups.">
+    <meta property="og:image" content="/logo.jpg">
+    <meta property="og:type" content="website">
+
+    <link rel="icon" type="image/jpeg" href="logo.jpg">
     <script src="https://cdn.tailwindcss.com"></script>
-    <style> body { background-color: #fdf2f8; } </style>
+    <style>
+        .hide-scroll-bar { -ms-overflow-style: none; scrollbar-width: none; }
+        .hide-scroll-bar::-webkit-scrollbar { display: none; }
+        html { scroll-behavior: smooth; }
+        body { transition: background-color 0.5s ease; }
+    </style>
 </head>
 <body class="font-sans flex flex-col min-h-screen relative overflow-x-hidden">
 
-    <nav class="bg-white/90 backdrop-blur-md shadow-sm sticky top-0 z-50 border-b border-pink-100">
-        <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-            <a href="index.html" class="flex items-center gap-3 text-3xl font-extrabold text-gray-800 tracking-tight">
-                <img src="logo.jpg" alt="Celebrift Official Logo" class="w-10 h-10 rounded-full object-cover shadow-sm">
-                <span><span class="text-pink-600">Celebr</span>ift 👑</span>
-            </a>
-            <div class="hidden md:flex gap-6 text-sm font-bold text-gray-700 items-center">
-                <a href="index.html" class="hover:text-pink-600 transition-colors">Home</a>
-                
-                <div class="relative group">
-                    <a href="index.html#rows-container" class="hover:text-pink-600 transition-colors flex items-center gap-1 py-2">
-                        All Decor <span class="text-[10px]">▼</span>
-                    </a>
-                    <div id="nav-categories-dropdown" class="absolute left-0 mt-0 w-64 bg-white border border-pink-100 rounded-2xl shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all flex flex-col overflow-hidden z-50">
+    <nav class="hidden md:flex items-center gap-6 shrink-0">
+                    <a href="index.html" class="text-gray-700 font-bold hover:text-pink-600 transition-colors">Home</a>
+                    <div class="relative group">
+                        <button class="text-pink-600 font-black flex items-center gap-1 py-8">All Decor ▾</button>
+                        <div class="absolute top-full right-0 w-64 bg-white shadow-xl rounded-2xl border border-pink-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all flex flex-col overflow-hidden z-50" id="nav-categories-dropdown"></div>
                     </div>
-                </div>
-
-                <a href="admin-login.html" class="hover:text-pink-600 transition-colors">Admin</a>
-            </div>
-            
-            <a href="index.html" class="md:hidden text-pink-500 font-bold hover:underline hidden" id="mobile-back-btn">&larr; Back to Home</a>
-        </div>
-    </nav>
+                </nav>
 
     <main class="flex-grow max-w-4xl mx-auto w-full px-4 py-16 relative z-10">
         <div id="loading" class="text-center font-bold text-pink-500 animate-pulse">Loading content...</div>
